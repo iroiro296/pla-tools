@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ポケモンレジェンズ アルセウス RTA用ツール</title>
+<meta name="description" content="ポケモンレジェンズ アルセウス(PLA)のRTA・やり込み向けツール。ダメージ計算・捕獲率計算・図鑑チェックリスト・配信用オーバーレイを1ページに。非公式ファンメイド。">
+<meta name="theme-color" content="#0c1018">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23fff' stroke='%23222' stroke-width='6'/><path d='M5 50a45 45 0 0 1 90 0z' fill='%23ff5a5a'/><rect x='5' y='46' width='90' height='8' fill='%23222'/><circle cx='50' cy='50' r='13' fill='%23fff' stroke='%23222' stroke-width='6'/></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ポケモンレジェンズ アルセウス RTA用ツール">
+<meta property="og:description" content="ダメージ計算・捕獲率計算・図鑑チェックリスト・配信用オーバーレイを1ページに。非公式ファンメイド。">
+<meta name="twitter:card" content="summary">
+<script src="pla-data.js"></script>
+<script src="pla-rta-route.js"></script>
+<script src="pla-catchrate.js"></script>
+<script src="pla-icons.js"></script>
+<script src="pla-food.js"></script>
+<style>
+:root{
+  --bg:#0c1018; --panel:#161f2c; --panel2:#1f2a3a; --panel3:#26344a;
+  --line:#2c3a51; --line2:#374863;
+  --text:#eef3fa; --muted:#9aabc2; --faint:#6f819a;
+  --accent:#ff8a4c; --accent2:#48b9ff;
+  --good:#46dba3; --warn:#ffd166; --bad:#ff6b6b;
+  --atk:#ff8a4c; --def:#48b9ff;
+  --radius:14px; --radius-sm:9px;
+  --ctl-h:38px; --gap:11px;
+  --shadow:0 6px 22px rgba(0,0,0,.35); --shadow-lg:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{scrollbar-color:var(--line2) transparent}
+body::-webkit-scrollbar{width:12px}
+body::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px;border:3px solid var(--bg)}
+body::-webkit-scrollbar-track{background:transparent}
+html,body{margin:0;padding:0;color:var(--text);
+  background:
+    radial-gradient(1100px 520px at 18% -8%,rgba(255,138,76,.10),transparent 60%),
+    radial-gradient(1100px 560px at 88% -6%,rgba(72,185,255,.10),transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+  font-size:14px;line-height:1.5;-webkit-text-size-adjust:100%;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 14px 90px}
+#dock{position:fixed;bottom:0;left:0;right:0;background:rgba(15,21,31,.82);
+  border-top:1px solid var(--line2);padding:11px 16px;z-index:100;
+  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
+  box-shadow:0 -8px 28px rgba(0,0,0,.35)}
+#dock-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-height:34px}
+.dk-dmg{font-size:22px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;
+  background:linear-gradient(135deg,var(--accent),#ff6e6e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.dk-pct{font-size:13px;font-weight:700;color:var(--accent2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dk-verdict{font-size:14px;font-weight:800;white-space:nowrap;margin-left:auto}
+.dk-verdict .ko{color:var(--bad)} .dk-verdict .rng{color:var(--warn)} .dk-verdict .safe{color:var(--good)}
+.dk-bar{flex:1;min-width:60px;max-width:200px;height:9px;border-radius:5px;
+  background:var(--panel2);position:relative;overflow:hidden;border:1px solid var(--line)}
+.dk-bar-max{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(255,138,76,.3),rgba(255,107,107,.42));transition:width .3s}
+.dk-bar-min{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent),var(--bad));transition:width .3s}
+.dk-hint{color:var(--muted);font-size:12px}
+header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .emblem{flex:0 0 auto;width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;background:linear-gradient(135deg,var(--accent),#ff5e87 55%,var(--accent2));
+  box-shadow:0 4px 14px rgba(255,138,76,.35);color:#fff}
+.brand .ttl{display:flex;flex-direction:column;gap:1px;min-width:0}
+header.top h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.01em;line-height:1.2}
+header.top .ver{font-size:10px;font-weight:700;color:var(--accent2);background:rgba(72,185,255,.12);
+  border:1px solid rgba(72,185,255,.25);padding:1px 7px;border-radius:99px;align-self:center}
+header.top .sub{font-size:11px;color:var(--muted);width:100%;line-height:1.5}
+/* モード切替トグル */
+.mode-toggle{margin-left:auto;display:flex;gap:2px;background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:3px;flex:0 0 auto;align-self:center}
+.mode-toggle .mt-btn{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:800;padding:6px 18px;border-radius:99px;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;letter-spacing:.04em}
+.mode-toggle .mt-btn:hover:not(.on){color:var(--text)}
+.mode-toggle .mt-btn.on{background:var(--accent);color:#10141c;box-shadow:0 2px 9px rgba(255,138,76,.35)}
+.mode-toggle .mt-btn[data-mode="rta"].on{background:linear-gradient(135deg,#ffd166,#ff8a4c);color:#10141c}
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:860px){.cards{grid-template-columns:1fr 66px 1fr;align-items:start;gap:10px}}
+/* カードボーダー: デフォルトは左=攻撃(橙) 右=防御(青) */
+#leftCard{border-top:3px solid var(--atk);box-shadow:var(--shadow),0 -1px 0 0 rgba(255,138,76,.25),inset 0 22px 40px -28px rgba(255,138,76,.30)}
+#rightCard{border-top:3px solid var(--def);box-shadow:var(--shadow),0 -1px 0 0 rgba(72,185,255,.25),inset 0 22px 40px -28px rgba(72,185,255,.30)}
+.cards.swapped #leftCard{border-top-color:var(--def);box-shadow:var(--shadow),0 -1px 0 0 rgba(72,185,255,.25),inset 0 22px 40px -28px rgba(72,185,255,.30)}
+.cards.swapped #rightCard{border-top-color:var(--atk);box-shadow:var(--shadow),0 -1px 0 0 rgba(255,138,76,.25),inset 0 22px 40px -28px rgba(255,138,76,.30)}
+/* 役割別フィールド: IDで高specificity確保 → .grid-move-styleに勝つ */
+#leftCard .l-def,#rightCard .r-atk{display:none}
+.cards.swapped #leftCard .l-atk,.cards.swapped #rightCard .r-def{display:none}
+.cards.swapped #leftCard .l-def,.cards.swapped #rightCard .r-atk{display:block}
+.cards.swapped #rightCard .r-atk.grid-move-style{display:grid}
+/* タグ表示切替: デフォルトは左=攻撃, 右=防御 */
+#leftCard .tag-def{display:none}
+#rightCard .tag-atk{display:none}
+.cards.swapped #leftCard .tag-atk{display:none}
+.cards.swapped #leftCard .tag-def{display:inline}
+.cards.swapped #rightCard .tag-def{display:none}
+.cards.swapped #rightCard .tag-atk{display:inline}
+.card{background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:var(--gap)}
+.card h2{font-size:15px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;letter-spacing:.01em}
+.card h2 .tag{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
+.tag.atk{background:rgba(255,138,76,.18);color:var(--atk);box-shadow:inset 0 0 0 1px rgba(255,138,76,.3)}
+.tag.def{background:rgba(72,185,255,.18);color:var(--def);box-shadow:inset 0 0 0 1px rgba(72,185,255,.3)}
+.row{margin-bottom:0}
+.row > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;letter-spacing:.02em}
+input,select,button{font-family:inherit;font-size:13px;color:var(--text)}
+input[type=text],input[type=number],select{width:100%;height:var(--ctl-h);background:var(--panel2);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:0 10px;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+input[type=text]:hover,input[type=number]:hover,select:hover{border-color:var(--line2)}
+input:focus,select:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(72,185,255,.16);background:var(--panel3)}
+input[type=number]{-moz-appearance:textfield}
+input::placeholder{color:var(--faint)}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:28px}
+.combo{position:relative}
+.combo .opts{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 4px);max-height:300px;overflow:auto;overscroll-behavior:contain;
+  background:var(--panel3);border:1px solid var(--line2);border-radius:var(--radius-sm);display:none;box-shadow:var(--shadow-lg);padding:4px}
+.combo.open .opts{display:block}
+.combo .opt{padding:8px 10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;border-radius:7px}
+.combo .opt:hover,.combo .opt.active{background:rgba(72,185,255,.18)}
+.combo .opt .no{font-size:11px;color:var(--faint);min-width:30px;font-variant-numeric:tabular-nums}
+.combo .opt .pw{margin-left:auto;font-size:11px;color:var(--muted)}
+.combo .opts::-webkit-scrollbar{width:9px}
+.combo .opts::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px;border:2px solid var(--panel3)}
+.combo .opts::-webkit-scrollbar-track{background:transparent}
+.opt-sep{padding:6px 10px 4px;font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.06em;
+  cursor:default;margin-top:2px}
+.tchip{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;color:#0c1018;white-space:nowrap;letter-spacing:.02em}
+.seg{display:flex;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--panel2)}
+.seg button{flex:1;height:calc(var(--ctl-h) - 2px);display:flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0 4px;cursor:pointer;color:var(--muted);font-size:12px;font-weight:600;transition:background .14s,color .14s;border-left:1px solid var(--line)}
+.seg button:first-child{border-left:none}
+.seg button:hover:not(.on){background:rgba(255,255,255,.04);color:var(--text)}
+.seg button.on{background:var(--accent);color:#10141c;font-weight:800;border-left-color:transparent}
+.seg.def button.on{background:var(--accent2)}
+.chk{display:flex;align-items:center;gap:7px;height:var(--ctl-h);font-size:12px;color:var(--text);cursor:pointer;background:var(--panel2);
+  border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 11px;transition:border-color .14s,background .14s;user-select:none;line-height:1}
+.chk:hover{border-color:var(--line2)}
+.chk input{width:auto;margin:0;flex-shrink:0;accent-color:var(--accent);cursor:pointer;vertical-align:middle}
+.chk.on{border-color:var(--accent);background:rgba(255,138,76,.13)}
+.chk.def input{accent-color:var(--accent2)}
+.chk.def.on{border-color:var(--accent2);background:rgba(72,185,255,.13)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.swapwrap{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}
+@media(min-width:860px){.swapwrap{position:sticky;top:14px;padding-top:26px}}
+@media(max-width:859px){.swapwrap{margin:2px 0}}
+.weather-btns{display:flex;flex-direction:column;gap:6px;width:100%}
+.wthr-label{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-align:center;margin-bottom:-2px}
+.wthr-btn{display:flex;align-items:center;justify-content:center;gap:4px;padding:7px 6px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel2);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;width:100%}
+.wthr-btn:hover{border-color:var(--line2);color:var(--text)}
+#wbtnSun.on{background:rgba(255,200,50,.16);border-color:rgba(255,200,50,.55);color:#ffca32}
+#wbtnRain.on{background:rgba(80,160,255,.16);border-color:rgba(80,160,255,.55);color:#70b0ff}
+.swap{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;border-radius:50%;
+  width:46px;height:46px;cursor:pointer;font-size:19px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 16px rgba(0,0,0,.4);transition:transform .25s ease,box-shadow .2s;flex:0 0 auto}
+.swap:hover{transform:rotate(180deg) scale(1.08);box-shadow:0 7px 22px rgba(72,185,255,.45)}
+.swap:active{transform:rotate(180deg) scale(.96)}
+.result{margin-top:14px;background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;box-shadow:var(--shadow)}
+.result>h2{font-size:11px;margin:0 0 14px;color:var(--faint);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.res-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.res-dmg{min-width:0}
+.res-label{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.dmgline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dmgbig{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.01em;
+  background:linear-gradient(135deg,var(--accent),#ff6e6e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
+.dmgpct{font-size:16px;font-weight:700;color:var(--accent2);font-variant-numeric:tabular-nums}
+.verdict-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:99px;font-size:15px;font-weight:800;white-space:nowrap}
+.verdict-badge.ko{background:rgba(255,107,107,.16);color:var(--bad);box-shadow:inset 0 0 0 1px rgba(255,107,107,.4)}
+.verdict-badge.rng{background:rgba(255,209,102,.15);color:var(--warn);box-shadow:inset 0 0 0 1px rgba(255,209,102,.36)}
+.verdict-badge.safe{background:rgba(70,219,163,.15);color:var(--good);box-shadow:inset 0 0 0 1px rgba(70,219,163,.36)}
+.bar{height:16px;background:var(--panel2);border-radius:8px;overflow:hidden;margin:14px 0 2px;border:1px solid var(--line);position:relative}
+.bar .fillmax{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(255,138,76,.3),rgba(255,107,107,.42));transition:width .35s cubic-bezier(.4,0,.2,1)}
+.bar .fillmin{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent),var(--bad));transition:width .35s cubic-bezier(.4,0,.2,1)}
+.bar-cap{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);font-weight:600;margin-bottom:12px}
+.rolls-head{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.rolls-head .legend{margin-left:auto;display:inline-flex;align-items:center;gap:5px;text-transform:none;letter-spacing:0;font-weight:600}
+.rolls-head .legend i{width:10px;height:10px;border-radius:3px;background:rgba(255,107,107,.25);box-shadow:inset 0 0 0 1px rgba(255,107,107,.5);display:inline-block}
+.rolls{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:5px;margin:0}
+.roll{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 2px;text-align:center;line-height:1.2}
+.roll b{font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;display:block}
+.roll small{display:block;font-size:10px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums}
+.roll.ko{background:rgba(255,107,107,.13);border-color:rgba(255,107,107,.4)}
+.roll.ko b{color:#ff8f8f}
+.roll.ko small{color:rgba(255,143,143,.7)}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin-top:16px;font-size:12px}
+.meta>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:var(--muted);padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
+.meta .wide{grid-column:1/-1}
+.meta b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+.meta .sub{font-size:10px;color:var(--faint);font-weight:500}
+.mults{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px}
+.mult{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+.mult b{color:var(--text);font-weight:700}
+.hint{font-size:13px;color:var(--muted);text-align:center;padding:22px 12px}
+.grid-mon-lv{display:grid;grid-template-columns:1fr 60px;gap:10px}
+.grid-move-style{display:grid;grid-template-columns:1fr 132px;gap:10px;align-items:end}
+.opt-mn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt-meta{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.opt-cat{font-size:11px;color:var(--muted)}
+.opt-pow{font-size:12px;font-weight:700;min-width:22px;text-align:right}
+.base-pow{margin-left:6px;font-weight:700;color:var(--accent2)}
+/* わざラベル: 伝授技トグルを右端に */
+.row > label.move-label{display:flex;align-items:center;gap:6px}
+.tutor-tg{margin-left:auto;flex:0 0 auto;font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--faint);cursor:pointer;transition:background .14s,color .14s,border-color .14s;letter-spacing:.02em}
+.tutor-tg::before{content:"＋";margin-right:2px;font-weight:800}
+.tutor-tg:hover{color:var(--text);border-color:var(--line2)}
+.tutor-tg.on{background:rgba(72,185,255,.16);border-color:var(--accent2);color:var(--accent2)}
+.tutor-tg.on::before{content:"✓"}
+/* コンパクト1行: がんばLv + 性格 + ランク */
+.cmpct-row{display:flex;gap:10px;margin-bottom:0;align-items:end}
+.cmpct-col{display:flex;flex-direction:column;gap:4px;min-width:0}
+.cmpct-col label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmpct-effort{flex:0 0 64px}
+.cmpct-effort-sm{flex:0 0 50px}
+.cmpct-nature{flex:1}
+.cmpct-rank{flex:1}
+.cmpct-num{width:100%;height:var(--ctl-h);background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 6px;text-align:center;font-size:13px;font-weight:700;color:var(--text);transition:border-color .15s,box-shadow .15s,background .15s}
+.cmpct-num:hover{border-color:var(--line2)}
+.cmpct-num:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(72,185,255,.16);background:var(--panel3)}
+.nat-seg{display:flex;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--panel2)}
+.nat-seg button{flex:1;height:calc(var(--ctl-h) - 2px);display:flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0 2px;cursor:pointer;color:var(--muted);font-size:11px;font-weight:600;transition:background .14s,color .14s;border-left:1px solid var(--line)}
+.nat-seg button:first-child{border-left:none}
+.nat-seg button:hover:not(.on){background:rgba(255,255,255,.04);color:var(--text)}
+.nat-seg button.on{background:var(--accent);color:#10141c;font-weight:800;border-left-color:transparent}
+.nat-seg.def button.on{background:var(--accent2)}
+/* swapped時のcmpct-row表示 */
+.cards.swapped #leftCard .l-def.cmpct-row,.cards.swapped #rightCard .r-atk.cmpct-row{display:flex}
+/* ===== RTAモード ===== */
+.rta-only{display:none}
+.cards.rta #rightCard .r-def.cmpct-row{display:none}              /* 防御時: がんば/性格は固定実数値なので隠す */
+.cards.rta.swapped #rightCard .r-atk.cmpct-row{display:none}      /* 攻撃時(交代): こうげきがんば/性格も隠す */
+.cards.rta #rightCard .rta-only{display:block}                   /* ルート情報は交代に関係なく表示 */
+/* RTA時の上段: トレーナー欄｜ポケモン欄 の2分割（Lvはポケモン欄に内包するので隠す） */
+.cards.rta #rightCard .grid-mon-lv{grid-template-columns:1fr 1fr}
+.cards.rta #rightCard #rightLvCell{display:none}
+#rightRtaMonSel:disabled{opacity:1;color:var(--text);-webkit-text-fill-color:var(--text);cursor:default}
+.rta-info{margin-bottom:0}
+.rta-val{height:var(--ctl-h);display:flex;align-items:center;justify-content:center;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm);font-size:14px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.rta-badge{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.04em;padding:2px 8px;border-radius:99px;background:rgba(255,138,76,.16);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(255,138,76,.3);margin-left:6px}
+.rta-route-label{font-size:11px;color:var(--def);font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rta-effort-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.rta-effort-lbl{font-size:11px;font-weight:800;color:var(--accent)}
+.rta-eff-item{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted)}
+.rta-effort-inp{width:46px;height:28px;background:var(--panel2);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:0 6px;text-align:center;font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.rta-effort-inp:focus{outline:none;box-shadow:0 0 0 3px rgba(255,138,76,.18)}
+.rta-count{font-size:10px;font-weight:800;color:var(--def);background:rgba(72,185,255,.14);padding:2px 8px;border-radius:99px;box-shadow:inset 0 0 0 1px rgba(72,185,255,.3)}
+.rta-monname{font-size:12px;font-weight:700;color:var(--text)}
+/* ===== メインタブ（ダメージ計算 / 捕獲率） ===== */
+.main-tabs{margin-left:auto;display:flex;gap:2px;background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:3px;flex:0 0 auto;align-self:center}
+.main-tab{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:800;padding:6px 16px;border-radius:99px;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;letter-spacing:.03em}
+.main-tab:hover:not(.on){color:var(--text)}
+.main-tab.on{background:var(--accent2);color:#10141c;box-shadow:0 2px 9px rgba(72,185,255,.35)}
+.damage-modebar{margin:0 0 12px auto}
+/* ===== 捕獲率タブ ===== */
+.cap-cards{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:860px){.cap-cards{grid-template-columns:1fr 1fr;align-items:start}}
+.tag-cap{background:rgba(72,185,255,.18);color:var(--def);box-shadow:inset 0 0 0 1px rgba(72,185,255,.3);font-size:10px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
+.cap-hplbl{color:var(--def);font-variant-numeric:tabular-nums}
+.cap-range{width:100%;accent-color:var(--accent2);cursor:pointer;padding:0;height:var(--ctl-h)}
+.cap-result{margin-top:12px}
+.cap-res-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.cap-big{font-size:40px;font-weight:800;line-height:1.05;background:linear-gradient(90deg,var(--accent2),var(--good));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
+.cap-verdict{font-size:13px;font-weight:800;padding:8px 16px;border-radius:99px;white-space:nowrap}
+.cap-verdict.hi{background:rgba(70,219,163,.16);color:var(--good);box-shadow:inset 0 0 0 1px rgba(70,219,163,.4)}
+.cap-verdict.mid{background:rgba(255,209,102,.16);color:var(--warn);box-shadow:inset 0 0 0 1px rgba(255,209,102,.4)}
+.cap-verdict.lo{background:rgba(255,107,107,.16);color:var(--bad);box-shadow:inset 0 0 0 1px rgba(255,107,107,.4)}
+.cap-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent2),var(--good));transition:width .3s}
+.foot{margin-top:20px;font-size:11px;color:var(--faint);line-height:1.7;
+  background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 14px}
+.foot summary{cursor:pointer;padding:12px 2px;font-weight:700;color:var(--muted);list-style:none;user-select:none}
+.foot summary::-webkit-details-marker{display:none}
+.foot summary::before{content:"▸";color:var(--faint);margin-right:7px;display:inline-block;transition:transform .15s}
+.foot[open] summary::before{transform:rotate(90deg)}
+.foot>div{padding:0 2px 12px}
+.foot code{background:var(--panel2);padding:1px 5px;border-radius:4px;color:var(--muted)}
+/* ===== 図鑑キャプチャタブ ===== */
+.dc-top{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch}
+.dc-card{background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:11px}
+.dc-prevwrap{position:relative;flex:1;min-width:280px}
+.dc-video{width:100%;border-radius:var(--radius-sm);background:#000;display:block;aspect-ratio:16/9;object-fit:contain}
+.dc-region{position:absolute;border:2px dashed rgba(72,185,255,.7);pointer-events:none;border-radius:3px}
+.dc-status{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.dc-dot{width:10px;height:10px;border-radius:50%;background:var(--faint);flex:0 0 auto}
+.dc-dot.live{background:var(--good);box-shadow:0 0 0 0 rgba(70,219,163,.6);animation:dcpulse 1.6s infinite}
+.dc-dot.hit{background:var(--accent)}
+@keyframes dcpulse{0%{box-shadow:0 0 0 0 rgba(70,219,163,.5)}70%{box-shadow:0 0 0 7px rgba(70,219,163,0)}100%{box-shadow:0 0 0 0 rgba(70,219,163,0)}}
+.dc-side{flex:0 0 300px;min-width:260px}
+.dc-btn{height:var(--ctl-h);border:none;border-radius:var(--radius-sm);font-weight:800;font-size:13px;cursor:pointer;color:#10141c;background:linear-gradient(135deg,var(--accent),var(--accent2));transition:transform .12s,filter .15s}
+.dc-btn:hover{filter:brightness(1.08)}.dc-btn:active{transform:translateY(1px)}
+.dc-btn.sub{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.dc-btn.sub:hover{border-color:var(--line2);filter:none}
+.dc-btn:disabled{opacity:.5;cursor:not-allowed;filter:none}
+.dc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);font-weight:600}
+.dc-row input[type=range]{flex:1;accent-color:var(--accent2)}
+.dc-sens{font-variant-numeric:tabular-nums;color:var(--def);font-weight:800;min-width:34px;text-align:right}
+.dc-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px}
+.dc-shot{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;position:relative;cursor:pointer}
+.dc-shot video{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:cover}
+.dc-shot .dc-play-ov{position:absolute;top:0;left:0;right:0;height:calc(100% - 26px);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;background:rgba(0,0,0,.18);opacity:0;transition:opacity .12s;pointer-events:none;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.dc-shot:hover .dc-play-ov{opacity:1}
+.dc-shot .dc-meta{display:flex;align-items:center;justify-content:space-between;padding:5px 7px;font-size:10px;color:var(--faint);font-weight:600}
+.dc-shot .dc-x{cursor:pointer;color:var(--bad);font-weight:800}
+.dc-shot .dc-dl{cursor:pointer;color:var(--accent2);font-weight:800;text-decoration:none}
+.dc-empty{color:var(--faint);font-size:12px;text-align:center;padding:30px 0}
+.dc-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:50}
+.dc-lightbox.on{display:flex}
+.dc-player{display:flex;flex-direction:column;gap:10px;max-width:94vw;max-height:94vh}
+.dc-player video{max-width:94vw;max-height:80vh;border-radius:8px;background:#000}
+.dc-pctrl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.dc-pctrl input[type=range]{flex:1;min-width:160px}
+.dc-pos{font-size:12px;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums;min-width:120px;text-align:center}
+.dc-pbtn{height:34px;padding:0 13px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-weight:700;font-size:12px;cursor:pointer}
+.dc-pbtn:hover{border-color:var(--accent2)}
+.dc-pbtn.alt{background:var(--accent2);border-color:var(--accent2);color:#06231d}
+.dc-stepsel{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-weight:700}
+.dc-stepsel select{height:30px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-weight:700;font-size:12px;padding:0 6px}
+.dc-pbtn{touch-action:none;user-select:none}
+.dc-msg{font-size:11px;color:var(--warn);line-height:1.5}
+/* ===== チェックリスト ===== */
+.cl-add{margin-bottom:14px}
+.cl-search-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:2px 0;user-select:none;gap:8px}
+.cl-search-toggle:hover .cl-search-lbl{color:var(--text)}
+.cl-search-lbl{font-size:13px;font-weight:700;color:var(--muted);transition:color .15s;flex:1}
+.cl-toggle-arrow{font-size:12px;color:var(--muted);transition:transform .2s;flex:none}
+.cl-sort-bar{display:flex;align-items:center;gap:6px}
+.cl-sort-btn{height:22px;padding:0 10px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:border-color .1s,color .1s,background .1s}
+.cl-sort-btn.on{background:var(--panel3);color:var(--text);border-color:var(--line2)}
+.cl-task-add{display:flex;gap:6px;align-items:center;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+.cl-task-inp{flex:1;min-width:0;height:32px;border-radius:7px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:13px;padding:0 10px}
+.cl-task-inp:focus{border-color:var(--accent2);outline:none}
+.cl-task-grp{height:32px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:12px;padding:0 6px;max-width:110px;flex:none}
+.cl-task-btn{height:32px;padding:0 13px;border-radius:7px;border:1px solid var(--line2);background:var(--panel3);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;flex:none;white-space:nowrap}
+.cl-task-btn:hover{border-color:var(--accent2);color:var(--accent2)}
+.cl-text-card .cl-text-lbl{flex:1;min-width:0;background:none;border:none;border-bottom:1px solid transparent;color:var(--text);font-size:13px;font-weight:700;padding:2px 4px;cursor:text;border-radius:0}
+.cl-text-card .cl-text-lbl:focus{outline:none;border-bottom-color:var(--accent2)}
+.cl-text-card.done .cl-text-lbl{text-decoration:line-through;color:var(--muted)}
+.cl-search-body{display:none;flex-direction:column;gap:6px;padding-top:10px}
+.cl-add.open .cl-search-body{display:flex}
+.cl-add.open .cl-toggle-arrow{transform:rotate(90deg)}
+.cl-add.open .cl-search-lbl{color:var(--text)}
+.cl-search-body input{height:38px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:14px;padding:0 11px}
+.cl-search-body input:focus{border-color:var(--accent2);outline:none}
+.cl-results{margin-top:10px;max-height:min(70vh,520px);overflow:auto;display:flex;flex-direction:column;gap:6px}
+.cl-res{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:6px 9px}
+.cl-res .cl-ic{width:38px;height:38px}
+.cl-res .cl-info{flex:none;width:150px}
+.cl-gchecks{display:flex;flex-wrap:wrap;gap:6px 8px;margin-left:auto;justify-content:flex-end}
+.cl-gck{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);font-weight:700;cursor:pointer;white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:3px 9px 3px 7px;user-select:none}
+.cl-gck input{width:14px;height:14px;accent-color:var(--good);cursor:pointer}
+.cl-gck.on{color:var(--text);border-color:var(--good);background:rgba(70,219,163,.12)}
+.cl-reshint{color:var(--faint);font-size:12px;padding:10px 2px}
+.cl-addnote{font-size:11px;color:var(--warn);font-weight:700;margin-left:10px}
+.cl-sticky-bar{position:sticky;top:0;z-index:80;background:var(--bg);padding:8px 0 2px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.cl-sticky-bar .cl-saves-bar{margin-bottom:6px;margin-top:6px}
+.cl-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cl-prog{font-weight:800;color:var(--text);font-size:13px}
+.cl-group{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.cl-ghead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.cl-gtitle{font-weight:800;font-size:15px;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--text);padding:4px 7px;flex:1;min-width:0}
+.cl-gtitle:hover{border-color:var(--line)}
+.cl-gtitle:focus{border-color:var(--accent2);background:var(--panel2);outline:none}
+.cl-gprog{font-size:12px;color:var(--muted);font-weight:700;white-space:nowrap}
+.cl-gbtn{flex:none}
+.cl-gempty{color:var(--faint);font-size:12px;padding:6px 2px}
+.cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;align-items:start}
+.cl-card{display:flex;flex-direction:column;background:var(--panel2);border:1px solid var(--line);border-radius:10px;user-select:none;transition:border-color .12s}
+.cl-card:hover{border-color:var(--accent2)}
+.cl-card.done{opacity:.5;background:var(--panel)}
+.cl-card.done .cl-name{text-decoration:line-through}
+.cl-card.cl-dragging{opacity:.35;outline:2px dashed var(--line2)}
+.cl-drop-indicator{height:3px;background:var(--accent2);border-radius:2px;margin:2px 4px;pointer-events:none}
+.cl-group.cl-dnd-target>.cl-grid{outline:2px dashed var(--accent2);outline-offset:-3px;border-radius:8px}
+.cl-drag-handle{font-size:18px;color:var(--line2);cursor:grab;padding:0 2px;line-height:1;align-self:center;flex:none;display:none}
+#clGroups.edit-mode .cl-drag-handle{display:block}
+.cl-drag-handle:active{cursor:grabbing}
+.cl-card.skip{border-color:rgba(255,107,107,.4)}
+.cl-card.optional{border-color:rgba(245,166,35,.35);border-left:3px solid #f5a623;background:rgba(245,166,35,.04)}
+.cl-opt-badge{font-size:10px;font-weight:800;color:#c8861a;background:rgba(245,166,35,.18);border:1px solid rgba(245,166,35,.4);border-radius:4px;padding:1px 5px;margin-left:5px;white-space:nowrap;vertical-align:middle;line-height:16px;display:inline-block}
+.cl-card.skip .cl-name{text-decoration:line-through;color:var(--muted)}
+.cl-card-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;cursor:pointer;position:relative}
+.cl-card-tools{display:flex;align-items:center;gap:6px;flex:none;margin-left:auto}
+.cl-card-foot{display:flex;justify-content:flex-end;gap:6px;padding:0 10px 8px;margin-top:auto}
+.cl-edit-btn{background:none;border:1px solid var(--line);border-radius:5px;color:var(--muted);cursor:pointer;font-size:10px;font-weight:800;padding:2px 7px;letter-spacing:.04em;transition:.12s;white-space:nowrap}
+.cl-edit-btn:hover,.cl-edit-btn.open{border-color:var(--accent2);color:var(--text)}
+.cl-skip-btn{background:none;border:1px solid var(--line);border-radius:5px;color:var(--muted);cursor:pointer;font-size:10px;font-weight:800;padding:2px 7px;letter-spacing:.04em;transition:.12s;white-space:nowrap}
+.cl-skip-btn:hover{border-color:rgba(255,107,107,.5);color:var(--bad)}
+.cl-skip-btn.on{border-color:rgba(255,107,107,.5);background:rgba(255,107,107,.08);color:var(--bad)}
+.cl-skip-btn.on:hover{border-color:var(--bad)}
+.cl-ic{width:46px;height:46px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--panel);border-radius:8px;font-size:12px;font-weight:800;color:var(--faint);overflow:hidden}
+.cl-ic img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.cl-info{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.cl-name{font-weight:700;font-size:13px;line-height:1.25;word-break:break-word}
+.cl-types{display:flex;gap:3px;flex-wrap:wrap}
+.cl-memo{margin-top:5px;width:100%;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:11px;padding:0 7px}
+.cl-memo:focus{border-color:var(--accent2);outline:none}
+.cl-card.done .cl-memo{opacity:.85}
+.cl-foods{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.cl-food{width:32px;height:32px;background-color:var(--panel3);border-radius:6px;background-repeat:no-repeat;background-position:center;background-size:26px}
+.cl-namechk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);font-weight:700;cursor:pointer;user-select:none}
+.cl-namechk input{width:15px;height:15px;accent-color:var(--accent2);cursor:pointer}
+#clGroups.cl-hidenames .cl-name{display:none}
+.cl-check{width:24px;height:24px;flex:none;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:transparent;font-weight:900;font-size:13px;transition:.12s}
+.cl-card.done .cl-check{background:var(--good);border-color:var(--good);color:#06231d}
+.cl-card.skip .cl-check{border-color:var(--bad);color:var(--bad)}
+.cl-x{position:absolute;top:-9px;right:-9px;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:var(--panel3);color:var(--bad);font-weight:800;cursor:pointer;font-size:13px;line-height:1;display:none;padding:0}
+#clGroups.edit-mode .cl-card:hover .cl-x{display:block}
+.cl-empty{color:var(--faint);font-size:12px;text-align:center;padding:30px 12px;line-height:1.7}
+/* サブタスク */
+.cl-subs{width:100%;margin-top:6px;display:flex;flex-direction:column;gap:4px;cursor:auto}
+.cl-sub-item{display:flex;align-items:center;gap:5px}
+.cl-sub-ck{width:15px;height:15px;flex:none;accent-color:var(--good);cursor:pointer}
+.cl-sub-label{flex:1;min-width:0;background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--text);font-size:12px;padding:2px 4px;cursor:text;user-select:text}
+.cl-sub-label:focus{border-bottom-color:var(--accent2);outline:none}
+.cl-sub-del{flex:none;background:none;border:none;color:var(--bad);cursor:pointer;font-size:11px;padding:0 3px;opacity:0;line-height:1}
+.cl-sub-item:hover .cl-sub-del{opacity:1}
+.cl-sub-add{display:flex;gap:5px;margin-top:4px}
+.cl-sub-new{flex:1;height:24px;border-radius:5px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:11px;padding:0 7px;user-select:text}
+.cl-sub-new:focus{border-color:var(--accent2);outline:none}
+.cl-sub-addbtn{height:24px;padding:0 9px;border:1px solid var(--line);background:var(--panel3);border-radius:5px;color:var(--text);cursor:pointer;font-size:14px;line-height:1}
+.cl-sub-addbtn:hover{border-color:var(--accent2);color:var(--accent2)}
+.cl-sub-lbl-ro{font-size:12px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 編集パネル */
+.cl-edit-panel{border-top:1px solid var(--line);background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:8px;cursor:default}
+.cl-ep-row{display:flex;align-items:center;gap:8px}
+.cl-ep-lbl{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap;width:70px;flex:none}
+.cl-ep-toggle{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text);cursor:pointer;user-select:none}
+.cl-ep-toggle input{width:14px;height:14px;accent-color:var(--accent2);cursor:pointer}
+.cl-ep-memo{flex:1;height:26px;border-radius:5px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:11px;padding:0 7px}
+.cl-ep-memo:focus{border-color:var(--accent2);outline:none}
+.cl-ep-subs{flex:1;display:flex;flex-direction:column;gap:4px}
+.cl-ep-foot{display:flex;justify-content:flex-end}
+.cl-ep-close{height:26px;padding:0 13px;border-radius:5px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);cursor:pointer;font-size:11px;font-weight:800;transition:.12s}
+.cl-ep-close:hover{border-color:var(--line2);color:var(--text)}
+/* 保存データバー */
+.cl-saves-bar{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:12px;flex-wrap:wrap}
+.cl-saves-lbl{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap}
+.cl-saves-sel{flex:1;min-width:120px;height:30px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:13px;font-weight:700;padding:0 8px;cursor:pointer}
+.cl-saves-sel:focus{border-color:var(--accent2);outline:none}
+.cl-saves-btn{height:28px;padding:0 11px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer;font-size:11px;font-weight:800;letter-spacing:.04em;white-space:nowrap;transition:.12s}
+.cl-saves-btn:hover:not(:disabled){border-color:var(--accent2);color:var(--accent2)}
+.cl-saves-btn:disabled{opacity:.4;cursor:not-allowed}
+.cl-saves-btn.danger:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
+/* ===== 配信オーバーレイモード ===== */
+body.ov-mode .wrap,body.ov-mode #dock{display:none!important}
+body.ov-mode{margin:0;padding:0}
+#ovRoot{padding:8px;min-height:100vh;box-sizing:border-box}
+#ovCtrlBar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+#ovCfgToggle{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:12px}
+#ovCfgToggle:hover{background:rgba(255,255,255,.25)}
+#ovCfgPanel{display:none;background:rgba(10,15,25,.92);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;margin-bottom:8px;gap:14px;flex-wrap:wrap;align-items:center}
+#ovCfgPanel.show{display:flex}
+#ovCfgPanel label{color:#ccc;font-size:12px;display:flex;align-items:center;gap:5px}
+#ovCfgPanel select,#ovCfgPanel input[type=number]{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:4px;padding:2px 6px;font-size:12px}
+#ovGrid{display:grid;gap:4px}
+.ov-ic{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
+.ov-ic img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.ov-ic.done-dim img,.ov-ic.skip img{opacity:.18;filter:grayscale(1)}
+.ov-ic.optional{opacity:.55}
+.ov-chk,.ov-skipx{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;font-weight:900;pointer-events:none;font-size:clamp(10px,2vw,24px);text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.ov-chk{color:#4cff6a}
+.ov-skipx{color:#ff6b6b}
+.ov-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.6vw,13px);font-weight:700;color:#9aa4b2}
+.ov-ic:has(img) .ov-num{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="emblem">⚔</span>
+      <span class="ttl">
+        <h1>ポケモンレジェンズ アルセウス RTA用ツール</h1>
+      </span>
+    </div>
+    <span class="ver" id="ver"></span>
+    <div class="main-tabs" id="mainTabs">
+      <button class="main-tab on" data-tab="damage">ダメージ計算</button>
+      <button class="main-tab" data-tab="capture">捕獲率</button>
+      <button class="main-tab" data-tab="checklist">チェックリスト</button>
+      <button class="main-tab" data-tab="dexcap">図鑑キャプチャ</button>
+    </div>
+    <span class="sub" id="headSub">レベル1〜100・がんばレベル・能力ランク・与ダメ補正・状態異常・力業/早業に対応。検索はローマ字でもOK。</span>
+  </header>
+
+  <div id="tabDamage">
+  <div class="mode-toggle damage-modebar" id="modeToggle">
+    <button class="mt-btn on" data-mode="rta">RTA</button>
+    <button class="mt-btn" data-mode="normal">通常</button>
+  </div>
+  <div class="cards">
+    <!-- 左カード (デフォルト: 攻撃) -->
+    <section class="card" id="leftCard">
+      <h2>
+        <span class="tag atk tag-atk">攻撃</span>
+        <span class="tag def tag-def">防御</span>
+        <span id="leftName">ポケモンを選択</span>
+      </h2>
+
+      <div class="grid-mon-lv">
+        <div class="row combo" data-combo="leftMon">
+          <label>ポケモン</label>
+          <input type="text" autocomplete="off" placeholder="名前 / romaji で検索（五十音順）">
+          <div class="opts"></div>
+        </div>
+        <div class="row"><label>Lv</label><input type="number" id="leftLv" min="1" max="100" value="50"></div>
+      </div>
+
+      <!-- 攻撃モード: わざ + スタイル -->
+      <div class="l-atk grid-move-style">
+        <div class="row combo" data-combo="leftMove">
+          <label class="move-label"><span id="leftMoveLabelText">わざ</span> <span id="leftMoveType"></span><span id="leftBasePow" class="base-pow"></span><button type="button" class="tutor-tg" id="leftTutorTg">伝授技</button></label>
+          <input type="text" autocomplete="off" placeholder="わざ名 / romaji で検索">
+          <div class="opts"></div>
+        </div>
+        <div class="row"><label>スタイル</label>
+          <div class="seg" id="leftStyle">
+            <button data-v="agile">早業</button><button data-v="normal" class="on">通常</button><button data-v="strong">力業</button>
+          </div></div>
+      </div>
+
+      <!-- 状態異常特効 (攻撃モードかつ特定技のみ) -->
+      <div class="l-atk row" id="leftTokkouRow" style="display:none">
+        <div class="chips">
+          <label class="chk" id="left_ck_tokkou"><input type="checkbox">状態異常特効 ×2（相手が状態異常時）</label>
+        </div>
+      </div>
+
+      <!-- 攻撃モード: がんばLv + 性格 + ランク -->
+      <div class="l-atk cmpct-row">
+        <div class="cmpct-col cmpct-effort">
+          <label id="leftAtkEffortLabel">こうげき</label>
+          <input type="number" id="leftAtkEffort" class="cmpct-num" min="0" max="10" value="0">
+        </div>
+        <div class="cmpct-col cmpct-nature">
+          <label id="leftAtkNatureLabel">性格補正</label>
+          <div class="nat-seg" id="leftAtkNature">
+            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
+          </div>
+        </div>
+        <div class="cmpct-col cmpct-rank">
+          <label>ランク</label>
+          <div class="nat-seg" id="leftAtkRank">
+            <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 防御モード: HP/防御がんばLv + 性格補正 + ランク (1段) -->
+      <div class="l-def cmpct-row">
+        <div class="cmpct-col cmpct-effort-sm">
+          <label>HP</label>
+          <input type="number" id="leftEffortH" class="cmpct-num" min="0" max="10" value="0">
+        </div>
+        <div class="cmpct-col cmpct-effort-sm">
+          <label id="leftDefEffortLabel">防御</label>
+          <input type="number" id="leftDefEffort" class="cmpct-num" min="0" max="10" value="0">
+        </div>
+        <div class="cmpct-col cmpct-nature">
+          <label id="leftDefNatureLabel">性格補正</label>
+          <div class="nat-seg def" id="leftDefNature">
+            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
+          </div>
+        </div>
+        <div class="cmpct-col cmpct-rank">
+          <label>ランク</label>
+          <div class="nat-seg def" id="leftDefRank">
+            <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 攻撃モード: 与ダメ補正 -->
+      <div class="l-atk row"><label>与ダメ補正・状態</label>
+        <div class="chips">
+          <label class="chk" id="left_ck_baibun"><input type="checkbox">倍付け ×1.5</label>
+          <label class="chk" id="left_ck_shuchuA"><input type="checkbox">熱中 ×1.5</label>
+          <label class="chk" id="left_ck_crit"><input type="checkbox">急所 ×1.5</label>
+          <label class="chk" id="left_ck_regigigas" style="display:none"><input type="checkbox">レジギガス 攻×0.5</label>
+          <label class="chk" id="left_ck_burn" style="display:none"><input type="checkbox">やけど ×0.5</label>
+          <label class="chk" id="left_ck_frost" style="display:none"><input type="checkbox">しもやけ ×0.5</label>
+        </div></div>
+
+      <!-- 防御モード: 被ダメ補正 -->
+      <div class="l-def row"><label>被ダメ補正・状態</label>
+        <div class="chips">
+          <label class="chk def" id="left_ck_shuchuD"><input type="checkbox">熱中（被）×1.33</label>
+          <label class="chk def" id="left_ck_nemuke"><input type="checkbox">ねむけ ×1.33</label>
+        </div></div>
+    </section>
+
+    <div class="swapwrap">
+      <button class="swap" id="swapBtn" title="攻守交代">⇄</button>
+      <div class="weather-btns">
+        <span class="wthr-label">天候</span>
+        <button class="wthr-btn" id="wbtnSun"><span>☀</span>はれ</button>
+        <button class="wthr-btn" id="wbtnRain"><span>☂</span>あめ</button>
+      </div>
+    </div>
+
+    <!-- 右カード (デフォルト: 防御) -->
+    <section class="card" id="rightCard">
+      <h2>
+        <span class="tag atk tag-atk">攻撃</span>
+        <span class="tag def tag-def">防御</span>
+        <span id="rightName">ポケモンを選択</span>
+      </h2>
+
+      <div class="grid-mon-lv">
+        <div class="row combo" data-combo="rightMon">
+          <label id="rightMonLabel">ポケモン</label>
+          <input type="text" autocomplete="off" placeholder="名前 / romaji で検索（五十音順）">
+          <div class="opts"></div>
+        </div>
+        <!-- RTAモード: トレーナーの手持ちポケモン選択（1匹なら自動） -->
+        <div class="row rta-only" id="rightRtaMonRow">
+          <label>ポケモン</label>
+          <select id="rightRtaMonSel"></select>
+        </div>
+        <div class="row" id="rightLvCell"><label>Lv</label><input type="number" id="rightLv" min="1" max="100" value="50"></div>
+      </div>
+
+      <!-- 攻撃モード: わざ + スタイル -->
+      <div class="r-atk grid-move-style">
+        <div class="row combo" data-combo="rightMove">
+          <label class="move-label"><span id="rightMoveLabelText">わざ</span> <span id="rightMoveType"></span><span id="rightBasePow" class="base-pow"></span><button type="button" class="tutor-tg" id="rightTutorTg">伝授技</button></label>
+          <input type="text" autocomplete="off" placeholder="わざ名 / romaji で検索">
+          <div class="opts"></div>
+        </div>
+        <div class="row"><label>スタイル</label>
+          <div class="seg" id="rightStyle">
+            <button data-v="agile">早業</button><button data-v="normal" class="on">通常</button><button data-v="strong">力業</button>
+          </div></div>
+      </div>
+
+      <!-- 状態異常特効 -->
+      <div class="r-atk row" id="rightTokkouRow" style="display:none">
+        <div class="chips">
+          <label class="chk" id="right_ck_tokkou"><input type="checkbox">状態異常特効 ×2（相手が状態異常時）</label>
+        </div>
+      </div>
+
+      <!-- 攻撃モード: がんばLv + 性格 + ランク -->
+      <div class="r-atk cmpct-row">
+        <div class="cmpct-col cmpct-effort">
+          <label id="rightAtkEffortLabel">こうげき</label>
+          <input type="number" id="rightAtkEffort" class="cmpct-num" min="0" max="10" value="0">
+        </div>
+        <div class="cmpct-col cmpct-nature">
+          <label id="rightAtkNatureLabel">性格補正</label>
+          <div class="nat-seg" id="rightAtkNature">
+            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
+          </div>
+        </div>
+        <div class="cmpct-col cmpct-rank">
+          <label>ランク</label>
+          <div class="nat-seg" id="rightAtkRank">
+            <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 防御モード: HP/防御がんばLv + 性格補正 + ランク (1段) -->
+      <div class="r-def cmpct-row">
+        <div class="cmpct-col cmpct-effort-sm">
+          <label>HP</label>
+          <input type="number" id="rightEffortH" class="cmpct-num" min="0" max="10" value="0">
+        </div>
+        <div class="cmpct-col cmpct-effort-sm">
+          <label id="rightDefEffortLabel">防御</label>
+          <input type="number" id="rightDefEffort" class="cmpct-num" min="0" max="10" value="0">
+        </div>
+        <div class="cmpct-col cmpct-nature">
+          <label id="rightDefNatureLabel">性格補正</label>
+          <div class="nat-seg def" id="rightDefNature">
+            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
+          </div>
+        </div>
+        <div class="cmpct-col cmpct-rank">
+          <label>ランク</label>
+          <div class="nat-seg def" id="rightDefRank">
+            <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RTAモード: ルート相手の固定実数値 + ランク -->
+      <div class="rta-only">
+        <div class="rta-route-label"><span id="rtaRouteLabel">相手の実数値（無補正・がんばLv0）</span><span class="rta-badge" id="rtaBadge" style="display:none">オヤブン</span></div>
+        <div class="rta-info cmpct-row">
+          <div class="cmpct-col cmpct-effort-sm" id="rtaColHP">
+            <label>HP</label>
+            <div class="rta-val" id="rtaValHP">—</div>
+          </div>
+          <div class="cmpct-col cmpct-effort-sm">
+            <label id="rtaValStatLabel">ぼうぎょ</label>
+            <div class="rta-val" id="rtaValStat">—</div>
+          </div>
+          <div class="cmpct-col cmpct-rank">
+            <label>ランク</label>
+            <div class="nat-seg def" id="rightRtaRank">
+              <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
+            </div>
+          </div>
+        </div>
+        <!-- オヤブンのみ: がんばレベル（HP/防御 or 攻撃） -->
+        <div class="rta-effort-row" id="rtaEffortRow" style="display:none">
+          <span class="rta-effort-lbl">がんばLv</span>
+          <span class="rta-eff-item" id="rtaEffHWrap"><span>HP</span><input type="number" id="rtaEffortH" class="rta-effort-inp" min="0" max="10" value="0"></span>
+          <span class="rta-eff-item" id="rtaEffDefWrap"><span id="rtaEffDefLbl">防御</span><input type="number" id="rtaEffortDef" class="rta-effort-inp" min="0" max="10" value="0"></span>
+          <span class="rta-eff-item" id="rtaEffAtkWrap" style="display:none"><span id="rtaEffAtkLbl">こうげき</span><input type="number" id="rtaEffortAtk" class="rta-effort-inp" min="0" max="10" value="0"></span>
+        </div>
+      </div>
+
+      <!-- 防御モード: 被ダメ補正 -->
+      <div class="r-def row"><label>被ダメ補正・状態</label>
+        <div class="chips">
+          <label class="chk def" id="right_ck_shuchuD"><input type="checkbox">熱中（被）×1.33</label>
+          <label class="chk def" id="right_ck_nemuke"><input type="checkbox">ねむけ ×1.33</label>
+          <label class="chk def" id="right_ck_oyabunD"><input type="checkbox">オヤブン 防×1.5</label>
+        </div></div>
+
+      <!-- 攻撃モード: 与ダメ補正 -->
+      <div class="r-atk row"><label>与ダメ補正・状態</label>
+        <div class="chips">
+          <label class="chk" id="right_ck_baibun"><input type="checkbox">倍付け ×1.5</label>
+          <label class="chk" id="right_ck_shuchuA"><input type="checkbox">熱中 ×1.5</label>
+          <label class="chk" id="right_ck_crit"><input type="checkbox">急所 ×1.5</label>
+          <label class="chk" id="right_ck_oyabunA"><input type="checkbox">オヤブン 攻×1.5</label>
+          <label class="chk" id="right_ck_regigigas" style="display:none"><input type="checkbox">レジギガス 攻×0.5</label>
+          <label class="chk" id="right_ck_burn" style="display:none"><input type="checkbox">やけど ×0.5</label>
+          <label class="chk" id="right_ck_frost" style="display:none"><input type="checkbox">しもやけ ×0.5</label>
+        </div></div>
+    </section>
+  </div>
+
+  <section class="result" id="result">
+    <h2>計算結果</h2>
+    <div id="resBody"><div class="hint">攻撃側ポケモン・わざ・防御側ポケモンを選ぶと計算します。</div></div>
+  </section>
+
+  <details class="foot">
+    <summary>計算式・仕様について</summary>
+    <div>基本ダメージ: <code>⌊ ⌊(Lv×15 + A + 100)×威力 ÷ (D+50)⌋ ÷ 5 ⌋</code>。各補正は規定順で都度切り捨て（ランク→天候→急所→乱数→一致→相性→やけど/しもやけ→ねむけ→熱中→倍付け）。</div>
+    <div>ステータス: <code>HP=⌊(Lv/100+1)×種族値+Lv+がんばり値⌋</code> / <code>他=⌊((Lv/50+1)×種族値÷1.5)×性格+がんばり値⌋</code> / <code>がんばり値=round((√種族値×C+Lv)÷2.5)</code></div>
+    <div>本作に個体値はありません。技の威力はPLA実数値（力業/早業の威力変化も実数値）を収録。収録は148技。</div>
+  </details>
+  </div><!-- /tabDamage -->
+
+  <!-- ========== 捕獲率計算タブ ========== -->
+  <div id="tabCapture" style="display:none">
+    <div class="cards cap-cards">
+      <section class="card">
+        <h2><span class="tag tag-cap">捕獲</span><span id="capName">ポケモンを選択</span></h2>
+        <div class="grid-mon-lv">
+          <div class="row combo" data-combo="capMon">
+            <label>ポケモン</label>
+            <input type="text" autocomplete="off" placeholder="名前 / romaji で検索">
+            <div class="opts"></div>
+          </div>
+          <div class="row"><label>Lv</label><input type="number" id="capLv" min="1" max="100" value="50"></div>
+        </div>
+        <div class="cmpct-row">
+          <div class="cmpct-col" style="flex:0 0 78px"><label>捕獲率(種族)</label><div class="rta-val" id="capCatchRate">—</div></div>
+          <div class="cmpct-col" style="flex:1"><label>残りHP <b id="capHpLbl" class="cap-hplbl">100%</b></label><input type="range" id="capHp" min="0" max="100" value="100" class="cap-range"></div>
+        </div>
+        <div class="row"><label>状態</label>
+          <div class="chips">
+            <label class="chk" id="cap_ck_alpha"><input type="checkbox">オヤブン</label>
+            <label class="chk" id="cap_ck_status"><input type="checkbox">状態異常 ×2</label>
+            <label class="chk" id="cap_ck_outbreak"><input type="checkbox">大量発生/大大大発生 +10</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="tag tag-cap">状況</span>ボール・状況</h2>
+        <div class="grid2">
+          <div class="row"><label>ボール</label>
+            <select id="capBall">
+              <option value="poke">モンスターボール</option>
+              <option value="great">スーパーボール</option>
+              <option value="ultra">ハイパーボール</option>
+              <option value="feather">フェザーボール</option>
+              <option value="wing">ウイングボール</option>
+              <option value="jet">ジェットボール</option>
+              <option value="heavy">ヘビーボール</option>
+              <option value="leaden">メガトンボール</option>
+              <option value="gigaton">ギガトンボール</option>
+            </select>
+          </div>
+          <div class="row"><label>団員ランク</label><input type="number" id="capRank" min="0" max="10" value="0"></div>
+        </div>
+        <div class="row"><label>相手の状況</label>
+          <select id="capAi">
+            <option value="default">戦闘中 / 攻撃的な相手が気づいた（！）</option>
+            <option value="caution">警戒「…」（ばりばりだま等）</option>
+            <option value="timid">臆病な相手が気づいた（！）</option>
+            <option value="escaping">逃げている</option>
+            <option value="resting">休んでいる（寝ていない・座り）</option>
+            <option value="sleeping">寝ている</option>
+            <option value="feeding_nuts">きのみを食べている</option>
+            <option value="feeding_cake">よせだまを食べている</option>
+            <option value="tiredness">疲れている（むしくいぼんぐり等）</option>
+          </select>
+        </div>
+        <div class="row"><label>補正</label>
+          <div class="chips">
+            <label class="chk" id="cap_ck_suitable" style="display:none"><input type="checkbox">ボール適正</label>
+            <label class="chk" id="cap_ck_back"><input type="checkbox">背面取り ×1.75</label>
+            <label class="chk" id="cap_ck_razz"><input type="checkbox">ズリのみ ×1.3</label>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="result cap-result">
+      <div class="cap-res-head">
+        <div>
+          <div class="res-label">捕獲率（1球あたり）</div>
+          <div class="cap-big" id="capPct">—</div>
+        </div>
+        <div class="cap-verdict" id="capVerdict"></div>
+      </div>
+      <div class="bar"><div class="cap-fill" id="capBarFill" style="width:0%"></div></div>
+      <div class="meta" id="capMeta"></div>
+    </section>
+
+    <details class="foot">
+      <summary>捕獲率の計算式について</summary>
+      <div>捕獲インデックス = <code>0.75×種族捕獲率 + (大量発生?10:0) + 30×Lv補正 + 環境補正</code></div>
+      <div>環境補正 = <code>30 × HP補正 × 状態異常 × ボール × 状況 × 不意打ち × ズリのみ</code>、<code>HP補正 = 1 − 0.66×(残HP/最大HP)</code></div>
+      <div>捕獲率 = <code>1 −(1 − clamp(捕獲インデックス÷255, 0, 1))^(2/2)</code> ＝ <code>clamp(捕獲インデックス÷255, 0, 1)</code>。Legends Arceus データマイン値より。</div>
+    </details>
+  </div><!-- /tabCapture -->
+
+  <!-- ========== チェックリストタブ ========== -->
+  <div id="tabChecklist" style="display:none">
+    <section class="card cl-add" id="clAddSec">
+      <div class="cl-search-toggle" id="clSearchToggle">
+        <span class="cl-search-lbl">ポケモンを追加</span>
+        <span class="cl-toggle-arrow">▶</span>
+      </div>
+      <div class="cl-search-body" id="clSearchBody">
+        <input type="text" id="clSearch" autocomplete="off" placeholder="名前 / romaji で検索 → 候補のグループ欄にチェックで追加">
+        <div class="cl-sort-bar">
+          <button class="cl-sort-btn on" id="clSortNo">図鑑番号順</button>
+          <button class="cl-sort-btn" id="clSortName">名前順</button>
+        </div>
+        <div class="cl-results" id="clResults"></div>
+        <div class="cl-task-add">
+          <input class="cl-task-inp" id="clTaskInp" type="text" autocomplete="off" maxlength="60" placeholder="テキストタスクを追加（例: ミツハニーを倒す）">
+          <select class="cl-task-grp" id="clTaskGrp"></select>
+          <button class="cl-task-btn" id="clTaskAddBtn">＋ 追加</button>
+        </div>
+      </div>
+    </section>
+    <div class="cl-sticky-bar">
+      <div class="cl-toolbar">
+        <button class="dc-btn sub" id="clAddGroup" style="height:30px;padding:0 12px">＋ グループを追加</button>
+        <label class="cl-namechk"><input type="checkbox" id="clShowNames" checked>名前を表示</label>
+        <button class="dc-btn sub" id="clDragLock" style="height:30px;padding:0 12px">🔒 並替</button>
+        <span class="cl-addnote" id="clAddNote"></span>
+        <span class="cl-prog" id="clProg" style="margin-left:auto"></span>
+        <button class="dc-btn sub" id="clOverlayBtn" style="height:30px;padding:0 12px">📺 配信</button>
+        <button class="dc-btn sub" id="clUncheckAll" style="height:30px;padding:0 12px">全解除</button>
+        <button class="dc-btn sub" id="clClear" style="height:30px;padding:0 12px">全消去</button>
+      </div>
+    <div class="cl-saves-bar">
+      <span class="cl-saves-lbl">保存データ</span>
+      <select class="cl-saves-sel" id="clSavesSel"></select>
+      <button class="cl-saves-btn" id="clSavesRename">名前変更</button>
+      <button class="cl-saves-btn" id="clSavesNew">＋新規</button>
+      <button class="cl-saves-btn danger" id="clSavesDel">削除</button>
+      <button class="cl-saves-btn" id="clSavesExport" style="margin-left:4px">↓ 書出し</button>
+      <button class="cl-saves-btn" id="clSavesImport">↑ 取込み</button>
+    </div>
+    </div><!-- /cl-sticky-bar -->
+    <div id="clGroups"></div>
+    <div class="cl-empty" id="clEmpty">「ポケモンを追加」で検索し、候補に並ぶ<b>グループのチェック欄</b>にチェックを入れると、そのグループに追加されます（複数グループ同時OK・外すと削除）。同じグループには同じポケモンは1回だけ。下のカードのクリックで「完了」を切り替え（同じポケモンは別グループでも一斉に切り替わります）。グループ名はクリックで変更、グループは最大10個まで。</div>
+    <details class="foot">
+      <summary>使い方</summary>
+      <div>「ポケモンを追加」で検索し、<b>追加先グループ</b>を選んで追加するとそのグループに並びます。「＋ グループを追加」でグループを増やせます。グループ名（「グループ1」など）は<b>直接クリックして変更</b>できます。</div>
+      <div>各カードをクリックすると<b>完了/未完了</b>が切り替わります。<b>同じポケモンを複数グループに入れた場合、1つチェックすると全グループの同じポケモンも一斉に切り替わります</b>。カード右上の×でそのグループから外し、グループの「削除」でグループごと消せます。状態はブラウザに保存され、リロードしても残ります。</div>
+    </details>
+  </div><!-- /tabChecklist -->
+
+  <!-- 新規プリセットモーダル -->
+  <div id="clNewModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center">
+    <div style="background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:22px 24px;width:min(360px,90vw);display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:15px;font-weight:700;color:var(--text)">新規プリセット</span>
+        <button id="clNewClose" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:2px 6px">×</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <label style="font-size:11px;font-weight:700;color:var(--muted)">名前</label>
+        <input id="clNewName" type="text" maxlength="40" style="height:34px;border-radius:7px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:13px;padding:0 10px">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)">
+          <input type="radio" name="clNewMode" value="blank"> 空白で作成
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)">
+          <input type="radio" name="clNewMode" value="copy" checked> 既存からコピー
+        </label>
+        <select id="clNewSrc" style="display:none;height:32px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:13px;padding:0 8px;margin-left:22px"></select>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="clNewCancelBtn" class="dc-btn sub" style="height:34px;padding:0 16px">キャンセル</button>
+        <button id="clNewCreateBtn" class="dc-btn" style="height:34px;padding:0 20px">作成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- インポート/エクスポートモーダル -->
+  <div id="clIEModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
+    <div style="background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:20px;width:min(500px,92vw);display:flex;flex-direction:column;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span id="clIETitle" style="font-size:15px;font-weight:700;color:var(--text)"></span>
+        <button id="clIEClose" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:2px 6px">×</button>
+      </div>
+      <textarea id="clIEText" style="height:280px;resize:vertical;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:12px;font-family:monospace;padding:10px;line-height:1.7;outline:none" spellcheck="false" placeholder="ここにテキストを貼り付け…"></textarea>
+      <div id="clIENote" style="font-size:11px;color:var(--muted);min-height:16px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="clIECopyBtn" class="dc-btn sub" style="height:34px;padding:0 16px">コピー</button>
+        <button id="clIEDoBtn" class="dc-btn" style="height:34px;padding:0 20px">インポート</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ドラッグ重複警告モーダル -->
+  <div id="clDragModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center">
+    <div style="background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:22px 26px;max-width:300px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+      <p id="clDragModalMsg" style="margin:0 0 16px;font-size:14px;line-height:1.6;color:var(--text)"></p>
+      <button id="clDragModalOk" class="dc-btn" style="padding:0 24px;height:36px">OK</button>
+    </div>
+  </div>
+
+  <!-- ========== 図鑑キャプチャタブ ========== -->
+  <div id="tabDexcap" style="display:none">
+    <div class="dc-top">
+      <section class="dc-card dc-prevwrap" style="flex:1">
+        <div class="dc-status"><span class="dc-dot" id="dcDot"></span><span id="dcStatus">未開始 — 「画面共有を開始」を押してゲーム画面（またはOBSのプロジェクター）を選んでください</span></div>
+        <div style="position:relative">
+          <video class="dc-video" id="dcVideo" autoplay muted playsinline></video>
+          <div class="dc-region" id="dcRegion" style="display:none"></div>
+        </div>
+        <div id="dcMsg" class="dc-msg"></div>
+      </section>
+      <section class="dc-card dc-side">
+        <button class="dc-btn" id="dcStart">画面共有を開始</button>
+        <button class="dc-btn sub" id="dcStop" disabled>停止</button>
+        <button class="dc-btn sub" id="dcManual" disabled>手動で5秒録画</button>
+        <div class="dc-row"><span>検出感度</span><input type="range" id="dcSens" min="40" max="90" value="70"><span class="dc-sens" id="dcSensVal">0.70</span></div>
+        <label class="chk" id="dcMultiChk" style="height:auto;display:none"><input type="checkbox" checked></label>
+        <label class="chk" id="dcAutoChk" style="height:auto"><input type="checkbox">録画した動画を自動ダウンロード</label>
+        <div class="dc-row" style="color:var(--faint)"><span>検出 クリーム率</span><span class="dc-sens" id="dcLiveFrac" style="color:var(--muted)">—</span></div>
+      </section>
+    </div>
+
+    <div class="dc-status" style="margin-top:16px"><b style="color:var(--text);font-size:14px">録画クリップ一覧</b><span id="dcCount" style="color:var(--faint)">0本</span>
+      <span style="margin-left:auto;display:flex;gap:8px">
+        <button class="dc-btn sub" id="dcDlAll" style="height:30px;padding:0 12px">全部DL</button>
+        <button class="dc-btn sub" id="dcClear" style="height:30px;padding:0 12px">全消去</button>
+      </span>
+    </div>
+    <div class="dc-gallery" id="dcGallery"></div>
+    <div class="dc-empty" id="dcEmpty">まだクリップはありません。RTAプレイ中に図鑑が出ると、その場面を自動で動画録画します。サムネをクリックするとコマ送りで確認できます。</div>
+
+    <details class="foot">
+      <summary>使い方・仕組み</summary>
+      <div>「画面共有を開始」→ <b>ゲーム画面の窓</b>（OBSの「ウィンドウプロジェクター(ソース)」やゲームキャプチャ窓）を選ぶと、その映像を60fpsで監視します。図鑑が出た瞬間（一瞬でも、報告後に数秒スクロールしても）を自動で<b>動画クリップとして録画</b>し、一覧に追加します。</div>
+      <div>サムネをクリックすると<b>コマ送りプレイヤー</b>が開きます。◀▶ボタン（または ← → キー）で1コマずつ戻す/進める、<b>ボタン長押しで連続送り</b>。「送り幅」で1回あたりの送り量（1コマ〜0.5秒）を変更可。スライダーで好きな位置へ、スペースで再生/停止。スクロールで見た各ポケモンのページを止めて読めます。「この1枚をPNG」で表示中のコマを画像保存、「動画DL」でクリップ(webm)を保存できます。</div>
+      <div>検出方法：画面がクリーム色（図鑑のページ）になっている間を録画。緑のフィールドやバトルとは色で区別します。<b>図鑑を閉じた後も約2秒録画を続け、「リサーチポイント獲得」画面まで収めて</b>から1クリップ確定します。感度スライダーで調整可。メニュー等で長く続いた場合は最長12秒で打ち止めます。</div>
+      <div>※ getDisplayMedia の都合上、<b>http://localhost で開く必要があります</b>（ファイルを直接開くと画面共有が使えない場合あり）。タイマー等のオーバーレイを含めたくない場合は、OBSでゲームソースだけのプロジェクター窓を共有してください。</div>
+    </details>
+  </div><!-- /tabDexcap -->
+</div><!-- /wrap -->
+
+<div class="dc-lightbox" id="dcLightbox">
+  <div class="dc-player" id="dcPlayer">
+    <video id="dcPlayVid" playsinline></video>
+    <div class="dc-pctrl">
+      <button class="dc-pbtn" id="dcPlayPause">▶ 再生</button>
+      <button class="dc-pbtn" id="dcStepB">◀ コマ</button>
+      <button class="dc-pbtn" id="dcStepF">コマ ▶</button>
+      <label class="dc-stepsel">送り幅<select id="dcStepSize">
+        <option value="0.01667" selected>1コマ(1/60s)</option>
+        <option value="0.03333">2コマ(1/30s)</option>
+        <option value="0.05">0.05秒</option>
+        <option value="0.1">0.1秒</option>
+        <option value="0.2">0.2秒</option>
+        <option value="0.5">0.5秒</option>
+      </select></label>
+      <input type="range" id="dcSeek" min="0" max="1000" value="0" step="1">
+      <span class="dc-pos" id="dcPos">0.00 / 0.00s</span>
+      <button class="dc-pbtn alt" id="dcFramePng">この1枚をPNG</button>
+      <button class="dc-pbtn alt" id="dcPlayDl">動画DL</button>
+      <button class="dc-pbtn" id="dcPlayClose">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<div id="dock"><div id="dock-inner"><span class="dk-hint">ポケモン・わざ・相手を選択</span></div></div>
+
+<script>
+"use strict";
+/* ===== 定数 ===== */
+const EFFORT_C=[0,2,3,4,7,8,9,14,15,16,25];
+const STYLE_DELTA=p=>{ if(p<=50)return 10; if(p<=75)return 15; return 20; };
+const TYPE_COLOR={ノーマル:'#9aa3b2',ほのお:'#ff7043',みず:'#42a5f5',でんき:'#ffca28',くさ:'#66bb6a',こおり:'#4dd0e1',
+  かくとう:'#e9573f',どく:'#ab47bc',じめん:'#d2a05a',ひこう:'#90caf9',エスパー:'#ec407a',むし:'#9ccc65',
+  いわ:'#bca36b',ゴースト:'#7e6bc4',ドラゴン:'#5e6fe0',あく:'#6d6d6d',はがね:'#90a4ae',フェアリー:'#f48fb1'};
+const STATUS_BOOST_MOVES=new Set(['たたりめ','ゆめくい']);
+
+/* ===== カタカナ→ローマ字 ===== */
+const _romaConv=t=>s=>{
+  s=s.replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));
+  let r='',i=0;
+  while(i<s.length){
+    if(s[i]==='ッ'){const nx=t[s.substr(i+1,2)]||t[s[i+1]]||'';if(nx)r+=nx[0];i++;continue;}
+    const two=s.substr(i,2);if(t[two]!==undefined){r+=t[two];i+=2;continue;}
+    r+=(t[s[i]]!==undefined?t[s[i]]:s[i]);i++;
+  }
+  return r.toLowerCase();
+};
+const _tBase={
+  'キャ':'kya','キュ':'kyu','キョ':'kyo','シャ':'sha','シュ':'shu','ショ':'sho','チャ':'cha','チュ':'chu','チョ':'cho',
+  'ニャ':'nya','ニュ':'nyu','ニョ':'nyo','ヒャ':'hya','ヒュ':'hyu','ヒョ':'hyo','ミャ':'mya','ミュ':'myu','ミョ':'myo',
+  'リャ':'rya','リュ':'ryu','リョ':'ryo','ギャ':'gya','ギュ':'gyu','ギョ':'gyo','ジャ':'ja','ジュ':'ju','ジョ':'jo',
+  'ビャ':'bya','ビュ':'byu','ビョ':'byo','ピャ':'pya','ピュ':'pyu','ピョ':'pyo',
+  'ア':'a','イ':'i','ウ':'u','エ':'e','オ':'o','カ':'ka','キ':'ki','ク':'ku','ケ':'ke','コ':'ko','サ':'sa','シ':'shi','ス':'su','セ':'se','ソ':'so',
+  'タ':'ta','チ':'chi','ツ':'tsu','テ':'te','ト':'to','ナ':'na','ニ':'ni','ヌ':'nu','ネ':'ne','ノ':'no','ハ':'ha','ヒ':'hi','フ':'fu','ヘ':'he','ホ':'ho',
+  'マ':'ma','ミ':'mi','ム':'mu','メ':'me','モ':'mo','ヤ':'ya','ユ':'yu','ヨ':'yo','ラ':'ra','リ':'ri','ル':'ru','レ':'re','ロ':'ro','ワ':'wa','ヲ':'wo','ン':'n',
+  'ガ':'ga','ギ':'gi','グ':'gu','ゲ':'ge','ゴ':'go','ザ':'za','ジ':'ji','ズ':'zu','ゼ':'ze','ゾ':'zo','ダ':'da','ヂ':'ji','ヅ':'zu','デ':'de','ド':'do',
+  'バ':'ba','ビ':'bi','ブ':'bu','ベ':'be','ボ':'bo','パ':'pa','ピ':'pi','プ':'pu','ペ':'pe','ポ':'po','ヴ':'vu',
+  'ー':'','・':'','（':'','）':'','ヒスイ':'hisui'};
+/* 標準ローマ字: ティ→ti, ディ→di, ファ→fa など */
+const ROMA=_romaConv({..._tBase,
+  'ファ':'fa','フィ':'fi','フェ':'fe','フォ':'fo','ウィ':'wi','ウェ':'we','ウォ':'wo',
+  'ヴァ':'va','ヴィ':'vi','ヴェ':'ve','ヴォ':'vo','ティ':'ti','ディ':'di','トゥ':'tu','ドゥ':'du','チェ':'che','ジェ':'je','シェ':'she',
+  'ァ':'a','ィ':'i','ゥ':'u','ェ':'e','ォ':'o','ャ':'ya','ュ':'yu','ョ':'yo'});
+/* キーボード入力スタイル: 小文字仮名をl接頭辞で表現 ディ→deli, ファ→fula など */
+const ROMAKBD=_romaConv({..._tBase,
+  'ァ':'la','ィ':'li','ゥ':'lu','ェ':'le','ォ':'lo','ャ':'lya','ュ':'lyu','ョ':'lyo'});
+const norm=s=>(s||'').toLowerCase().replace(/[ー・（）\s]/g,'');
+function loose(r){
+  return (r||'').toLowerCase()
+    .replace(/shi/g,'si').replace(/sh/g,'sy').replace(/chi/g,'ti').replace(/ch/g,'ty')
+    .replace(/tsu/g,'tu').replace(/fu/g,'hu').replace(/ji/g,'zi').replace(/j/g,'zy')
+    .replace(/wi/g,'ui').replace(/we/g,'ue').replace(/[\-' ]/g,'')
+    .replace(/x([aeiou])/g,'l$1');
+}
+function matchName(name,q){
+  if(!q)return true;
+  if(norm(name).includes(norm(q)))return true;
+  const ql=loose(q);
+  return loose(ROMA(name)).includes(ql)||loose(ROMAKBD(name)).includes(ql);
+}
+
+/* ===== ステータス計算 ===== */
+function ganbari(base,lv,el){const c=EFFORT_C[Math.max(0,Math.min(10,el|0))]||0;return Math.round((Math.sqrt(base)*c+lv)/2.5);}
+const NMUL={up:1.1,none:1,down:0.9};
+function calcStat(key,base,lv,el,nm){
+  const gv=ganbari(base,lv,el);
+  if(key==='h')return Math.floor((lv/100+1)*base+lv+gv);
+  return Math.floor(((lv/50+1)*base/1.5)*(nm||1)+gv);
+}
+// RTA相手の実数値: シート値(がんばLv0)を基準に、オヤブンはがんばレベル分を加算（floor(X+整数)=floor(X)+整数なので増分は厳密）
+function rtaEffortForKey(key){return key==='h'?(S.right.rtaEffortH||0):(key==='a'||key==='c')?(S.right.rtaEffortAtk||0):(S.right.rtaEffortDef||0);}
+function rtaStatVal(key,mon,lv,rta){
+  if(!rta)return 0;
+  const sheetVal={h:rta.H,a:rta.A,b:rta.B,c:rta.C,d:rta.D}[key];
+  if(rta.note==='オヤブン'&&mon){
+    const N=rtaEffortForKey(key);
+    if(N>0)return sheetVal+(ganbari(mon.base[key],lv,N)-ganbari(mon.base[key],lv,0));
+  }
+  return sheetVal;
+}
+
+/* ===== 状態 ===== */
+const makeBase=()=>({
+  mon:null,lv:50,
+  atkNatureMod:'none',atkEffort:0,atkRank:'none',
+  defNatureMod:'none',defEffort:0,defRank:'none',
+  effortH:0,
+  move:null,powerOverride:null,style:'normal',
+  baibun:false,shuchuA:false,crit:false,tokkou:false,regigigas:false,status:'none',oyabunA:false,
+  shuchuD:false,nemuke:false,oyabunD:false,
+  rta:null,rtaGroup:null,rtaMonIdx:0,rtaEffortH:0,rtaEffortDef:0,rtaEffortAtk:0
+});
+const S={left:makeBase(),right:makeBase(),swapped:false,weather:'none',mode:'normal',showTutor:false};
+
+/* ===== コンボボックス ===== */
+function tchipHTML(types){return types.map(t=>`<span class="tchip" style="background:${TYPE_COLOR[t]||'#888'}">${t}</span>`).join(' ');}
+function setupCombo(name,getItems,onPick){
+  const root=document.querySelector(`[data-combo="${name}"]`);
+  const input=root.querySelector('input');const opts=root.querySelector('.opts');
+  let active=-1,items=[],savedLabel='',picked=false;
+  function render(){
+    items=getItems(input.value);
+    if(!items.length){opts.innerHTML=`<div class="opt" style="color:var(--muted)">該当なし</div>`;return;}
+    opts.innerHTML=items.map((it,i)=>it.sep
+      ?`<div class="opt-sep">${it.html}</div>`
+      :`<div class="opt${i===active?' active':''}" data-i="${i}">${it.html}</div>`
+    ).join('');
+  }
+  function open(){savedLabel=input.value;input.value='';picked=false;root.classList.add('open');active=-1;render();}
+  function close(){root.classList.remove('open');if(!picked)input.value=savedLabel;}
+  function pick(it){picked=true;savedLabel=it.label;input.value=it.label;onPick(it.key);close();input.blur();}
+  input.addEventListener('focus',open);
+  input.addEventListener('input',()=>{active=-1;render();root.classList.add('open');});
+  input.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){let nx=active+1;while(nx<items.length&&items[nx]?.sep)nx++;active=Math.min(nx,items.length-1);render();e.preventDefault();}
+    else if(e.key==='ArrowUp'){let nx=active-1;while(nx>=0&&items[nx]?.sep)nx--;active=Math.max(nx,0);render();e.preventDefault();}
+    else if(e.key==='Enter'){if(active>=0&&items[active]&&!items[active].sep)pick(items[active]);e.preventDefault();}
+    else if(e.key==='Escape')close();
+  });
+  opts.addEventListener('mousedown',e=>{const o=e.target.closest('[data-i]');if(!o)return;const it=items[+o.dataset.i];if(it&&!it.sep)pick(it);e.preventDefault();});
+  document.addEventListener('click',e=>{if(!root.contains(e.target))close();});
+  root._setLabel=v=>{input.value=v;savedLabel=v;};
+  root._refresh=()=>{if(root.classList.contains('open'))render();};   // 開いている候補を再生成
+  return root;
+}
+
+/* ===== 初期化 ===== */
+document.getElementById('ver').textContent='v0.1';
+// ー(長音符)をU+FFFFに置換 → localeCompare('ja')でンより後ろ(五十音の末尾)に来る
+function jaKanaKey(s){return s.replace(/ー/g,'￿');}
+const sortedDex=[...PLA_DEX].sort((a,b)=>jaKanaKey(a.name).localeCompare(jaKanaKey(b.name),'ja'));
+const findMon=no=>PLA_DEX.find(d=>d.no===no);
+const dexItems=q=>sortedDex.filter(d=>matchName(d.name,q)).map(d=>({
+  key:d.no,label:d.name,
+  html:`<span class="no">${String(d.no).padStart(3,'0')}</span><span>${d.name}</span><span class="pw">${tchipHTML(d.types)}</span>`
+}));
+
+const makeMoveItems=side=>q=>{
+  const st=S[side];const mon=st.mon;
+  let names=Object.keys(PLA_MOVES);
+  const rtaMoves=(S.mode==='rta'&&side==='right'&&st.rta&&st.rta.moves&&st.rta.moves.length)?st.rta.moves:null;
+  if(rtaMoves){const mv=new Set(rtaMoves);names=names.filter(n=>mv.has(n));}   // ルート相手=トレーナー使用技のみ
+  else if(mon&&mon.learnset&&mon.learnset.length>0){
+    const ls=new Set(mon.learnset);                                            // レベル技
+    if(S.showTutor&&mon.tutor)mon.tutor.forEach(t=>ls.add(t));                 // 伝授技(トグルON時)
+    names=names.filter(n=>ls.has(n));
+  }
+  if(q)names=names.filter(n=>matchName(n,q));
+  names.sort((a,b)=>jaKanaKey(a).localeCompare(jaKanaKey(b),'ja'));
+  return names.map(n=>{const m=PLA_MOVES[n];return{key:n,label:n,
+    html:`<span class="opt-mn">${n}</span><span class="opt-meta"><span class="tchip" style="background:${TYPE_COLOR[m.t]}">${m.t}</span><span class="opt-cat">${m.c}</span><span class="opt-pow">${m.p}</span></span>`};});
+};
+
+// そのポケモンのわざ候補の先頭を自動選択
+function pickFirstMove(side){
+  const items=makeMoveItems(side)('');
+  const combo=document.querySelector(`[data-combo="${side}Move"]`);
+  S[side].powerOverride=null;
+  if(items.length){S[side].move=items[0].key;combo._setLabel(items[0].label);}
+  else{S[side].move=null;combo._setLabel('');}
+}
+setupCombo('leftMon',dexItems,no=>{
+  S.left.mon=findMon(no);
+  pickFirstMove('left');update();
+});
+// RTAモード時はルート相手を「トレーナー単位」で順番通りに列挙
+const rightMonItems=q=>{
+  if(S.mode==='rta'){
+    return PLA_RTA_ROUTE
+      .map((g,i)=>({g,i}))
+      .filter(({g})=>!q||matchName(g.label,q)||g.mons.some(m=>matchName(m.n,q)))
+      .map(({g,i})=>{
+        let meta='';
+        if(g.mons.length>1)meta=`<span class="pw rta-count">${g.mons.length}匹</span>`;
+        else if(!g.wild)meta=`<span class="pw rta-monname">${g.mons[0].n}</span>`;  // 単独トレーナーは相手ポケモン名
+        return {key:'rtag:'+i,label:g.label,
+          html:`<span class="no">${String(i+1).padStart(2,'0')}</span><span>${g.label}</span>${meta}`};
+      });
+  }
+  return dexItems(q);
+};
+// RTAルート: トレーナー(グループ)選択 → ポケモン欄を手持ちで満たし先頭をセット
+function pickRtaTrainer(gi){
+  const g=PLA_RTA_ROUTE[gi];if(!g)return;
+  const sel=document.getElementById('rightRtaMonSel');
+  sel.innerHTML=g.mons.map((m,i)=>`<option value="${i}">${m.n} Lv${m.lv}</option>`).join('');
+  sel.disabled=g.mons.length<2;   // 1匹なら選択不要（自動）
+  document.querySelector('[data-combo="rightMon"]')._setLabel(g.label);
+  setRtaMon(gi,0);
+}
+// RTAルート: グループ(gi)内の手持ち(mi)を相手としてセット
+function setRtaMon(gi,mi){
+  const g=PLA_RTA_ROUTE[gi];if(!g)return;
+  mi=Math.max(0,Math.min(g.mons.length-1,mi|0));
+  const m=g.mons[mi];
+  S.right.rtaGroup=gi;S.right.rtaMonIdx=mi;S.right.rta=m;
+  S.right.mon=findMon(m.no);S.right.lv=m.lv;
+  S.right.atkRank='none';S.right.defRank='none';   // 相手を変えたらランクはリセット
+  S.right.rtaEffortH=0;S.right.rtaEffortDef=0;S.right.rtaEffortAtk=0;   // がんばLvもリセット
+  document.getElementById('rtaEffortH').value=0;document.getElementById('rtaEffortDef').value=0;document.getElementById('rtaEffortAtk').value=0;
+  // オヤブンは攻撃/防御とも×1.5をデフォルトON（非オヤブンはOFF）。攻守交代どちらでも効く
+  const isOya=m.note==='オヤブン';
+  S.right.oyabunD=isOya;S.right.oyabunA=isOya;
+  ['right_ck_oyabunD','right_ck_oyabunA'].forEach(id=>{
+    const c=document.getElementById(id);c.querySelector('input').checked=isOya;c.classList.toggle('on',isOya);
+  });
+  document.getElementById('rightLv').value=m.lv;
+  document.getElementById('rightRtaMonSel').value=mi;
+  pickFirstMove('right');   // ルート相手(攻守交代時)の使用技も先頭を投入
+  update();
+}
+setupCombo('rightMon',rightMonItems,key=>{
+  if(typeof key==='string'&&key.startsWith('rtag:')){
+    pickRtaTrainer(+key.slice(5));return;
+  }
+  S.right.rta=null;S.right.rtaGroup=null;S.right.mon=findMon(key);
+  pickFirstMove('right');update();
+});
+// ポケモン欄(手持ち選択)
+document.getElementById('rightRtaMonSel').addEventListener('change',e=>{
+  if(S.right.rtaGroup==null)return;
+  setRtaMon(S.right.rtaGroup,+e.target.value);
+});
+// RTAランク補正（攻守交代に応じて atkRank/defRank を切替）
+document.getElementById('rightRtaRank').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  S.right[S.swapped?'atkRank':'defRank']=b.dataset.v;
+  update();
+});
+// RTAオヤブンのがんばレベル（HP/防御/攻撃）
+[['rtaEffortH','rtaEffortH'],['rtaEffortDef','rtaEffortDef'],['rtaEffortAtk','rtaEffortAtk']].forEach(([id,key])=>{
+  document.getElementById(id).addEventListener('input',e=>{S.right[key]=Math.max(0,Math.min(10,parseInt(e.target.value,10)||0));update();});
+});
+setupCombo('leftMove',makeMoveItems('left'),n=>{S.left.move=n;S.left.powerOverride=null;update();});
+setupCombo('rightMove',makeMoveItems('right'),n=>{S.right.move=n;S.right.powerOverride=null;update();});
+// 伝授技トグル（左右共通でS.showTutorを切替）
+['leftTutorTg','rightTutorTg'].forEach(id=>document.getElementById(id).addEventListener('click',()=>{
+  S.showTutor=!S.showTutor;
+  document.querySelector('[data-combo="leftMove"]')._refresh();
+  document.querySelector('[data-combo="rightMove"]')._refresh();
+  update();
+}));
+
+/* バインド */
+function bindNum(id,side,key,asInt){const el=document.getElementById(id);el.addEventListener('input',()=>{
+  const v=el.value===''?null:(asInt?parseInt(el.value,10):parseFloat(el.value));S[side][key]=v;update();});}
+function bindSel(id,side,key){const el=document.getElementById(id);el.addEventListener('change',()=>{S[side][key]=el.value;update();});}
+function bindChk(id,side,key){const el=document.getElementById(id);const cb=el.querySelector('input');
+  cb.addEventListener('change',()=>{S[side][key]=cb.checked;el.classList.toggle('on',cb.checked);update();});}
+function bindSeg(id,side,key){const seg=document.getElementById(id);seg.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');S[side][key]=b.dataset.v;update();});}
+
+bindNum('leftLv','left','lv',true);    bindSeg('leftStyle','left','style');
+bindSeg('leftAtkNature','left','atkNatureMod'); bindNum('leftAtkEffort','left','atkEffort',true);
+bindSeg('leftAtkRank','left','atkRank');
+bindSeg('leftDefNature','left','defNatureMod'); bindNum('leftDefEffort','left','defEffort',true);
+bindSeg('leftDefRank','left','defRank');
+bindNum('leftEffortH','left','effortH',true);
+bindChk('left_ck_baibun','left','baibun'); bindChk('left_ck_shuchuA','left','shuchuA');
+bindChk('left_ck_crit','left','crit');    bindChk('left_ck_tokkou','left','tokkou');
+bindChk('left_ck_regigigas','left','regigigas');
+bindChk('left_ck_shuchuD','left','shuchuD'); bindChk('left_ck_nemuke','left','nemuke');
+
+bindNum('rightLv','right','lv',true);  bindSeg('rightStyle','right','style');
+bindSeg('rightAtkNature','right','atkNatureMod'); bindNum('rightAtkEffort','right','atkEffort',true);
+bindSeg('rightAtkRank','right','atkRank');
+bindSeg('rightDefNature','right','defNatureMod'); bindNum('rightDefEffort','right','defEffort',true);
+bindSeg('rightDefRank','right','defRank');
+bindNum('rightEffortH','right','effortH',true);
+bindChk('right_ck_baibun','right','baibun'); bindChk('right_ck_shuchuA','right','shuchuA');
+bindChk('right_ck_crit','right','crit');    bindChk('right_ck_tokkou','right','tokkou');
+bindChk('right_ck_oyabunA','right','oyabunA');
+bindChk('right_ck_regigigas','right','regigigas');
+bindChk('right_ck_shuchuD','right','shuchuD'); bindChk('right_ck_nemuke','right','nemuke');
+bindChk('right_ck_oyabunD','right','oyabunD');
+
+/* やけど/しもやけ: status を直接セット */
+['left','right'].forEach(side=>{
+  const bel=document.getElementById(side+'_ck_burn');
+  const fel=document.getElementById(side+'_ck_frost');
+  bel.querySelector('input').addEventListener('change',()=>{
+    S[side].status=bel.querySelector('input').checked?'burn':'none';
+    bel.classList.toggle('on',S[side].status==='burn');
+    update();
+  });
+  fel.querySelector('input').addEventListener('change',()=>{
+    S[side].status=fel.querySelector('input').checked?'frost':'none';
+    fel.classList.toggle('on',S[side].status==='frost');
+    update();
+  });
+});
+
+/* 天候ボタン: 同じボタン押しで解除 */
+['wbtnSun','wbtnRain'].forEach(id=>{
+  const val=id==='wbtnSun'?'sun':'rain';
+  document.getElementById(id).addEventListener('click',()=>{
+    S.weather=S.weather===val?'none':val;
+    document.getElementById('wbtnSun').classList.toggle('on',S.weather==='sun');
+    document.getElementById('wbtnRain').classList.toggle('on',S.weather==='rain');
+    update();
+  });
+});
+
+/* 攻守交代: ポケモンはそのまま、役割(フィールド)を入れ替え */
+document.getElementById('swapBtn').addEventListener('click',()=>{
+  S.swapped=!S.swapped;
+  document.querySelector('.cards').classList.toggle('swapped',S.swapped);
+  update();
+});
+
+/* デフォルト投入: ポケモン/トレーナー/技とも一覧の先頭を入れておく */
+function setDefaultLeft(){
+  const d=sortedDex[0];
+  S.left.mon=d;
+  document.querySelector('[data-combo="leftMon"]')._setLabel(d.name);
+  pickFirstMove('left');                                       // 先頭のわざ
+}
+function setDefaultRight(){
+  if(S.mode==='rta'){pickRtaTrainer(0);return;}                // 先頭トレーナー→先頭ポケモン（update内包）
+  const d=sortedDex[0];
+  S.right.rta=null;S.right.rtaGroup=null;S.right.mon=d;
+  document.querySelector('[data-combo="rightMon"]')._setLabel(d.name);
+  pickFirstMove('right');update();
+}
+
+/* 通常 / RTA モード切替 */
+const NORMAL_SUB='レベル1〜100・がんばレベル・能力ランク・与ダメ補正・状態異常・力業/早業に対応。検索はローマ字でもOK。';
+const RTA_SUB='RTAモード：右(防御)はアルセウスRTAルート順の相手をプリセット。実数値はルート表の値を使用。';
+function applyMode(m){
+  S.mode=m;
+  try{localStorage.setItem('pla-mode',m);}catch(e){}   // リロード後もモード保持
+  document.querySelectorAll('#modeToggle .mt-btn').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  const cards=document.querySelector('.cards');
+  cards.classList.toggle('rta',m==='rta');
+  // モード切替時はスワップを既定(非交代)に戻す（RTA内でも攻守交代は可能）
+  S.swapped=false;cards.classList.remove('swapped');
+  // 右(防御)側を初期化して別モードの値が残らないようにする
+  S.right=makeBase();
+  document.querySelector('[data-combo="rightMon"]')._setLabel('');
+  document.querySelector('[data-combo="rightMove"]')._setLabel('');
+  document.querySelectorAll('#rightCard .seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v==='normal')));
+  document.querySelectorAll('#rightCard .nat-seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v==='none')));
+  document.querySelectorAll('#rightCard .chk').forEach(c=>{c.classList.remove('on');const i=c.querySelector('input');if(i)i.checked=false;});
+  document.querySelectorAll('#rightCard .cmpct-num').forEach(n=>n.value=0);
+  const rl=document.getElementById('rightLv');rl.value=50;rl.readOnly=(m==='rta');
+  const rmInput=document.querySelector('[data-combo="rightMon"] input');
+  rmInput.placeholder=(m==='rta')?'トレーナーを選択（順番通り）':'名前 / romaji で検索（五十音順）';
+  document.getElementById('rightMonLabel').textContent=(m==='rta')?'トレーナー':'ポケモン';
+  const rsel=document.getElementById('rightRtaMonSel');rsel.innerHTML='';rsel.disabled=true;
+  document.getElementById('headSub').textContent=(m==='rta')?RTA_SUB:NORMAL_SUB;
+  setDefaultRight();   // 新モードの右側に先頭を投入（update内包）
+}
+document.getElementById('modeToggle').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.mode!==S.mode)applyMode(b.dataset.mode);
+});
+
+/* ===== 計算 ===== */
+function effPower(side){
+  const s=S[side];const m=s.move?PLA_MOVES[s.move]:null;if(!m)return null;
+  let ov=null;
+  if(s.powerOverride!=null)ov=s.powerOverride;
+  else if(PLA_POWER_OVERRIDE[s.move]!=null)ov=PLA_POWER_OVERRIDE[s.move];
+  if(ov!=null){
+    if(s.style==='strong')return ov+STYLE_DELTA(ov);
+    if(s.style==='agile')return Math.max(1,ov-STYLE_DELTA(ov));
+    return ov;
+  }
+  if(s.style==='agile')return m.pa!=null?m.pa:m.p;
+  if(s.style==='strong')return m.ps!=null?m.ps:m.p;
+  return m.p;
+}
+function typeEffectiveness(moveType,defTypes){
+  let e=1;for(const t of defTypes)e*=TYPE_CHART[moveType][t];
+  if(e===4)e=2.5;else if(e===0.25)e=0.4;
+  return e;
+}
+
+function update(){
+  const aSide=S.swapped?'right':'left', dSide=S.swapped?'left':'right';
+  const a=S[aSide], d=S[dSide];
+  const body=document.getElementById('resBody');
+  const m=a.move?PLA_MOVES[a.move]:null;
+
+  document.getElementById('leftName').textContent=S.left.mon?S.left.mon.name:'ポケモンを選択';
+  document.getElementById('rightName').textContent=S.right.mon?S.right.mon.name:'ポケモンを選択';
+
+  // わざラベル
+  const atkHasLS=a.mon&&a.mon.learnset&&a.mon.learnset.length>0;
+  const atkRtaMoves=S.mode==='rta'&&a.rta&&a.rta.moves&&a.rta.moves.length;
+  document.getElementById(aSide+'MoveLabelText').textContent=atkRtaMoves?'わざ（使用技のみ） ':(atkHasLS?'わざ（レベル技）':'わざ ');
+  // 伝授技トグル: 攻撃側のみ表示・ルート相手(使用技固定)や伝授技なしの時は隠す
+  ['left','right'].forEach(s=>{
+    const tg=document.getElementById(s+'TutorTg');
+    const show=(s===aSide)&&!atkRtaMoves&&!!(a.mon&&a.mon.tutor&&a.mon.tutor.length);
+    tg.style.display=show?'':'none';
+    tg.classList.toggle('on',S.showTutor);
+  });
+  document.getElementById(aSide+'MoveType').innerHTML=m?`<span class="tchip" style="background:${TYPE_COLOR[m.t]}">${m.t}・${m.c}</span>`:'';
+  document.getElementById(aSide+'BasePow').textContent=m?' '+m.p:'';
+
+  // 物理/特殊でラベル切替
+  const phys=m?m.c==='物理':true;
+  const atkKey=phys?'a':'c', defKey=phys?'b':'d';
+  const atkStatName=phys?'こうげき':'とくこう', defStatName=phys?'ぼうぎょ':'とくぼう';
+  document.getElementById(aSide+'AtkEffortLabel').textContent=atkStatName;
+  document.getElementById(dSide+'DefEffortLabel').textContent=phys?'防御':'特防';
+  document.getElementById(aSide+'AtkNatureLabel').textContent='性格補正';
+  document.getElementById(dSide+'DefNatureLabel').textContent='性格補正';
+
+  // やけど/しもやけ チェック表示切替
+  const burnEl=document.getElementById(aSide+'_ck_burn');
+  const frostEl=document.getElementById(aSide+'_ck_frost');
+  if(m){
+    burnEl.style.display=phys?'':'none';
+    frostEl.style.display=!phys?'':'none';
+    if(phys&&a.status==='frost'){a.status='none';frostEl.querySelector('input').checked=false;frostEl.classList.remove('on');}
+    if(!phys&&a.status==='burn'){a.status='none';burnEl.querySelector('input').checked=false;burnEl.classList.remove('on');}
+  } else {
+    burnEl.style.display='none'; frostEl.style.display='none';
+  }
+
+  // 状態異常特効
+  const isStatusBoost=a.move!=null&&STATUS_BOOST_MOVES.has(a.move);
+  document.getElementById(aSide+'TokkouRow').style.display=isStatusBoost?'':'none';
+  if(!isStatusBoost&&a.tokkou){
+    const ck=document.getElementById(aSide+'_ck_tokkou');
+    ck.querySelector('input').checked=false;ck.classList.remove('on');a.tokkou=false;
+  }
+
+  // レジギガス
+  const isRegi=a.mon!=null&&a.mon.name==='レジギガス';
+  document.getElementById(aSide+'_ck_regigigas').style.display=isRegi?'':'none';
+  if(!isRegi&&a.regigigas){
+    const ck=document.getElementById(aSide+'_ck_regigigas');
+    ck.querySelector('input').checked=false;ck.classList.remove('on');a.regigigas=false;
+  }
+
+  // 実数値（計算用・表示なし／RTAモードはルート表の実数値を直接使用）
+  let atkStat=null,defStat=null,defHP=null;
+  if(S.mode==='rta'&&a.rta){
+    atkStat=rtaStatVal(atkKey,a.mon,a.lv,a.rta);          // ルート相手が攻撃側(攻守交代時)。オヤブンはがんばLv反映
+  } else if(a.mon){
+    atkStat=calcStat(atkKey,a.mon.base[atkKey],a.lv,a.atkEffort||0,NMUL[a.atkNatureMod]);
+  }
+  if(S.mode==='rta'&&d.rta){
+    defStat=rtaStatVal(defKey,d.mon,d.lv,d.rta);
+    defHP=rtaStatVal('h',d.mon,d.lv,d.rta);
+  } else if(d.mon){
+    defStat=calcStat(defKey,d.mon.base[defKey],d.lv,d.defEffort||0,NMUL[d.defNatureMod]);
+    defHP=calcStat('h',d.mon.base.h,d.lv,d.effortH||0,1);
+  }
+
+  // RTA情報の描画（ルート相手は常に右側。物理/特殊で表示ステを切替・攻守交代で攻/防を切替）
+  if(S.mode==='rta'){
+    const r=S.right.rta;const rm=S.right.mon,rl=S.right.lv;
+    const sv=k=>r?rtaStatVal(k,rm,rl,r):'—';   // オヤブンはがんばLv反映済みの値
+    const hpCol=document.getElementById('rtaColHP');
+    if(S.swapped){              // 相手が攻撃側 → こうげき/とくこう のみ
+      hpCol.style.display='none';
+      document.getElementById('rtaValStatLabel').textContent=phys?'こうげき':'とくこう';
+      document.getElementById('rtaValStat').textContent=sv(phys?'a':'c');
+    } else {                    // 相手が防御側 → HP + ぼうぎょ/とくぼう
+      hpCol.style.display='';
+      document.getElementById('rtaValHP').textContent=sv('h');
+      document.getElementById('rtaValStatLabel').textContent=phys?'ぼうぎょ':'とくぼう';
+      document.getElementById('rtaValStat').textContent=sv(phys?'b':'d');
+    }
+    // ランク表示を現在の役割の値に同期
+    const rk=S.swapped?S.right.atkRank:S.right.defRank;
+    document.querySelectorAll('#rightRtaRank button').forEach(x=>x.classList.toggle('on',x.dataset.v===rk));
+    const badge=document.getElementById('rtaBadge');
+    badge.style.display=(r&&r.note)?'':'none';if(r&&r.note)badge.textContent=r.note;
+    // オヤブン(野生)の時だけ がんばレベル入力欄を表示。守備時=HP+防御/特防、攻撃時=攻撃/特攻
+    const isOya=!!(r&&r.note==='オヤブン');
+    document.getElementById('rtaEffortRow').style.display=isOya?'':'none';
+    document.getElementById('rtaRouteLabel').textContent=isOya?'相手の実数値（がんばLv反映）':'相手の実数値（無補正・がんばLv0）';
+    if(isOya){
+      document.getElementById('rtaEffHWrap').style.display=S.swapped?'none':'';
+      document.getElementById('rtaEffDefWrap').style.display=S.swapped?'none':'';
+      document.getElementById('rtaEffAtkWrap').style.display=S.swapped?'':'none';
+      document.getElementById('rtaEffDefLbl').textContent=phys?'防御':'特防';
+      document.getElementById('rtaEffAtkLbl').textContent=phys?'こうげき':'とくこう';
+    }
+  }
+
+  if(!a.mon||!m||!d.mon){body.innerHTML='<div class="hint">攻撃側ポケモン・わざ・防御側ポケモンを選ぶと計算します。</div>';setDock(null);return;}
+
+  const power=effPower(aSide);
+  const eff=typeEffectiveness(m.t,d.mon.types);
+  if(eff===0){body.innerHTML=`<div class="res-top"><div class="res-dmg"><div class="res-label">ダメージ</div><div class="dmgline"><span class="dmgbig">0</span></div></div><div class="verdict-badge safe">こうかがないようだ……</div></div>`;setDock(null);return;}
+
+  let A=atkStat,D=defStat;const aMods=[],dMods=[];
+  if(a.oyabunA){A=Math.floor(A*1.5);aMods.push('オヤブン');}
+  if(a.regigigas){A=Math.floor(A*0.5);aMods.push('レジギガス');}
+  if(d.oyabunD){D=Math.floor(D*1.5);dMods.push('オヤブン');}
+
+  const base=Math.floor(Math.floor((a.lv*15+A+100)*power/(D+50))/5);
+
+  const aUp=a.atkRank==='up',aDown=a.atkRank==='down',dUp=d.defRank==='up',dDown=d.defRank==='down';
+  const rankCancel=(aUp&&dUp)||(aDown&&dDown);
+  const rankMul=rankCancel?1:((aUp?1.5:aDown?0.66:1)*(dUp?0.66:dDown?1.5:1));
+  const stab=a.mon.types.includes(m.t);
+
+  function chain(rnd){
+    let x=base;
+    x=Math.floor(x*rankMul);
+    if(S.weather==='rain'&&m.t==='ほのお')x=Math.floor(x*3072/4096);
+    else if(S.weather==='sun'&&m.t==='みず')x=Math.floor(x*3072/4096);
+    if(a.crit)x=Math.floor(x*15/10);
+    x=Math.floor(x*rnd/100);
+    if(stab)x=Math.floor(x*5120/4096);
+    x=Math.floor(x*eff);
+    if(a.status==='burn'&&phys)x=Math.floor(x*50/100);
+    else if(a.status==='frost'&&!phys)x=Math.floor(x*50/100);
+    if(d.nemuke)x=Math.floor(x*133/100);
+    if(a.shuchuA)x=Math.floor(x*150/100);
+    if(d.shuchuD)x=Math.floor(x*133/100);
+    if(a.baibun)x=Math.floor(x*3/2);
+    if(a.tokkou)x=Math.floor(x*2);
+    return x;
+  }
+  const rolls=Array.from({length:16},(_,i)=>chain(85+i));
+  const dmgMin=rolls[0],dmgMax=rolls[15];
+
+  const mults=[];
+  if(rankCancel)mults.push(['ランク打消し','1.00']);
+  else{if(aUp)mults.push(['攻ランク↑','1.5']);if(aDown)mults.push(['攻ランク↓','0.66']);
+       if(dUp)mults.push(['防ランク↑','0.66']);if(dDown)mults.push(['防ランク↓','1.5']);}
+  if(S.weather==='rain'&&m.t==='ほのお')mults.push(['雨','0.75']);
+  else if(S.weather==='sun'&&m.t==='みず')mults.push(['晴れ','0.75']);
+  if(a.crit)mults.push(['急所','1.5']);
+  if(stab)mults.push(['タイプ一致','1.25']);
+  mults.push(['相性',(eff===2.5?'2.5(二重弱点)':eff===0.4?'0.4(二重半減)':String(eff))]);
+  if(a.status==='burn'&&phys)mults.push(['やけど','0.5']);
+  else if(a.status==='frost'&&!phys)mults.push(['しもやけ','0.5']);
+  if(d.nemuke)mults.push(['ねむけ','1.33']);
+  if(a.shuchuA)mults.push(['熱中(攻)','1.5']);
+  if(d.shuchuD)mults.push(['熱中(被)','1.33']);
+  if(a.baibun)mults.push(['倍付け','1.5']);
+  if(a.tokkou)mults.push(['状態異常特効','2']);
+
+  const pMin=dmgMin/defHP*100,pMax=dmgMax/defHP*100;
+  const koBest=Math.ceil(defHP/Math.max(1,dmgMax)),koWorst=Math.ceil(defHP/Math.max(1,dmgMin));
+  let verdictText,verdictSev;
+  if(dmgMax<=0){verdictText='ダメージなし';verdictSev='safe';}
+  else if(koBest===koWorst){verdictText=`確定${koBest}発`;verdictSev=koBest===1?'ko':'rng';}
+  else {verdictText=`乱数${koBest}〜${koWorst}発`;verdictSev='rng';}
+  const verdict=`<span class="${verdictSev}">${verdictText}</span>`;
+
+  const pctW=Math.min(100,pMax),pctWmin=Math.min(100,pMin);
+  setDock({dmgMin,dmgMax,pMin,pMax,verdict,pctW,pctWmin});
+  const rollsHTML=rolls.map(r=>{
+    const ko=r>=defHP;
+    return `<span class="roll${ko?' ko':''}"><b>${r}</b><small>${(r/defHP*100).toFixed(1)}%</small></span>`;
+  }).join('');
+  const styleTag=a.style!=='normal'?`<span class="sub">${a.style==='strong'?'力業':'早業'}</span>`:'';
+  const anyKo=rolls.some(r=>r>=defHP);
+  const koLegend=anyKo?`<span class="legend"><i></i>1発で倒せる乱数</span>`:'';
+
+  body.innerHTML=`
+    <div class="res-top">
+      <div class="res-dmg">
+        <div class="res-label">ダメージ</div>
+        <div class="dmgline">
+          <span class="dmgbig">${dmgMin} – ${dmgMax}</span>
+          <span class="dmgpct">${pMin.toFixed(1)}% – ${pMax.toFixed(1)}%</span>
+        </div>
+      </div>
+      <div class="verdict-badge ${verdictSev}">${verdictText}</div>
+    </div>
+    <div class="bar"><div class="fillmax" style="width:${pctW}%"></div><div class="fillmin" style="width:${pctWmin}%"></div></div>
+    <div class="bar-cap"><span>確定 ${pMin.toFixed(1)}%</span><span>最大 ${pMax.toFixed(1)}%</span></div>
+    <div class="rolls-head">ダメージ乱数（16段階）${koLegend}</div>
+    <div class="rolls">${rollsHTML}</div>
+    <div class="meta">
+      <div><span>${phys?'こうげき':'とくこう'}${aMods.length?'（'+aMods.join('・')+'）':''}</span><b>${A}</b></div>
+      <div><span>${phys?'ぼうぎょ':'とくぼう'}${dMods.length?'（'+dMods.join('・')+'）':''}</span><b>${D}</b></div>
+      <div><span>相手HP</span><b>${defHP}</b></div>
+      <div><span>威力（補正後）${styleTag}</span><b>${power}</b></div>
+      <div class="wide"><span>基本ダメージ</span><b>${base}</b></div>
+    </div>
+    <div class="mults">${mults.map(x=>`<span class="mult">${x[0]} <b>×${x[1]}</b></span>`).join('')||'<span class="mult">補正なし</span>'}</div>
+  `;
+}
+function setDock(opts){
+  const inner=document.getElementById('dock-inner');
+  if(!inner)return;
+  if(!opts){inner.innerHTML=`<span class="dk-hint">ポケモン・わざ・相手を選択</span>`;return;}
+  const {dmgMin,dmgMax,pMin,pMax,verdict,pctW,pctWmin}=opts;
+  inner.innerHTML=`
+    <span class="dk-dmg">${dmgMin} 〜 ${dmgMax}</span>
+    <span class="dk-pct">${pMin.toFixed(1)}%〜${pMax.toFixed(1)}%</span>
+    <div class="dk-bar">
+      <div class="dk-bar-max" style="width:${pctW}%"></div>
+      <div class="dk-bar-min" style="width:${pctWmin}%"></div>
+    </div>
+    <span class="dk-verdict">${verdict}</span>
+  `;
+}
+/* ===== 捕獲率計算 ===== */
+const C={mon:null,catchRate:null,lv:50,alpha:false,hpPct:100,status:false,
+  ball:'poke',ai:'default',suitable:false,backstrike:false,razz:false,outbreak:false,plrank:0};
+const CAP_BALL={poke:{n:0.75},great:{n:1.5},ultra:{n:2.25},
+  feather:{n:0.5,s:1.25},wing:{n:1.25,s:2},jet:{n:2,s:2.75},
+  heavy:{n:1,s:1.25},leaden:{n:1.75,s:2},gigaton:{n:2.5,s:2.75}};
+// AI補正（wiki準拠）: 攻撃的が気づく/戦闘中/警戒=2、臆病が気づく/逃走=1、休憩2.5、寝4、きのみ2.5、よせだま4、疲れ3
+const CAP_AI={default:2,caution:2,timid:1,escaping:1,resting:2.5,sleeping:4,feeding_nuts:2.5,feeding_cake:4,tiredness:3};
+function capBallHasSuitable(){return CAP_BALL[C.ball]&&CAP_BALL[C.ball].s!=null;}
+
+setupCombo('capMon',dexItems,no=>{
+  C.mon=findMon(no);C.catchRate=PLA_CATCHRATE[no]!=null?PLA_CATCHRATE[no]:null;
+  calcCapture();
+});
+
+function calcCapture(){
+  const pctEl=document.getElementById('capPct'),meta=document.getElementById('capMeta'),
+    fill=document.getElementById('capBarFill'),vEl=document.getElementById('capVerdict');
+  document.getElementById('capName').textContent=C.mon?C.mon.name:'ポケモンを選択';
+  document.getElementById('capCatchRate').textContent=C.catchRate!=null?C.catchRate:'—';
+  document.getElementById('cap_ck_suitable').style.display=capBallHasSuitable()?'':'none';
+  if(!C.mon||C.catchRate==null){pctEl.textContent='—';meta.innerHTML='';fill.style.width='0%';vEl.textContent='';vEl.className='cap-verdict';return;}
+  const POKEPARA=0.75,BASIC=30,HPC=0.66,RANGE=255,ROOT=2,EVAL=2;
+  // L = 団員ランク -(オヤブン補正 + レベル補正)+ 1、-5〜0にクランプ（wiki準拠・レベル補正=⌈Lv/10⌉）
+  const levcorr=Math.ceil((C.lv||1)/10);
+  const lvFactor=Math.max(-5,Math.min(0,(C.plrank||0)-((C.alpha?4:0)+levcorr)+1));
+  const hpFactor=1-HPC*((C.hpPct||0)/100);
+  const sick=C.status?2:1;
+  const bd=CAP_BALL[C.ball];const ball=(C.suitable&&bd.s!=null)?bd.s:bd.n;
+  const ai=CAP_AI[C.ai]||2;const back=C.backstrike?1.75:1;const bait=C.razz?1.3:1;
+  const env=BASIC*hpFactor*sick*ball*ai*back*bait;
+  const idx=POKEPARA*C.catchRate+(C.outbreak?10:0)+BASIC*lvFactor+env;
+  const ratio=Math.max(0,Math.min(1,idx/RANGE));
+  const pct=(1-Math.pow(1-ratio,EVAL/ROOT))*100;
+  pctEl.textContent=pct.toFixed(1)+'%';
+  fill.style.width=Math.min(100,Math.max(0,pct))+'%';
+  vEl.textContent=pct>=80?'入りやすい':pct>=40?'まあまあ':pct>0?'入りにくい':'ほぼ入らない';
+  vEl.className='cap-verdict '+(pct>=80?'hi':pct>=40?'mid':'lo');
+  const expected=pct>0?100/pct:Infinity;
+  meta.innerHTML=
+    `<div><span>捕獲インデックス</span><b>${idx.toFixed(2)}</b></div>`
+    +`<div><span>環境補正</span><b>${env.toFixed(2)}</b></div>`
+    +`<div><span>HP補正</span><b>${hpFactor.toFixed(4)}</b></div>`
+    +`<div><span>ボール×状況</span><b>×${(ball*ai).toFixed(2)}</b></div>`
+    +`<div class="wide"><span>期待球数（平均）</span><b>${isFinite(expected)?expected.toFixed(1)+' 球':'—'}</b></div>`;
+}
+
+document.getElementById('capLv').addEventListener('input',e=>{C.lv=e.target.value===''?null:parseInt(e.target.value,10);calcCapture();});
+document.getElementById('capHp').addEventListener('input',e=>{C.hpPct=parseInt(e.target.value,10);document.getElementById('capHpLbl').textContent=C.hpPct+'%';calcCapture();});
+document.getElementById('capRank').addEventListener('input',e=>{C.plrank=Math.max(0,Math.min(10,parseInt(e.target.value,10)||0));calcCapture();});
+document.getElementById('capBall').addEventListener('change',e=>{C.ball=e.target.value;if(!capBallHasSuitable()){C.suitable=false;const c=document.getElementById('cap_ck_suitable');c.querySelector('input').checked=false;c.classList.remove('on');}calcCapture();});
+document.getElementById('capAi').addEventListener('change',e=>{C.ai=e.target.value;calcCapture();});
+function capChk(id,key){const el=document.getElementById(id);el.querySelector('input').addEventListener('change',()=>{const v=el.querySelector('input').checked;C[key]=v;el.classList.toggle('on',v);calcCapture();});}
+capChk('cap_ck_alpha','alpha');capChk('cap_ck_status','status');capChk('cap_ck_outbreak','outbreak');
+capChk('cap_ck_suitable','suitable');capChk('cap_ck_back','backstrike');capChk('cap_ck_razz','razz');
+function setDefaultCap(){const d=sortedDex[0];C.mon=d;C.catchRate=PLA_CATCHRATE[d.no]!=null?PLA_CATCHRATE[d.no]:null;document.querySelector('[data-combo="capMon"]')._setLabel(d.name);calcCapture();}
+
+/* メインタブ切替 */
+const CAP_SUB='捕獲率計算：ポケモン・ボール・状況を入れると1球あたりの捕獲率を表示します。';
+const DEXCAP_SUB='図鑑キャプチャ：RTA中に一瞬だけ表示される図鑑を、画面共有から自動でキャプチャします。';
+const CL_SUB='チェックリスト：選んだポケモンだけを並べて、RTA中のタスク消化を「完了」チェックで管理できます。';
+function showTab(t){
+  document.getElementById('tabDamage').style.display=t==='damage'?'':'none';
+  document.getElementById('tabCapture').style.display=t==='capture'?'':'none';
+  document.getElementById('tabChecklist').style.display=t==='checklist'?'':'none';
+  document.getElementById('tabDexcap').style.display=t==='dexcap'?'':'none';
+  document.getElementById('dock').style.display=t==='damage'?'':'none';
+  document.querySelectorAll('#mainTabs .main-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  document.getElementById('headSub').textContent=t==='dexcap'?DEXCAP_SUB:t==='capture'?CAP_SUB:t==='checklist'?CL_SUB:(S.mode==='rta'?RTA_SUB:NORMAL_SUB);
+  try{localStorage.setItem('pla-tab',t);}catch(e){}
+  if(t==='capture')calcCapture();
+}
+document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
+
+/* ===== 図鑑キャプチャ（画面共有を60fps監視→図鑑の一瞬を自動キャプチャ） ===== */
+(function(){
+  const video=document.getElementById('dcVideo');
+  const dot=document.getElementById('dcDot'),statusEl=document.getElementById('dcStatus'),msgEl=document.getElementById('dcMsg');
+  const startBtn=document.getElementById('dcStart'),stopBtn=document.getElementById('dcStop'),manualBtn=document.getElementById('dcManual');
+  const sens=document.getElementById('dcSens'),sensVal=document.getElementById('dcSensVal'),liveFrac=document.getElementById('dcLiveFrac');
+  const multiChk=document.getElementById('dcMultiChk').querySelector('input'),autoChk=document.getElementById('dcAutoChk').querySelector('input');
+  const gallery=document.getElementById('dcGallery'),emptyEl=document.getElementById('dcEmpty'),countEl=document.getElementById('dcCount');
+  const lightbox=document.getElementById('dcLightbox');
+  const aCanvas=document.createElement('canvas');aCanvas.width=96;aCanvas.height=54;const aCtx=aCanvas.getContext('2d',{willReadFrequently:true});
+  let stream=null,running=false,rafId=null,useRVFC=false;
+  const CLIP_FPS=60;                 // コマ送りの想定fps
+  const clips=[];
+
+  function threshold(){return sens.value/100;}
+  sens.addEventListener('input',()=>{sensVal.textContent=threshold().toFixed(2);});
+
+  /* ---- 録画（図鑑シーンを動画クリップに） ---- */
+  let recState='idle',recorder=null,recChunks=[],recStopTimer=null,recStart=0;
+  // TAIL_MS: 図鑑が消えた後も録画を続ける時間。図鑑を閉じた後の「リサーチポイント獲得」画面を収めつつ余りすぎない長さ
+  const TAIL_MS=2000, MAX_CLIP_MS=12000;
+  function pickMime(){for(const m of ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'])if(window.MediaRecorder&&MediaRecorder.isTypeSupported(m))return m;return '';}
+  function startRec(){
+    if(!stream||recState!=='idle')return;
+    try{
+      recChunks=[];const mime=pickMime();
+      recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:12000000}:{videoBitsPerSecond:12000000});
+      recorder.ondataavailable=e=>{if(e.data&&e.data.size)recChunks.push(e.data);};
+      recorder.onstop=()=>{const blob=new Blob(recChunks,{type:'video/webm'});recChunks=[];recState='idle';if(blob.size>0)addClip(blob);};
+      recorder.start();recState='recording';recStart=performance.now();
+    }catch(e){recState='idle';msgEl.textContent='録画開始に失敗：'+(e&&e.message||e);}
+  }
+  function stopRec(){recStopTimer=null;if(recState==='recording'&&recorder){recState='stopping';try{recorder.stop();}catch{recState='idle';}}}
+
+  // 1フレーム解析（左62%/縦10-92%のクリーム率＝図鑑のページ色）→図鑑なら録画開始、消えてTAIL後に停止＝1クリップ確定
+  function detect(src,fw,fh){
+    if(!fw||!fh)return;
+    aCtx.drawImage(src,0,fh*0.10,fw*0.62,fh*0.82,0,0,96,54);
+    const d=aCtx.getImageData(0,0,96,54).data;let cream=0;const n=96*54;
+    for(let i=0;i<n;i++){const r=d[i*4],g=d[i*4+1],b=d[i*4+2];if(Math.min(r,g,b)>150&&r>=b-10&&g<=r+30)cream++;}
+    liveFrac.textContent=(cream/n).toFixed(2);
+    const hit=cream/n>=threshold();
+    if(hit){
+      dot.classList.add('hit');
+      if(recState==='idle'){startRec();statusEl.textContent='図鑑シーンを録画中…';}
+      else if(recStopTimer){clearTimeout(recStopTimer);recStopTimer=null;}   // 連続表示中は止めない
+      if(recState==='recording'&&performance.now()-recStart>MAX_CLIP_MS)stopRec();  // 長すぎ(メニュー等)は打ち止め
+    } else {
+      dot.classList.remove('hit');
+      if(recState==='recording'&&!recStopTimer)recStopTimer=setTimeout(stopRec,TAIL_MS);
+    }
+  }
+
+  function download(url,name){const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();}
+  function addClip(blob){
+    const url=URL.createObjectURL(blob);const ts=new Date();
+    const name='zukan_'+ts.toISOString().replace(/[:.]/g,'-').slice(0,19)+'.webm';
+    clips.unshift({url,blob,name,ts});renderGallery();
+    statusEl.textContent='クリップ保存（'+ts.toLocaleTimeString('ja-JP')+'）— 監視中';
+    if(autoChk.checked)download(url,name);
+  }
+  function renderGallery(){
+    countEl.textContent=clips.length+'本';emptyEl.style.display=clips.length?'none':'';
+    gallery.innerHTML=clips.map((c,i)=>`<div class="dc-shot" data-i="${i}"><video src="${c.url}#t=0.15" muted preload="metadata" playsinline></video><div class="dc-play-ov">▶ コマ送り</div><div class="dc-meta"><span>${c.ts.toLocaleTimeString('ja-JP')}</span><span><a class="dc-dl" data-dl="${i}">DL</a> <span class="dc-x" data-x="${i}">×</span></span></div></div>`).join('');
+  }
+  gallery.addEventListener('click',e=>{
+    const dl=e.target.closest('[data-dl]');if(dl){const c=clips[+dl.dataset.dl];download(c.url,c.name);return;}
+    const x=e.target.closest('[data-x]');if(x){const i=+x.dataset.x;URL.revokeObjectURL(clips[i].url);clips.splice(i,1);renderGallery();return;}
+    const card=e.target.closest('.dc-shot[data-i]');if(card)openPlayer(+card.dataset.i);
+  });
+  document.getElementById('dcDlAll').addEventListener('click',()=>clips.slice().reverse().forEach((c,k)=>setTimeout(()=>download(c.url,c.name),k*200)));
+  document.getElementById('dcClear').addEventListener('click',()=>{if(clips.length&&confirm('クリップを全部消去しますか？')){clips.forEach(c=>URL.revokeObjectURL(c.url));clips.length=0;renderGallery();}});
+
+  /* ---- コマ送りプレイヤー ---- */
+  const pVid=document.getElementById('dcPlayVid'),pSeek=document.getElementById('dcSeek'),pPos=document.getElementById('dcPos'),pPlay=document.getElementById('dcPlayPause');
+  let curClip=-1;
+  function openPlayer(i){const c=clips[i];if(!c)return;curClip=i;pVid.src=c.url;lightbox.classList.add('on');pVid.pause();pVid.currentTime=0.05;}
+  function closePlayer(){lightbox.classList.remove('on');pVid.pause();}
+  function updatePos(){const dur=isFinite(pVid.duration)?pVid.duration:0;pSeek.max=Math.max(1,Math.round(dur*1000));pSeek.value=Math.round((pVid.currentTime||0)*1000);pPos.textContent=(pVid.currentTime||0).toFixed(2)+' / '+dur.toFixed(2)+'s';pPlay.textContent=pVid.paused?'▶ 再生':'⏸ 停止';}
+  ['loadedmetadata','timeupdate','seeked','play','pause'].forEach(ev=>pVid.addEventListener(ev,updatePos));
+  let stepSec=1/CLIP_FPS;
+  const stepSel=document.getElementById('dcStepSize');
+  stepSel.addEventListener('change',()=>{stepSec=parseFloat(stepSel.value)||1/CLIP_FPS;});
+  function step(dir){pVid.pause();const dur=isFinite(pVid.duration)?pVid.duration:0;pVid.currentTime=Math.max(0,Math.min(dur,(pVid.currentTime||0)+dir*stepSec));}
+  // 長押しで連続送り（最初に1回→300ms後から70ms間隔でリピート）
+  function holdStep(btn,dir){
+    let to=null,iv=null;
+    const start=e=>{e.preventDefault();step(dir);to=setTimeout(()=>{iv=setInterval(()=>step(dir),70);},300);};
+    const end=()=>{if(to){clearTimeout(to);to=null;}if(iv){clearInterval(iv);iv=null;}};
+    btn.addEventListener('pointerdown',start);btn.addEventListener('pointerup',end);
+    btn.addEventListener('pointerleave',end);btn.addEventListener('pointercancel',end);
+  }
+  holdStep(document.getElementById('dcStepB'),-1);
+  holdStep(document.getElementById('dcStepF'),1);
+  pPlay.addEventListener('click',()=>{if(pVid.paused)pVid.play();else pVid.pause();});
+  pSeek.addEventListener('input',()=>{pVid.pause();pVid.currentTime=pSeek.value/1000;});
+  document.getElementById('dcPlayClose').addEventListener('click',closePlayer);
+  document.getElementById('dcPlayDl').addEventListener('click',()=>{if(curClip>=0)download(clips[curClip].url,clips[curClip].name);});
+  document.getElementById('dcFramePng').addEventListener('click',()=>{
+    if(!pVid.videoWidth)return;const c=document.createElement('canvas');c.width=pVid.videoWidth;c.height=pVid.videoHeight;c.getContext('2d').drawImage(pVid,0,0);
+    download(c.toDataURL('image/png'),'zukan_'+(pVid.currentTime||0).toFixed(2)+'s.png');
+  });
+  lightbox.addEventListener('click',e=>{if(e.target===lightbox)closePlayer();});
+  document.addEventListener('keydown',e=>{if(!lightbox.classList.contains('on'))return;
+    if(e.key==='ArrowLeft'){step(-1);e.preventDefault();}else if(e.key==='ArrowRight'){step(1);e.preventDefault();}
+    else if(e.key===' '){pVid.paused?pVid.play():pVid.pause();e.preventDefault();}else if(e.key==='Escape')closePlayer();});
+
+  /* ---- 監視ループ ---- */
+  let procReader=null,procTrack=null;
+  async function pumpProcessor(){
+    while(running&&procReader){
+      let res;try{res=await procReader.read();}catch{break;}
+      if(res.done)break;
+      const frame=res.value;
+      try{detect(frame,frame.displayWidth,frame.displayHeight);}finally{frame.close();}
+    }
+  }
+  function loopRVFC(){
+    if(!running)return;
+    detect(video,video.videoWidth,video.videoHeight);
+    if(running){if(useRVFC)video.requestVideoFrameCallback(loopRVFC);else rafId=requestAnimationFrame(loopRVFC);}
+  }
+  async function start(){
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia){msgEl.textContent='この環境では画面共有(getDisplayMedia)が使えません。http://localhost で開いているか確認してください。';return;}
+    if(!window.MediaRecorder){msgEl.textContent='この環境では録画(MediaRecorder)が使えません。';return;}
+    try{stream=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:60},audio:false});}
+    catch(e){msgEl.textContent='画面共有がキャンセル/失敗しました：'+(e&&e.message||e);return;}
+    video.srcObject=stream;await video.play().catch(()=>{});
+    const track=stream.getVideoTracks()[0];track.addEventListener('ended',stop);
+    running=true;startBtn.disabled=true;stopBtn.disabled=false;manualBtn.disabled=false;
+    dot.classList.add('live');msgEl.textContent='';
+    if(typeof MediaStreamTrackProcessor!=='undefined'){
+      try{procTrack=track.clone();procReader=new MediaStreamTrackProcessor({track:procTrack}).readable.getReader();
+        statusEl.textContent='監視中（裏画面でも検出）— 図鑑が出ると自動で録画';pumpProcessor();}
+      catch(e){procReader=null;}
+    }
+    if(!procReader){useRVFC=typeof video.requestVideoFrameCallback==='function';statusEl.textContent='監視中 — 図鑑が出ると自動で録画（このウィンドウは表示したままに）';loopRVFC();}
+  }
+  function stop(){
+    running=false;if(rafId)cancelAnimationFrame(rafId);
+    if(recState==='recording')stopRec();
+    if(procReader){try{procReader.cancel();}catch{}procReader=null;}
+    if(procTrack){try{procTrack.stop();}catch{}procTrack=null;}
+    if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+    video.srcObject=null;
+    startBtn.disabled=false;stopBtn.disabled=true;manualBtn.disabled=true;
+    dot.classList.remove('live','hit');statusEl.textContent='停止しました';liveFrac.textContent='—';
+  }
+  manualBtn.addEventListener('click',()=>{if(running&&recState==='idle'){startRec();statusEl.textContent='手動録画中…(5秒)';setTimeout(()=>{if(recState==='recording')stopRec();},5000);}});
+  startBtn.addEventListener('click',start);stopBtn.addEventListener('click',stop);
+})();
+
+/* ===== チェックリスト（グループ分け／完了は種ごと＝全グループ共通） ===== */
+(function(){
+  const KEY='pla-checklist';
+  const SAVES_KEY='pla-cl-saves';
+  // CL = { groups:[{id,title,items:[no...]}], done:{no:true}, memo:{no:"text"}（共に種ごと・全グループ共通）, nextId }
+  let CL={groups:[],done:{},memo:{},subtasks:{},skip:{},showFood:{},optional:{},textItems:{},nextId:1,nextSubId:1,nextTId:1};
+  let SAVES={active:null,list:[],nextId:1};
+  let dragLocked=true;try{if(localStorage.getItem('pla-cl-drag-lock')==='0')dragLocked=false;}catch(e){}
+  let dragState=null,dragOverInfo=null;
+  try{const s=JSON.parse(localStorage.getItem(KEY));
+    if(s){
+      CL.done=s.done||{};
+      CL.memo=s.memo||{};
+      CL.subtasks=s.subtasks||{};
+      CL.skip=s.skip||{};
+      CL.showFood=s.showFood||{};
+      CL.optional=s.optional||{};
+      CL.textItems=s.textItems||{};
+      CL.nextTId=s.nextTId||1;
+      CL.nextSubId=s.nextSubId||1;
+      if(typeof s.showNames==='boolean')CL.showNames=s.showNames;
+      if(Array.isArray(s.groups)){
+        CL.groups=s.groups.map(g=>({id:g.id,title:g.title||'グループ',items:(g.items||[]).filter(no=>findMon(no))}));
+        CL.nextId=s.nextId||(CL.groups.reduce((m,g)=>Math.max(m,g.id),0)+1);
+      }else if(Array.isArray(s.items)){   // 旧形式（単一リスト）から移行
+        CL.groups=[{id:1,title:'グループ1',items:s.items.filter(no=>findMon(no))}];CL.nextId=2;
+      }
+    }
+  }catch(e){}
+  if(!CL.groups.length){CL.groups=[{id:1,title:'グループ1',items:[]}];CL.nextId=2;}
+  function clImportText(text){
+    const lines=text.split('\n');
+    const groups=[],memos={},subtasks={},showFood={},optional={},textItems={};
+    let cur=null,curNo=null,nid=1,nsid=1,ntid=1;
+    for(const raw of lines){
+      const gm=raw.match(/^===\s*(.+?)\s*===\s*$/);
+      if(gm){cur={id:nid++,title:gm[1],items:[]};groups.push(cur);curNo=null;continue;}
+      if((raw.startsWith('  ')||raw.startsWith('\t'))&&curNo!=null){
+        const mm=raw.match(/^\s+memo:\s*(.+)$/);if(mm){memos[curNo]=mm[1].trim();continue;}
+        if(raw.trim()==='food'){showFood[curNo]=true;continue;}
+        if(raw.trim()==='optional'){optional[curNo]=true;continue;}
+        const sm=raw.match(/^\s+sub:\s*(.+)$/);
+        if(sm){if(!subtasks[curNo])subtasks[curNo]=[];subtasks[curNo].push({id:nsid++,label:sm[1].trim(),checked:false});continue;}
+        continue;
+      }
+      const tm=raw.match(/^\[task\]\s*(.+)$/);
+      if(tm&&cur){const id=-(ntid++);textItems[id]={label:tm[1].trim()};cur.items.push(id);curNo=null;continue;}
+      const name=raw.trim();if(!name||!cur)continue;
+      const d=PLA_DEX.find(x=>x.name===name);
+      if(d&&!cur.items.includes(d.no)){cur.items.push(d.no);curNo=d.no;}
+    }
+    if(!groups.length)return null;
+    return{groups,done:{},skip:{},showFood,optional,textItems,nextTId:ntid,memo:memos,subtasks,showNames:true,nextId:nid,nextSubId:nsid};
+  }
+  const _SAMPLE_TEXT=`=== 黒曜の原野 ===
+ヒノアラシ
+マグマラシ
+ムックル
+  sub: ♂
+  sub: ♀
+ケムッソ
+カラサリス
+マユルド
+  optional
+アゲハント
+  sub: ♂
+  sub: ♀
+コロボーシ
+ムクバード
+ルクシオ
+ミミロル
+コダック
+ミツハニー
+  optional
+  sub: 倒す
+  sub: タスク完了
+
+=== 紅蓮の湿地 ===
+コリンク
+パラス
+マスキッパ
+コロトック
+ヒメグマ
+グレッグル
+ヒポポタス
+サイホーン
+スボミー
+モンジャラ
+ミツハニー
+  optional
+  sub: 倒す
+  sub: タスク完了
+
+=== 群青の海岸 ===
+ニャルマー
+タマザラシ
+ペラップ
+ヨマワル
+ドクケイル
+カラナクシ
+  food
+メノクラゲ
+ロコン
+  optional
+ガーディ（ヒスイ）
+  optional
+ワンリキー
+  optional
+トゲピー
+  optional
+ケイコウオ
+  optional
+
+=== 天冠の山麓 ===
+ガーメイル
+スカタンク
+ヤンヤンマ
+メガヤンマ
+ムウマ
+カバルドン
+グライガー
+ドクロッグ
+ビリリダマ（ヒスイ）
+ゴーリキー
+  optional`;
+  // 保存データ初期化（初回はサンプルプリセットを登録）
+  (function(){
+    try{const s=JSON.parse(localStorage.getItem(SAVES_KEY));if(s&&Array.isArray(s.list)&&s.list.length){SAVES=s;if(!SAVES.list.find(p=>p.id===SAVES.active))SAVES.active=SAVES.list[0].id;return;}}catch(e){}
+    const sampleCl=clImportText(_SAMPLE_TEXT)||JSON.parse(JSON.stringify(CL));
+    const id=SAVES.nextId++;SAVES.list=[{id,name:'サンプル',cl:sampleCl}];SAVES.active=id;saveSavesData();
+    Object.assign(CL,sampleCl);
+    try{localStorage.setItem(KEY,JSON.stringify(CL));}catch(e){}
+  })();
+
+  const groupsEl=document.getElementById('clGroups'),empty=document.getElementById('clEmpty'),prog=document.getElementById('clProg');
+  const searchEl=document.getElementById('clSearch'),resultsEl=document.getElementById('clResults'),addBtn=document.getElementById('clAddGroup'),addNote=document.getElementById('clAddNote');
+  let clSortMode='no';
+  const MAX_GROUPS=10,MAX_RESULTS=60;
+  let currentQuery='';
+  if(typeof CL.showNames!=='boolean')CL.showNames=true;
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(CL));}catch(e){}syncActivePreset();}
+  function saveSavesData(){try{localStorage.setItem(SAVES_KEY,JSON.stringify(SAVES));}catch(e){}}
+  function syncActivePreset(){const p=SAVES.list.find(x=>x.id===SAVES.active);if(p){p.cl=JSON.parse(JSON.stringify(CL));saveSavesData();}}
+  function applyPreset(preset){
+    const s=preset.cl||{};
+    const ti=s.textItems||{};
+    CL.groups=(s.groups||[]).map(g=>({id:g.id,title:g.title||'グループ',items:(g.items||[]).filter(no=>no<0?!!ti[no]:!!findMon(no))}));
+    CL.done=s.done||{};CL.memo=s.memo||{};CL.subtasks=s.subtasks||{};CL.skip=s.skip||{};CL.showFood=s.showFood||{};CL.optional=s.optional||{};CL.textItems=ti;CL.nextTId=s.nextTId||1;
+    CL.showNames=typeof s.showNames==='boolean'?s.showNames:true;
+    CL.nextId=s.nextId||(CL.groups.reduce((m,g)=>Math.max(m,g.id),0)+1);
+    CL.nextSubId=s.nextSubId||1;
+    if(!CL.groups.length)CL.groups=[{id:CL.nextId++,title:'グループ1',items:[]}];
+    editOpenSet.clear();
+    try{localStorage.setItem(KEY,JSON.stringify(CL));}catch(e){}
+    applyNames();
+  }
+  function renderSaves(){
+    const sel=document.getElementById('clSavesSel');if(!sel)return;
+    sel.innerHTML=SAVES.list.map(p=>`<option value="${p.id}"${p.id===SAVES.active?' selected':''}>${esc(p.name)}</option>`).join('');
+    document.getElementById('clSavesDel').disabled=SAVES.list.length<=1;
+  }
+  const editOpenSet=new Set();
+  function isDone(no){const st=CL.subtasks[no];return(st&&st.length)?st.every(t=>t.checked):!!CL.done[no];}
+  function recomputeDone(no){const st=CL.subtasks[no];if(st&&st.length){if(st.every(t=>t.checked))CL.done[no]=true;else delete CL.done[no];}return isDone(no);}
+  function addSubtask(no,label){if(!label.trim())return;if(!CL.subtasks[no])CL.subtasks[no]=[];CL.subtasks[no].push({id:CL.nextSubId++,label:label.trim(),checked:false});recomputeDone(no);save();renderGroups();const ni=groupsEl.querySelector(`.cl-sub-new[data-no="${no}"]`);if(ni)ni.focus();}
+  // ポケモン名の表示/非表示（グループカード側）
+  const nameChk=document.getElementById('clShowNames');
+  function applyNames(){nameChk.checked=CL.showNames;groupsEl.classList.toggle('cl-hidenames',!CL.showNames);}
+  nameChk.addEventListener('change',()=>{CL.showNames=nameChk.checked;save();applyNames();});
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  // アイコン枠：PokeAPIスプライト(jsDelivr配信)を全国図鑑IDで表示。読めない時は図鑑番号にフォールバック
+  function iconHTML(d){
+    const num=String(d.no).padStart(3,'0');
+    const id=(typeof PLA_ICONS!=='undefined')?PLA_ICONS[d.no]:null;
+    if(id)return `<img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.outerHTML='<span>${num}</span>'">`;
+    return `<span>${num}</span>`;
+  }
+  // 好物アイコン（エサ5種・gamepedia由来を内蔵）。base64はCSSに一度だけ展開→各行はクラスspanのみ（全件一覧でも軽量）
+  const FOOD_ASCII={'キノコ':'kinoko','ミネラル':'mineral','ミツ':'mitsu','イナホ':'inaho','マメ':'mame'};
+  if(typeof FOOD_ICONS!=='undefined'){
+    const css=Object.entries(FOOD_ASCII).map(([jp,a])=>FOOD_ICONS[jp]?`.cl-food-${a}{background-image:url('${FOOD_ICONS[jp]}')}`:'').join('');
+    const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+  }
+  function foodHTML(no){
+    const foods=(typeof PLA_FOOD!=='undefined')?(PLA_FOOD[no]||[]):[];
+    if(!foods.length)return '';
+    return '<span class="cl-foods">'+foods.map(f=>`<span class="cl-food cl-food-${FOOD_ASCII[f]}" title="好物: ${f}"></span>`).join('')+'</span>';
+  }
+  /* ---- 上部: 検索＋候補ごとにグループのチェック欄（閉じずに次々追加/解除） ---- */
+  function resRowHTML(d){
+    const checks=CL.groups.map(g=>{
+      const inIt=g.items.includes(d.no);
+      return `<label class="cl-gck${inIt?' on':''}"><input type="checkbox" data-no="${d.no}" data-gid="${g.id}"${inIt?' checked':''}>${esc(g.title)}</label>`;
+    }).join('');
+    return `<div class="cl-res"><span class="cl-ic">${iconHTML(d)}</span><span class="cl-info"><span class="cl-name">${esc(d.name)}</span>${foodHTML(d.no)}</span><span class="cl-gchecks">${checks}</span></div>`;
+  }
+  function renderResults(){
+    const q=currentQuery.trim();
+    const base=clSortMode==='name'?sortedDex:PLA_DEX;   // 図鑑番号順=PLA_DEX順、名前順=sortedDex
+    const matches=q?base.filter(d=>matchName(d.name,q)):base;
+    if(!matches.length){resultsEl.innerHTML='<div class="cl-reshint">該当なし</div>';return;}
+    resultsEl.innerHTML=matches.map(resRowHTML).join('');
+  }
+  searchEl.addEventListener('input',()=>{currentQuery=searchEl.value;renderResults();});
+  document.getElementById('clSortNo').addEventListener('click',()=>{
+    clSortMode='no';
+    document.getElementById('clSortNo').classList.add('on');
+    document.getElementById('clSortName').classList.remove('on');
+    renderResults();
+  });
+  document.getElementById('clSortName').addEventListener('click',()=>{
+    clSortMode='name';
+    document.getElementById('clSortName').classList.add('on');
+    document.getElementById('clSortNo').classList.remove('on');
+    renderResults();
+  });
+  resultsEl.addEventListener('change',e=>{
+    const cb=e.target.closest('input[type=checkbox]');if(!cb)return;
+    const no=+cb.dataset.no,gid=+cb.dataset.gid,g=CL.groups.find(z=>z.id===gid);if(!g)return;
+    if(cb.checked){if(!g.items.includes(no))g.items.push(no);}   // 同グループは1回だけ
+    else g.items=g.items.filter(n=>n!==no);
+    cb.closest('.cl-gck').classList.toggle('on',cb.checked);
+    save();renderGroups();   // 候補パネルは触らない（チェックはユーザー操作のまま＝データと一致）
+  });
+
+  /* ---- 下部: グループとカード ---- */
+  function textCardHTML(id,gid){
+    const item=CL.textItems[id];if(!item)return '';
+    const done=isDone(id),skip=!!CL.skip[id],opt=!!CL.optional[id];
+    const handle='<span class="cl-drag-handle" title="ドラッグで並替">⠿</span>';
+    return `<div class="cl-card cl-text-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${id}" data-gid="${gid}"${dragLocked?'':' draggable="true"'}>
+      <div class="cl-card-row" data-no="${id}" data-gid="${gid}">
+        ${handle}<input class="cl-text-lbl" data-no="${id}" value="${esc(item.label)}" placeholder="タスク内容" maxlength="60">
+        ${opt?'<span class="cl-opt-badge">任意</span>':''}
+        <div class="cl-card-tools"><span class="cl-check">${skip?'✕':'✓'}</span><button class="cl-skip-btn${skip?' on':''}" data-skip="${id}">${skip?'解除':'スキップ'}</button></div>
+        <button class="cl-x" data-x title="削除">×</button>
+      </div></div>`;
+  }
+  function cardHTML(no,gid){
+    if(no<0)return textCardHTML(no,gid);
+    const d=findMon(no);if(!d)return '';
+    const done=isDone(no),skip=!!CL.skip[no],opt=!!CL.optional[no];
+    const st=CL.subtasks[no]||[];
+    const epKey=gid+'_'+no,editing=editOpenSet.has(epKey);
+    // 通常表示: メモ(内容があれば)・サブタスクチェック(あれば、ラベルはread-only)・好物(非表示設定がなければ)
+    const mainFood=CL.showFood[no]?foodHTML(no):'';
+    const mainMemo=CL.memo[no]?`<input class="cl-memo" data-no="${no}" value="${esc(CL.memo[no])}" placeholder="ひとことメモ" maxlength="50">`:'';
+    const mainSubs=st.length?`<div class="cl-subs">${st.map(t=>`<div class="cl-sub-item"><input type="checkbox" class="cl-sub-ck" data-no="${no}" data-sid="${t.id}"${t.checked?' checked':''}><span class="cl-sub-lbl-ro">${esc(t.label)}</span></div>`).join('')}</div>`:'';
+    // 編集パネル: 好物表示・メモ管理・サブタスク管理
+    const ep=editing?`<div class="cl-edit-panel">
+      <div class="cl-ep-row"><span class="cl-ep-lbl">判定</span><label class="cl-ep-toggle"><input type="checkbox" class="cl-ep-opt-chk" data-no="${no}"${opt?' checked':''}> 任意（状況次第）</label></div>
+      <div class="cl-ep-row"><span class="cl-ep-lbl">好物</span><label class="cl-ep-toggle"><input type="checkbox" class="cl-ep-food-chk" data-no="${no}"${CL.showFood[no]?' checked':''}> 表示する</label>${foodHTML(no)}</div>
+      <div class="cl-ep-row"><span class="cl-ep-lbl">メモ</span><input class="cl-memo cl-ep-memo" data-no="${no}" value="${esc(CL.memo[no]||'')}" placeholder="ひとことメモ（空欄で非表示）" maxlength="50"></div>
+      <div class="cl-ep-row"><span class="cl-ep-lbl">サブタスク</span><div class="cl-ep-subs">${st.map(t=>`<div class="cl-sub-item"><input type="checkbox" class="cl-sub-ck" data-no="${no}" data-sid="${t.id}"${t.checked?' checked':''}><input class="cl-sub-label" data-no="${no}" data-sid="${t.id}" value="${esc(t.label)}" maxlength="30" placeholder="ラベル"><button class="cl-sub-del" data-no="${no}" data-sid="${t.id}">×</button></div>`).join('')}<div class="cl-sub-add"><input class="cl-sub-new" data-no="${no}" placeholder="例: ♂" maxlength="30"><button class="cl-sub-addbtn" data-no="${no}">＋</button></div></div></div>
+      <div class="cl-ep-foot"><button class="cl-ep-close" data-epclose="${epKey}">閉じる</button></div>
+    </div>`:'';
+    const handle='<span class="cl-drag-handle" title="ドラッグで並替">⠿</span>';
+    return `<div class="cl-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${no}" data-gid="${gid}"${dragLocked?'':' draggable="true"'}>
+      <div class="cl-card-row" data-no="${no}" data-gid="${gid}">
+        <span class="cl-ic">${iconHTML(d)}</span>
+        <span class="cl-info"><span class="cl-name">${esc(d.name)}</span>${opt?'<span class="cl-opt-badge">任意</span>':''}${mainFood}${mainMemo}${mainSubs}</span>
+        <div class="cl-card-tools">${handle}<span class="cl-check">${skip?'✕':'✓'}</span></div>
+        <button class="cl-x" data-x title="このグループから外す">×</button>
+      </div>
+      <div class="cl-card-foot"><button class="cl-skip-btn${skip?' on':''}" data-skip="${no}">${skip?'解除':'スキップ'}</button><button class="cl-edit-btn${editing?' open':''}" data-epkey="${epKey}">編集</button></div>${ep}</div>`;
+  }
+  function groupHTML(g){
+    const done=g.items.filter(no=>isDone(no)&&!CL.skip[no]).length;
+    const skipC=g.items.filter(no=>CL.skip[no]).length;
+    const progTxt=skipC?(done+' 完了 ('+skipC+' スキップ) / '+g.items.length):(done+' / '+g.items.length+' 完了');
+    const cards=g.items.length?g.items.map(no=>cardHTML(no,g.id)).join(''):'<div class="cl-gempty">上の「ポケモンを追加」で、このグループのチェック欄にチェックを入れて追加</div>';
+    return `<section class="cl-group" data-gid="${g.id}">
+      <div class="cl-ghead">
+        <input class="cl-gtitle" data-gid="${g.id}" value="${esc(g.title)}" maxlength="24" title="クリックして名前変更">
+        <span class="cl-gprog">${progTxt}</span>
+        <button class="dc-btn sub cl-gbtn" data-guncheck="${g.id}" style="height:28px;padding:0 10px">解除</button>
+        <button class="dc-btn sub cl-gbtn" data-gdel="${g.id}" style="height:28px;padding:0 10px">削除</button>
+      </div>
+      <div class="cl-grid">${cards}</div>
+    </section>`;
+  }
+  function updateAddBtn(){const full=CL.groups.length>=MAX_GROUPS;addBtn.disabled=full;addNote.textContent=full?('グループは最大'+MAX_GROUPS+'個まで'):'';}
+  function updateProg(){
+    const nos=new Set();CL.groups.forEach(g=>g.items.forEach(no=>{if(no>0)nos.add(no);}));
+    const total=nos.size;
+    const done=[...nos].filter(no=>isDone(no)&&!CL.skip[no]).length;
+    const skip=[...nos].filter(no=>CL.skip[no]).length;
+    prog.textContent=skip?('合計 '+done+' 完了 ('+skip+' スキップ) / '+total):('合計 '+done+' / '+total+' 完了');
+    empty.style.display=CL.groups.some(g=>g.items.length)?'none':'';
+  }
+  function renderGroups(){
+    groupsEl.innerHTML=CL.groups.map(groupHTML).join('');
+    updateProg();
+    updateAddBtn();
+  }
+  function updateTaskGrpSel(){
+    const sel=document.getElementById('clTaskGrp');if(!sel)return;
+    const prev=+sel.value;
+    sel.innerHTML=CL.groups.map(g=>`<option value="${g.id}"${g.id===prev?' selected':''}>${esc(g.title)}</option>`).join('');
+  }
+  function renderAll(){renderGroups();renderResults();updateTaskGrpSel();}
+  groupsEl.addEventListener('click',e=>{
+    const x=e.target.closest('[data-x]');
+    if(x){const card=x.closest('.cl-card');const no=+card.dataset.no,gid=+card.dataset.gid,g=CL.groups.find(z=>z.id===gid);if(g)g.items=g.items.filter(n=>n!==no);editOpenSet.delete(gid+'_'+no);if(no<0&&!CL.groups.some(z=>z.items.includes(no)))delete CL.textItems[no];save();renderAll();return;}
+    const gd=e.target.closest('[data-gdel]');
+    if(gd){const gid=+gd.dataset.gdel;if(confirm('このグループを削除しますか？')){CL.groups=CL.groups.filter(z=>z.id!==gid);if(!CL.groups.length)CL.groups=[{id:CL.nextId++,title:'グループ1',items:[]}];save();renderAll();}return;}
+    const gu=e.target.closest('[data-guncheck]');
+    if(gu){const gid=+gu.dataset.guncheck;const g=CL.groups.find(z=>z.id===gid);if(g)g.items.forEach(no=>{delete CL.done[no];delete CL.skip[no];if(CL.subtasks[no])CL.subtasks[no].forEach(t=>t.checked=false);});save();renderGroups();return;}
+    const sd=e.target.closest('.cl-sub-del');
+    if(sd){const no=+sd.dataset.no,sid=+sd.dataset.sid;if(CL.subtasks[no])CL.subtasks[no]=CL.subtasks[no].filter(t=>t.id!==sid);if(CL.subtasks[no]&&!CL.subtasks[no].length)delete CL.subtasks[no];recomputeDone(no);save();renderGroups();return;}
+    const ab=e.target.closest('.cl-sub-addbtn');
+    if(ab){const no=+ab.dataset.no,inp=ab.closest('.cl-sub-add').querySelector('.cl-sub-new');addSubtask(no,inp.value);return;}
+    // 編集パネルの操作
+    const eb=e.target.closest('[data-epkey]');
+    if(eb){const k=eb.dataset.epkey;if(editOpenSet.has(k)){editOpenSet.delete(k);}else{editOpenSet.clear();editOpenSet.add(k);}renderGroups();return;}
+    const skbtn=e.target.closest('[data-skip]');
+    if(skbtn){const no=+skbtn.dataset.skip;if(CL.skip[no])delete CL.skip[no];else CL.skip[no]=true;save();renderGroups();return;}
+    const epcl=e.target.closest('[data-epclose]');
+    if(epcl){editOpenSet.delete(epcl.dataset.epclose);renderGroups();return;}
+    // カード行クリック: done トグル（スキップ中・サブタスクあり は無効）
+    const cr=e.target.closest('.cl-card-row');
+    if(cr){if(e.target.closest('.cl-memo')||e.target.closest('.cl-text-lbl')||e.target.closest('.cl-subs')||e.target.closest('.cl-edit-btn')||e.target.closest('.cl-skip-btn')||e.target.closest('[data-x]'))return;
+      const no=+cr.dataset.no;
+      if(CL.skip[no])return;
+      const st=CL.subtasks[no];if(st&&st.length)return;
+      if(CL.done[no])delete CL.done[no];else CL.done[no]=true;save();renderGroups();return;}
+  });
+  // グループ名の変更（入力中は下部を再描画せずフォーカス維持、候補のラベルだけ更新）
+  groupsEl.addEventListener('input',e=>{
+    const t=e.target.closest('.cl-gtitle');
+    if(t){const gid=+t.dataset.gid,g=CL.groups.find(z=>z.id===gid);if(g){g.title=t.value;save();renderResults();updateTaskGrpSel();}return;}
+    const tl=e.target.closest('.cl-text-lbl');
+    if(tl){const id=+tl.dataset.no;if(CL.textItems[id])CL.textItems[id].label=tl.value;save();return;}
+    const m=e.target.closest('.cl-memo');   // ひとことメモ（種ごと）：保存し、同じポケモンの他カードのメモ欄も同期
+    if(m){const no=+m.dataset.no;CL.memo[no]=m.value;save();
+      groupsEl.querySelectorAll('.cl-memo[data-no="'+no+'"]').forEach(el=>{if(el!==m)el.value=m.value;});return;}
+    const sl=e.target.closest('.cl-sub-label');   // サブタスクラベル：保存し他グループの同種カードも同期
+    if(sl){const no=+sl.dataset.no,sid=+sl.dataset.sid;const st=CL.subtasks[no];if(!st)return;const t=st.find(x=>x.id===sid);if(t){t.label=sl.value;save();}groupsEl.querySelectorAll(`.cl-sub-label[data-no="${no}"][data-sid="${sid}"]`).forEach(el=>{if(el!==sl)el.value=sl.value;});}
+  });
+  groupsEl.addEventListener('change',e=>{
+    const oc=e.target.closest('.cl-ep-opt-chk');
+    if(oc){const no=+oc.dataset.no;if(oc.checked)CL.optional[no]=true;else delete CL.optional[no];save();renderGroups();return;}
+    const fc=e.target.closest('.cl-ep-food-chk');
+    if(fc){const no=+fc.dataset.no;if(fc.checked)CL.showFood[no]=true;else delete CL.showFood[no];save();renderGroups();return;}
+    const ck=e.target.closest('.cl-sub-ck');if(!ck)return;
+    const no=+ck.dataset.no,sid=+ck.dataset.sid;
+    const st=CL.subtasks[no];if(!st)return;
+    const t=st.find(x=>x.id===sid);if(t)t.checked=ck.checked;
+    const done=recomputeDone(no);save();
+    // 再描画せず同種の他グループカードを同期（フォーカス維持）
+    groupsEl.querySelectorAll(`.cl-sub-ck[data-no="${no}"][data-sid="${sid}"]`).forEach(el=>{if(el!==ck)el.checked=ck.checked;});
+    groupsEl.querySelectorAll(`.cl-card[data-no="${no}"]`).forEach(card=>{card.classList.toggle('done',done);});
+    updateProg();
+    CL.groups.forEach(g=>{
+      const gd=g.items.filter(n=>isDone(n)&&!CL.skip[n]).length,gs=g.items.filter(n=>CL.skip[n]).length;
+      const gp=groupsEl.querySelector(`.cl-group[data-gid="${g.id}"] .cl-gprog`);
+      if(gp)gp.textContent=gs?(gd+' 完了 ('+gs+' スキップ) / '+g.items.length):(gd+' / '+g.items.length+' 完了');
+    });
+  });
+  groupsEl.addEventListener('keydown',e=>{
+    const inp=e.target.closest('.cl-sub-new');
+    if(inp&&e.key==='Enter'){e.preventDefault();addSubtask(+inp.dataset.no,inp.value);inp.value='';}
+  });
+  addBtn.addEventListener('click',()=>{
+    if(CL.groups.length>=MAX_GROUPS)return;
+    CL.groups.push({id:CL.nextId++,title:'グループ'+(CL.groups.length+1),items:[]});save();renderAll();
+  });
+  function addTextTask(label,gid){
+    if(!label.trim())return;
+    const id=-(CL.nextTId++);
+    CL.textItems[id]={label:label.trim()};
+    const g=CL.groups.find(z=>z.id===gid);
+    if(g&&!g.items.includes(id))g.items.push(id);
+    save();renderGroups();updateTaskGrpSel();
+  }
+  document.getElementById('clTaskAddBtn').addEventListener('click',()=>{
+    const inp=document.getElementById('clTaskInp');
+    const gid=+document.getElementById('clTaskGrp').value;
+    addTextTask(inp.value,gid);inp.value='';inp.focus();
+  });
+  document.getElementById('clTaskInp').addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();document.getElementById('clTaskAddBtn').click();}
+  });
+  document.getElementById('clUncheckAll').addEventListener('click',()=>{
+    CL.done={};CL.skip={};
+    Object.values(CL.subtasks).forEach(sts=>sts.forEach(t=>{t.checked=false;}));
+    save();renderGroups();
+  });
+  document.getElementById('clClear').addEventListener('click',()=>{
+    if(confirm('チェックリストを全部消去しますか？（グループも全部）')){CL.groups=[{id:CL.nextId++,title:'グループ1',items:[]}];CL.done={};CL.memo={};CL.subtasks={};CL.skip={};CL.showFood={};CL.optional={};CL.textItems={};CL.nextTId=1;editOpenSet.clear();save();renderAll();}
+  });
+  // ===== 保存データ操作 =====
+  document.getElementById('clSavesSel').addEventListener('change',e=>{
+    const id=+e.target.value;syncActivePreset();SAVES.active=id;saveSavesData();
+    applyPreset(SAVES.list.find(p=>p.id===id));renderAll();renderSaves();
+  });
+  document.getElementById('clSavesRename').addEventListener('click',()=>{
+    const p=SAVES.list.find(x=>x.id===SAVES.active);if(!p)return;
+    const name=prompt('新しい名前:',p.name);if(name===null)return;
+    p.name=name.trim()||p.name;saveSavesData();renderSaves();
+  });
+  function openNewPresetModal(){
+    document.getElementById('clNewName').value='プリセット'+(SAVES.list.length+1);
+    document.querySelector('input[name="clNewMode"][value="copy"]').checked=true;
+    const srcSel=document.getElementById('clNewSrc');
+    srcSel.style.display='';
+    srcSel.innerHTML=SAVES.list.map(p=>`<option value="${p.id}"${p.id===SAVES.active?' selected':''}>${esc(p.name)}</option>`).join('');
+    document.getElementById('clNewModal').style.display='flex';
+    setTimeout(()=>{const n=document.getElementById('clNewName');n.select();n.focus();},50);
+  }
+  document.querySelectorAll('input[name="clNewMode"]').forEach(r=>{
+    r.addEventListener('change',()=>{
+      document.getElementById('clNewSrc').style.display=r.value==='copy'?'':'none';
+    });
+  });
+  function closeNewModal(){document.getElementById('clNewModal').style.display='none';}
+  document.getElementById('clNewClose').addEventListener('click',closeNewModal);
+  document.getElementById('clNewCancelBtn').addEventListener('click',closeNewModal);
+  document.getElementById('clSavesNew').addEventListener('click',openNewPresetModal);
+  document.getElementById('clNewCreateBtn').addEventListener('click',()=>{
+    const name=document.getElementById('clNewName').value.trim();
+    if(!name){document.getElementById('clNewName').focus();return;}
+    const mode=document.querySelector('input[name="clNewMode"]:checked')?.value;
+    const srcId=+document.getElementById('clNewSrc').value;
+    syncActivePreset();
+    const id=SAVES.nextId++;
+    let cl;
+    if(mode==='copy'){
+      const src=SAVES.list.find(p=>p.id===srcId);
+      cl=src?JSON.parse(JSON.stringify(src.cl)):{groups:[{id:1,title:'グループ1',items:[]}],done:{},memo:{},subtasks:{},skip:{},showFood:{},optional:{},showNames:true,nextId:2,nextSubId:1};
+    } else {
+      cl={groups:[{id:1,title:'グループ1',items:[]}],done:{},memo:{},subtasks:{},skip:{},showFood:{},optional:{},textItems:{},nextTId:1,showNames:true,nextId:2,nextSubId:1};
+    }
+    SAVES.list.push({id,name,cl});
+    SAVES.active=id;saveSavesData();
+    applyPreset(SAVES.list.find(p=>p.id===id));renderAll();renderSaves();
+    closeNewModal();editOpenSet.clear();
+  });
+  document.getElementById('clSavesDel').addEventListener('click',()=>{
+    if(SAVES.list.length<=1)return;const p=SAVES.list.find(x=>x.id===SAVES.active);
+    if(!confirm('「'+(p?.name||'')+'」を削除しますか？'))return;
+    SAVES.list=SAVES.list.filter(x=>x.id!==SAVES.active);SAVES.active=SAVES.list[0].id;saveSavesData();
+    applyPreset(SAVES.list[0]);renderAll();renderSaves();
+  });
+  // ===== インポート / エクスポート =====
+  function clExportText(cl){
+    const lines=[];
+    (cl.groups||[]).forEach(g=>{
+      lines.push('=== '+g.title+' ===');
+      (g.items||[]).forEach(no=>{
+        if(no<0){const ti=(cl.textItems||{})[no];if(ti)lines.push('[task] '+ti.label);return;}
+        const d=findMon(no);if(!d)return;
+        lines.push(d.name);
+        const m=(cl.memo||{})[no];if(m)lines.push('  memo: '+m);
+        if((cl.showFood||{})[no])lines.push('  food');
+        if((cl.optional||{})[no])lines.push('  optional');
+        ((cl.subtasks||{})[no]||[]).forEach(s=>lines.push('  sub: '+s.label));
+      });
+      lines.push('');
+    });
+    return lines.join('\n').trim();
+  }
+  function openIEModal(mode){
+    const modal=document.getElementById('clIEModal');
+    const ta=document.getElementById('clIEText');
+    const note=document.getElementById('clIENote');
+    const doBtn=document.getElementById('clIEDoBtn');
+    const cpBtn=document.getElementById('clIECopyBtn');
+    if(mode==='export'){
+      syncActivePreset();
+      const p=SAVES.list.find(x=>x.id===SAVES.active);
+      document.getElementById('clIETitle').textContent='書出し — '+(p?p.name:'');
+      ta.value=clExportText(p?p.cl:CL);ta.readOnly=true;
+      note.textContent='このテキストをコピーして他の人に共有できます。「取込み」で貼り付けて読み込み。';
+      doBtn.style.display='none';cpBtn.style.display='';
+    } else {
+      document.getElementById('clIETitle').textContent='取込み（新規プリセットに追加）';
+      ta.value='';ta.readOnly=false;
+      note.textContent='「=== グループ名 ===」形式のテキストを貼り付けてください。';
+      doBtn.style.display='';cpBtn.style.display='none';
+      setTimeout(()=>ta.focus(),50);
+    }
+    modal.style.display='flex';
+  }
+  document.getElementById('clSavesExport').addEventListener('click',()=>openIEModal('export'));
+  document.getElementById('clSavesImport').addEventListener('click',()=>openIEModal('import'));
+  document.getElementById('clIEClose').addEventListener('click',()=>{document.getElementById('clIEModal').style.display='none';});
+  document.getElementById('clIECopyBtn').addEventListener('click',()=>{
+    const ta=document.getElementById('clIEText');
+    const note=document.getElementById('clIENote');
+    ta.select();
+    (navigator.clipboard?navigator.clipboard.writeText(ta.value):Promise.reject()).catch(()=>{try{document.execCommand('copy');}catch(e){}}).then(()=>{note.textContent='コピーしました！';}).catch(()=>{note.textContent='コピーしました！';});
+    note.textContent='コピーしました！';
+  });
+  document.getElementById('clIEDoBtn').addEventListener('click',()=>{
+    const text=document.getElementById('clIEText').value.trim();
+    const note=document.getElementById('clIENote');
+    if(!text){note.textContent='⚠ テキストが空です。';return;}
+    const cl=clImportText(text);
+    if(!cl){note.textContent='⚠ 読み込めませんでした。「=== グループ名 ===」形式か確認してください。';return;}
+    const name=prompt('インポート後のプリセット名:','取込み '+new Date().toLocaleDateString('ja-JP'));
+    if(name===null)return;
+    syncActivePreset();
+    const id=SAVES.nextId++;
+    SAVES.list.push({id,name:name.trim()||'取込み',cl});
+    SAVES.active=id;saveSavesData();
+    applyPreset(SAVES.list.find(p=>p.id===id));
+    renderAll();renderSaves();
+    document.getElementById('clIEModal').style.display='none';
+    editOpenSet.clear();
+  });
+
+  // ===== ドラッグ&ドロップ並替 =====
+  function clearDragUI(){
+    groupsEl.querySelectorAll('.cl-dragging').forEach(el=>el.classList.remove('cl-dragging'));
+    groupsEl.querySelectorAll('.cl-drop-indicator').forEach(el=>el.remove());
+    groupsEl.querySelectorAll('.cl-dnd-target').forEach(el=>el.classList.remove('cl-dnd-target'));
+    dragOverInfo=null;
+  }
+  groupsEl.addEventListener('dragstart',e=>{
+    if(dragLocked){e.preventDefault();return;}
+    if(e.target.closest('input,button,select,textarea')){e.preventDefault();return;}
+    const card=e.target.closest('.cl-card');if(!card)return;
+    const no=+card.dataset.no,gid=+card.dataset.gid;
+    const g=CL.groups.find(z=>z.id===gid);
+    dragState={no,gid,srcIdx:g?g.items.indexOf(no):0};
+    e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','');
+    card.classList.add('cl-dragging');
+  });
+  groupsEl.addEventListener('dragover',e=>{
+    if(!dragState)return;e.preventDefault();e.dataTransfer.dropEffect='move';
+    clearDragUI();
+    const card=e.target.closest('.cl-card');
+    if(card&&!(+card.dataset.no===dragState.no&&+card.dataset.gid===dragState.gid)){
+      const rect=card.getBoundingClientRect(),before=e.clientY<rect.top+rect.height/2;
+      const ind=document.createElement('div');ind.className='cl-drop-indicator';
+      if(before)card.parentNode.insertBefore(ind,card);else card.parentNode.insertBefore(ind,card.nextSibling);
+      const g=CL.groups.find(z=>z.id===+card.dataset.gid);
+      if(g){const ci=g.items.indexOf(+card.dataset.no);dragOverInfo={targetGid:+card.dataset.gid,insertIdx:before?ci:ci+1};}
+    } else {
+      const group=e.target.closest('.cl-group');
+      if(group&&!card){
+        group.classList.add('cl-dnd-target');
+        const tgid=+group.dataset.gid,tg=CL.groups.find(z=>z.id===tgid);
+        dragOverInfo={targetGid:tgid,insertIdx:tg?tg.items.length:0};
+      }
+    }
+  });
+  groupsEl.addEventListener('dragleave',e=>{
+    if(!groupsEl.contains(e.relatedTarget))clearDragUI();
+  });
+  groupsEl.addEventListener('dragend',e=>{clearDragUI();dragState=null;});
+  groupsEl.addEventListener('drop',e=>{
+    e.preventDefault();
+    if(!dragState||!dragOverInfo){clearDragUI();dragState=null;return;}
+    const{no,gid:srcGid,srcIdx}=dragState,{targetGid,insertIdx}=dragOverInfo;
+    clearDragUI();dragState=null;
+    if(srcGid===targetGid){
+      const g=CL.groups.find(z=>z.id===srcGid);if(!g)return;
+      g.items.splice(srcIdx,1);
+      const adj=srcIdx<insertIdx?insertIdx-1:insertIdx;
+      g.items.splice(Math.max(0,Math.min(adj,g.items.length)),0,no);
+      save();renderGroups();
+    } else {
+      const srcG=CL.groups.find(z=>z.id===srcGid),dstG=CL.groups.find(z=>z.id===targetGid);
+      if(!srcG||!dstG)return;
+      if(dstG.items.includes(no)){
+        const m=findMon(no);
+        document.getElementById('clDragModalMsg').textContent='「'+(m?m.name:no)+'」は既に「'+dstG.title+'」に追加されています';
+        document.getElementById('clDragModal').style.display='flex';
+        return;
+      }
+      srcG.items.splice(srcIdx,1);
+      dstG.items.splice(Math.min(insertIdx,dstG.items.length),0,no);
+      save();renderGroups();
+    }
+  });
+  document.getElementById('clDragModalOk').addEventListener('click',()=>{
+    document.getElementById('clDragModal').style.display='none';
+  });
+  document.addEventListener('click',e=>{
+    if(!editOpenSet.size)return;
+    if(e.target.closest('.cl-edit-panel')||e.target.closest('[data-epkey]'))return;
+    editOpenSet.clear();renderGroups();
+  });
+  // ===== ロックボタン =====
+  function applyDragLockUI(){
+    const btn=document.getElementById('clDragLock');
+    btn.textContent=dragLocked?'✏ 編集':'✏ 編集中';
+    btn.style.borderColor=dragLocked?'':'var(--accent2)';
+    btn.style.color=dragLocked?'':'var(--accent2)';
+    groupsEl.classList.toggle('edit-mode',!dragLocked);
+    groupsEl.querySelectorAll('.cl-card').forEach(c=>c.draggable=!dragLocked);
+  }
+  document.getElementById('clDragLock').addEventListener('click',()=>{
+    dragLocked=!dragLocked;
+    try{localStorage.setItem('pla-cl-drag-lock',dragLocked?'1':'0');}catch(e){}
+    applyDragLockUI();
+  });
+  applyDragLockUI();
+  // ===== 検索エリアトグル =====
+  const clAddSec=document.getElementById('clAddSec');
+  document.getElementById('clSearchToggle').addEventListener('click',()=>{
+    clAddSec.classList.toggle('open');
+    if(clAddSec.classList.contains('open'))document.getElementById('clSearch').focus();
+  });
+  document.addEventListener('click',e=>{
+    if(!clAddSec.contains(e.target)&&clAddSec.classList.contains('open'))
+      clAddSec.classList.remove('open');
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&clAddSec.classList.contains('open'))clAddSec.classList.remove('open');
+  });
+  applyNames();renderAll();renderSaves();
+})();
+
+// 初期値: ポケモン/トレーナー/技は一覧の先頭をデフォルト投入
+setDefaultLeft();
+// デフォはRTA。保存キーを新しくして旧'normal'保存ユーザーにも新デフォルトが効くように
+let _savedMode='rta';try{_savedMode=localStorage.getItem('pla-mode')||'rta';}catch(e){}
+applyMode(_savedMode);
+setDefaultCap();
+update();
+let _savedTab='damage';try{_savedTab=localStorage.getItem('pla-tab')||'damage';}catch(e){}
+showTab(_savedTab);
+
+// ===== 配信オーバーレイ =====
+(function(){
+  const openBtn=document.getElementById('clOverlayBtn');
+  if(openBtn){
+    openBtn.addEventListener('click',()=>{
+      const url=location.href.split('#')[0]+'#overlay';
+      window.open(url,'pla_overlay','width=860,height=280,resizable=yes,toolbar=no,menubar=no,location=no');
+    });
+  }
+  if(location.hash!=='#overlay')return;
+  document.body.classList.add('ov-mode');
+  let cfg={cols:8,sort:'cl',done:'dim',bg:'trans'};
+  try{const s=JSON.parse(localStorage.getItem('pla-overlay-cfg'));if(s)Object.assign(cfg,s);}catch(e){}
+  function saveCfg(){try{localStorage.setItem('pla-overlay-cfg',JSON.stringify(cfg));}catch(e){}}
+  function ovEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function ovIconHTML(d){
+    const id=(typeof PLA_ICONS!=='undefined')?PLA_ICONS[d.no]:null;
+    const num=String(d.no).padStart(3,'0');
+    // 番号フォールバックは背面に常設し、画像が読めた時だけ前面で隠す（onerrorに引用符を入れず壊さない）
+    if(id)return `<span class="ov-num">${num}</span><img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.remove()">`;
+    return `<span class="ov-num">${num}</span>`;
+  }
+  function ovIsDone(no,cl){
+    const sts=(cl.subtasks||{})[no]||[];
+    return sts.length?sts.every(t=>t.checked):!!(cl.done||{})[no];
+  }
+  const root=document.createElement('div');root.id='ovRoot';
+  root.innerHTML=`<div id="ovCtrlBar"><button id="ovCfgToggle">⚙ 設定</button></div>
+  <div id="ovCfgPanel">
+    <label>列数<input type="number" id="ovCols" min="1" max="40" value="${cfg.cols}" style="width:52px"></label>
+    <label>並び順<select id="ovSort">
+      <option value="cl"${cfg.sort==='cl'?' selected':''}>リスト順</option>
+      <option value="dex"${cfg.sort==='dex'?' selected':''}>図鑑番号順</option>
+    </select></label>
+    <label>完了表示<select id="ovDone">
+      <option value="dim"${cfg.done==='dim'?' selected':''}>グレーアウト</option>
+      <option value="check"${cfg.done==='check'?' selected':''}>チェックマーク</option>
+    </select></label>
+    <label>背景<select id="ovBg">
+      <option value="trans"${cfg.bg==='trans'?' selected':''}>透過</option>
+      <option value="dark"${cfg.bg==='dark'?' selected':''}>暗め(半透明黒)</option>
+      <option value="black"${cfg.bg==='black'?' selected':''}>黒</option>
+    </select></label>
+  </div>
+  <div id="ovGrid"></div>`;
+  document.body.appendChild(root);
+  function applyBg(){
+    const m={trans:'transparent',dark:'rgba(0,0,0,.65)',black:'#000'};
+    document.body.style.background=m[cfg.bg]||'transparent';
+  }
+  applyBg();
+  function render(){
+    let cl={groups:[],done:{},skip:{},optional:{},subtasks:{}};
+    try{const s=JSON.parse(localStorage.getItem('pla-checklist'));if(s)cl=s;}catch(e){}
+    const nos=[],seen=new Set();
+    (cl.groups||[]).forEach(g=>(g.items||[]).forEach(no=>{if(no>0&&!seen.has(no)){seen.add(no);nos.push(no);}}));
+    if(cfg.sort==='dex')nos.sort((a,b)=>a-b);
+    const grid=document.getElementById('ovGrid');if(!grid)return;
+    grid.style.gridTemplateColumns=`repeat(${cfg.cols},1fr)`;
+    grid.innerHTML=nos.map(no=>{
+      const d=(typeof PLA_DEX!=='undefined')?PLA_DEX.find(x=>x.no===no):null;if(!d)return '';
+      const done=ovIsDone(no,cl),skip=!!(cl.skip||{})[no],opt=!!(cl.optional||{})[no];
+      const cls=['ov-ic',done?(cfg.done==='dim'?'done-dim':'done-chk'):'',skip?'skip':'',opt?'optional':''].filter(Boolean).join(' ');
+      return `<div class="${cls}" title="${ovEsc(d.name)}">${ovIconHTML(d)}${done&&cfg.done==='check'?'<span class="ov-chk">✓</span>':''}${skip?'<span class="ov-skipx">✕</span>':''}</div>`;
+    }).join('');
+  }
+  render();
+  document.getElementById('ovCfgToggle').addEventListener('click',()=>{document.getElementById('ovCfgPanel').classList.toggle('show');});
+  document.getElementById('ovCols').addEventListener('input',e=>{cfg.cols=Math.max(1,+e.target.value||8);saveCfg();render();});
+  document.getElementById('ovSort').addEventListener('change',e=>{cfg.sort=e.target.value;saveCfg();render();});
+  document.getElementById('ovDone').addEventListener('change',e=>{cfg.done=e.target.value;saveCfg();render();});
+  document.getElementById('ovBg').addEventListener('change',e=>{cfg.bg=e.target.value;saveCfg();applyBg();});
+  window.addEventListener('storage',e=>{if(e.key==='pla-checklist')render();});
+})();
+</script>
+</body>
+</html>
