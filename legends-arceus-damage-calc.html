@@ -249,13 +249,13 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .tutor-tg.on{background:rgba(72,185,255,.16);border-color:var(--accent2);color:var(--accent2)}
 .tutor-tg.on::before{content:"✓"}
 /* コンパクト1行: がんばLv + 性格 + ランク */
-.cmpct-row{display:flex;gap:10px;margin-bottom:0;align-items:end}
+.cmpct-row{display:flex;gap:8px 10px;margin-bottom:0;align-items:end;flex-wrap:wrap}
 .cmpct-col{display:flex;flex-direction:column;gap:4px;min-width:0}
 .cmpct-col label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cmpct-effort{flex:0 0 64px}
 .cmpct-effort-sm{flex:0 0 50px}
 .cmpct-nature{flex:1}
-.cmpct-rank{flex:1}
+.cmpct-rank{flex:0 0 100%}
 .cmpct-num{width:100%;height:var(--ctl-h);background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 6px;text-align:center;font-size:13px;font-weight:700;color:var(--text);transition:border-color .15s,box-shadow .15s,background .15s}
 .cmpct-num:hover{border-color:var(--line2)}
 .cmpct-num:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(72,185,255,.16);background:var(--panel3)}
@@ -276,11 +276,8 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cards.rta #rightCard .grid-mon-lv{grid-template-columns:1fr 1fr}
 .cards.rta #rightCard #rightLvCell{display:none}
 #rightRtaMonSel:disabled{opacity:1;color:var(--text);-webkit-text-fill-color:var(--text);cursor:default}
-.rta-info{margin-bottom:0}
-.rta-val{height:var(--ctl-h);display:flex;align-items:center;justify-content:center;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm);font-size:14px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
-.rta-badge{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.04em;padding:2px 8px;border-radius:99px;background:rgba(255,138,76,.16);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(255,138,76,.3);margin-left:6px}
-.rta-route-label{font-size:11px;color:var(--def);font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .rta-effort-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.rta-eff-wrap{display:contents}
 .rta-effort-lbl{font-size:11px;font-weight:800;color:var(--accent)}
 .rta-eff-item{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted)}
 .rta-effort-inp{width:46px;height:28px;background:var(--panel2);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:0 6px;text-align:center;font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
@@ -307,6 +304,10 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cap-verdict.mid{background:rgba(255,209,102,.16);color:var(--warn);box-shadow:inset 0 0 0 1px rgba(255,209,102,.4)}
 .cap-verdict.lo{background:rgba(255,107,107,.16);color:var(--bad);box-shadow:inset 0 0 0 1px rgba(255,107,107,.4)}
 .cap-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent2),var(--good));transition:width .3s}
+.cap-note{font-size:11px;color:var(--def);margin-top:6px;line-height:1.6;padding-left:2px}
+.cap-hide-mult .cap-mult{display:none}
+.cap-layout{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
+@media(min-width:700px){.cap-layout{grid-template-columns:1fr 1fr}}
 .foot{margin-top:20px;font-size:11px;color:var(--faint);line-height:1.7;
   background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 14px}
 .foot summary{cursor:pointer;padding:12px 2px;font-weight:700;color:var(--muted);list-style:none;user-select:none}
@@ -405,9 +406,11 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cl-gbtn{flex:none}
 .cl-gempty{color:var(--faint);font-size:12px;padding:6px 2px}
 .cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;align-items:start}
-.cl-card{display:flex;flex-direction:column;background:var(--panel2);border:1px solid var(--line);border-radius:10px;user-select:none;transition:border-color .12s}
+.cl-card{display:flex;flex-direction:column;background:var(--panel2);border:1px solid var(--line);border-radius:10px;user-select:none;transition:border-color .12s;position:relative;overflow:hidden}
 .cl-card:hover{border-color:var(--accent2)}
-.cl-card.done{opacity:.5;background:var(--panel)}
+.cl-card.done{background:var(--panel)}
+.cl-card.done::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;color:var(--good);pointer-events:none}
+.cl-card.skip::after{content:'✕';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;color:var(--bad);pointer-events:none}
 .cl-card.done .cl-name{text-decoration:line-through}
 .cl-card.cl-dragging{opacity:.35;outline:2px dashed var(--line2)}
 .cl-drop-indicator{height:3px;background:var(--accent2);border-radius:2px;margin:2px 4px;pointer-events:none}
@@ -428,15 +431,15 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cl-skip-btn:hover{border-color:rgba(255,107,107,.5);color:var(--bad)}
 .cl-skip-btn.on{border-color:rgba(255,107,107,.5);background:rgba(255,107,107,.08);color:var(--bad)}
 .cl-skip-btn.on:hover{border-color:var(--bad)}
-.cl-ic{width:46px;height:46px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--panel);border-radius:8px;font-size:12px;font-weight:800;color:var(--faint);overflow:hidden}
-.cl-ic img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.cl-ic{width:54px;height:54px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--panel);border-radius:8px;font-size:12px;font-weight:800;color:var(--faint);overflow:hidden}
+.cl-ic img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;transform:scale(1.6)}
 .cl-info{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
 .cl-name{font-weight:700;font-size:13px;line-height:1.25;word-break:break-word}
 .cl-types{display:flex;gap:3px;flex-wrap:wrap}
 .cl-memo{margin-top:5px;width:100%;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:11px;padding:0 7px}
 .cl-memo:focus{border-color:var(--accent2);outline:none}
 .cl-card.done .cl-memo{opacity:.85}
-.cl-foods{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.cl-foods{display:flex;gap:4px;margin-top:4px;flex-wrap:nowrap}
 .cl-food{width:32px;height:32px;background-color:var(--panel3);border-radius:6px;background-repeat:no-repeat;background-position:center;background-size:26px}
 .cl-namechk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);font-weight:700;cursor:pointer;user-select:none}
 .cl-namechk input{width:15px;height:15px;accent-color:var(--accent2);cursor:pointer}
@@ -485,22 +488,21 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 /* ===== 配信オーバーレイモード ===== */
 body.ov-mode .wrap,body.ov-mode #dock{display:none!important}
 body.ov-mode{margin:0;padding:0}
-#ovRoot{padding:8px;min-height:100vh;box-sizing:border-box}
-#ovCtrlBar{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-#ovCfgToggle{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:12px}
-#ovCfgToggle:hover{background:rgba(255,255,255,.25)}
-#ovCfgPanel{display:none;background:rgba(10,15,25,.92);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;margin-bottom:8px;gap:14px;flex-wrap:wrap;align-items:center}
+#ovRoot{padding:2px;min-height:100vh;box-sizing:border-box;position:relative}
+#ovCtrlBar{position:absolute;top:4px;right:4px;z-index:20;display:flex;flex-direction:column;align-items:flex-end;gap:4px;opacity:0;pointer-events:none;transition:opacity .15s}
+#ovRoot:hover #ovCtrlBar{opacity:1;pointer-events:auto}
+#ovCfgToggle{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.6);border-radius:4px;padding:2px 7px;cursor:pointer;font-size:11px}
+#ovCfgToggle:hover{background:rgba(0,0,0,.75);color:#fff}
+#ovCfgPanel{display:none;background:rgba(10,15,25,.95);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:8px 12px;gap:12px;flex-wrap:wrap;align-items:center}
 #ovCfgPanel.show{display:flex}
 #ovCfgPanel label{color:#ccc;font-size:12px;display:flex;align-items:center;gap:5px}
 #ovCfgPanel select,#ovCfgPanel input[type=number]{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:4px;padding:2px 6px;font-size:12px}
-#ovGrid{display:grid;gap:4px}
+#ovGrid{display:grid;gap:2px}
 .ov-ic{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
 .ov-ic img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-.ov-ic.done-dim img,.ov-ic.skip img{opacity:.18;filter:grayscale(1)}
 .ov-ic.optional{opacity:.55}
-.ov-chk,.ov-skipx{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;font-weight:900;pointer-events:none;font-size:clamp(10px,2vw,24px);text-shadow:0 1px 3px rgba(0,0,0,.9)}
-.ov-chk{color:#4cff6a}
-.ov-skipx{color:#ff6b6b}
+.ov-ic.done-chk::after,.ov-ic.done-dim::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(30,195,80,.5);border-radius:4px;pointer-events:none}
+.ov-ic.skip::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(220,55,55,.5);border-radius:4px;pointer-events:none}
 .ov-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.6vw,13px);font-weight:700;color:#9aa4b2}
 .ov-ic:has(img) .ov-num{display:none}
 </style>
@@ -567,17 +569,17 @@ body.ov-mode{margin:0;padding:0}
         </div>
       </div>
 
-      <!-- 攻撃モード: がんばLv + 性格 + ランク -->
+      <!-- 攻撃モード: 性格 + がんばLv / ランク -->
       <div class="l-atk cmpct-row">
-        <div class="cmpct-col cmpct-effort">
-          <label id="leftAtkEffortLabel">こうげき</label>
-          <input type="number" id="leftAtkEffort" class="cmpct-num" min="0" max="10" value="0">
-        </div>
         <div class="cmpct-col cmpct-nature">
           <label id="leftAtkNatureLabel">性格補正</label>
           <div class="nat-seg" id="leftAtkNature">
             <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
           </div>
+        </div>
+        <div class="cmpct-col cmpct-effort">
+          <label id="leftAtkEffortLabel">こうげき</label>
+          <input type="number" id="leftAtkEffort" class="cmpct-num" min="0" max="10" value="0">
         </div>
         <div class="cmpct-col cmpct-rank">
           <label>ランク</label>
@@ -587,8 +589,14 @@ body.ov-mode{margin:0;padding:0}
         </div>
       </div>
 
-      <!-- 防御モード: HP/防御がんばLv + 性格補正 + ランク (1段) -->
+      <!-- 防御モード: 性格補正 + HP/防御がんばLv / ランク (2段) -->
       <div class="l-def cmpct-row">
+        <div class="cmpct-col cmpct-nature">
+          <label id="leftDefNatureLabel">性格補正</label>
+          <div class="nat-seg def" id="leftDefNature">
+            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
+          </div>
+        </div>
         <div class="cmpct-col cmpct-effort-sm">
           <label>HP</label>
           <input type="number" id="leftEffortH" class="cmpct-num" min="0" max="10" value="0">
@@ -596,12 +604,6 @@ body.ov-mode{margin:0;padding:0}
         <div class="cmpct-col cmpct-effort-sm">
           <label id="leftDefEffortLabel">防御</label>
           <input type="number" id="leftDefEffort" class="cmpct-num" min="0" max="10" value="0">
-        </div>
-        <div class="cmpct-col cmpct-nature">
-          <label id="leftDefNatureLabel">性格補正</label>
-          <div class="nat-seg def" id="leftDefNature">
-            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
-          </div>
         </div>
         <div class="cmpct-col cmpct-rank">
           <label>ランク</label>
@@ -681,17 +683,17 @@ body.ov-mode{margin:0;padding:0}
         </div>
       </div>
 
-      <!-- 攻撃モード: がんばLv + 性格 + ランク -->
+      <!-- 攻撃モード: 性格 + がんばLv / ランク -->
       <div class="r-atk cmpct-row">
-        <div class="cmpct-col cmpct-effort">
-          <label id="rightAtkEffortLabel">こうげき</label>
-          <input type="number" id="rightAtkEffort" class="cmpct-num" min="0" max="10" value="0">
-        </div>
         <div class="cmpct-col cmpct-nature">
           <label id="rightAtkNatureLabel">性格補正</label>
           <div class="nat-seg" id="rightAtkNature">
             <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
           </div>
+        </div>
+        <div class="cmpct-col cmpct-effort">
+          <label id="rightAtkEffortLabel">こうげき</label>
+          <input type="number" id="rightAtkEffort" class="cmpct-num" min="0" max="10" value="0">
         </div>
         <div class="cmpct-col cmpct-rank">
           <label>ランク</label>
@@ -701,8 +703,14 @@ body.ov-mode{margin:0;padding:0}
         </div>
       </div>
 
-      <!-- 防御モード: HP/防御がんばLv + 性格補正 + ランク (1段) -->
+      <!-- 防御モード: 性格補正 + HP/防御がんばLv / ランク (2段) -->
       <div class="r-def cmpct-row">
+        <div class="cmpct-col cmpct-nature">
+          <label id="rightDefNatureLabel">性格補正</label>
+          <div class="nat-seg def" id="rightDefNature">
+            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
+          </div>
+        </div>
         <div class="cmpct-col cmpct-effort-sm">
           <label>HP</label>
           <input type="number" id="rightEffortH" class="cmpct-num" min="0" max="10" value="0">
@@ -710,12 +718,6 @@ body.ov-mode{margin:0;padding:0}
         <div class="cmpct-col cmpct-effort-sm">
           <label id="rightDefEffortLabel">防御</label>
           <input type="number" id="rightDefEffort" class="cmpct-num" min="0" max="10" value="0">
-        </div>
-        <div class="cmpct-col cmpct-nature">
-          <label id="rightDefNatureLabel">性格補正</label>
-          <div class="nat-seg def" id="rightDefNature">
-            <button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button>
-          </div>
         </div>
         <div class="cmpct-col cmpct-rank">
           <label>ランク</label>
@@ -725,17 +727,28 @@ body.ov-mode{margin:0;padding:0}
         </div>
       </div>
 
-      <!-- RTAモード: ルート相手の固定実数値 + ランク -->
+      <!-- RTAモード: 性格補正 + がんばLv (オヤブン) / ランク -->
       <div class="rta-only">
-        <div class="rta-route-label"><span id="rtaRouteLabel">相手の実数値（無補正・がんばLv0）</span><span class="rta-badge" id="rtaBadge" style="display:none">オヤブン</span></div>
-        <div class="rta-info cmpct-row">
-          <div class="cmpct-col cmpct-effort-sm" id="rtaColHP">
-            <label>HP</label>
-            <div class="rta-val" id="rtaValHP">—</div>
+        <div class="cmpct-row">
+          <div id="rtaNatureRow" class="cmpct-col cmpct-nature" style="display:none">
+            <label>性格補正（<span id="rtaNatureStatLbl">ぼうぎょ</span>）</label>
+            <div class="nat-seg def" id="rightRtaNature" style="min-width:150px">
+              <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
+            </div>
           </div>
-          <div class="cmpct-col cmpct-effort-sm">
-            <label id="rtaValStatLabel">ぼうぎょ</label>
-            <div class="rta-val" id="rtaValStat">—</div>
+          <div id="rtaEffortRow" class="rta-eff-wrap" style="display:none">
+            <div class="cmpct-col cmpct-effort-sm" id="rtaEffHWrap">
+              <label>HP</label>
+              <input type="number" id="rtaEffortH" class="cmpct-num" min="0" max="10" value="0">
+            </div>
+            <div class="cmpct-col cmpct-effort-sm" id="rtaEffDefWrap">
+              <label id="rtaEffDefLbl">防御</label>
+              <input type="number" id="rtaEffortDef" class="cmpct-num" min="0" max="10" value="0">
+            </div>
+            <div class="cmpct-col cmpct-effort-sm" id="rtaEffAtkWrap" style="display:none">
+              <label id="rtaEffAtkLbl">こうげき</label>
+              <input type="number" id="rtaEffortAtk" class="cmpct-num" min="0" max="10" value="0">
+            </div>
           </div>
           <div class="cmpct-col cmpct-rank">
             <label>ランク</label>
@@ -743,13 +756,6 @@ body.ov-mode{margin:0;padding:0}
               <button data-v="down">下降</button><button data-v="none" class="on">無</button><button data-v="up">上昇</button>
             </div>
           </div>
-        </div>
-        <!-- オヤブンのみ: がんばレベル（HP/防御 or 攻撃） -->
-        <div class="rta-effort-row" id="rtaEffortRow" style="display:none">
-          <span class="rta-effort-lbl">がんばLv</span>
-          <span class="rta-eff-item" id="rtaEffHWrap"><span>HP</span><input type="number" id="rtaEffortH" class="rta-effort-inp" min="0" max="10" value="0"></span>
-          <span class="rta-eff-item" id="rtaEffDefWrap"><span id="rtaEffDefLbl">防御</span><input type="number" id="rtaEffortDef" class="rta-effort-inp" min="0" max="10" value="0"></span>
-          <span class="rta-eff-item" id="rtaEffAtkWrap" style="display:none"><span id="rtaEffAtkLbl">こうげき</span><input type="number" id="rtaEffortAtk" class="rta-effort-inp" min="0" max="10" value="0"></span>
         </div>
       </div>
 
@@ -782,7 +788,7 @@ body.ov-mode{margin:0;padding:0}
 
   <details class="foot">
     <summary>計算式・仕様について</summary>
-    <div>基本ダメージ: <code>⌊ ⌊(Lv×15 + A + 100)×威力 ÷ (D+50)⌋ ÷ 5 ⌋</code>。各補正は規定順で都度切り捨て（ランク→天候→急所→乱数→一致→相性→やけど/しもやけ→ねむけ→熱中→倍付け）。</div>
+    <div>基本ダメージ: <code>⌊ ⌊(Lv×15 + A + 100)×威力 ÷ (D+50)⌋ ÷ 5 ⌋</code>。各補正は規定順で都度切り捨て（ランク→天候→急所→乱数→一致→相性→やけど/しもやけ→ねむけ→熱中→倍付け→特効）。</div>
     <div>ステータス: <code>HP=⌊(Lv/100+1)×種族値+Lv+がんばり値⌋</code> / <code>他=⌊((Lv/50+1)×種族値÷1.5)×性格+がんばり値⌋</code> / <code>がんばり値=round((√種族値×C+Lv)÷2.5)</code></div>
     <div>本作に個体値はありません。技の威力はPLA実数値（力業/早業の威力変化も実数値）を収録。収録は148技。</div>
   </details>
@@ -790,89 +796,107 @@ body.ov-mode{margin:0;padding:0}
 
   <!-- ========== 捕獲率計算タブ ========== -->
   <div id="tabCapture" style="display:none">
-    <div class="cards cap-cards">
+    <div class="cap-layout">
+      <!-- 左: 入力欄 -->
       <section class="card">
         <h2><span class="tag tag-cap">捕獲</span><span id="capName">ポケモンを選択</span></h2>
-        <div class="grid-mon-lv">
-          <div class="row combo" data-combo="capMon">
+        <div style="display:flex;gap:8px;align-items:end">
+          <div class="row combo" data-combo="capMon" style="flex:1;min-width:0">
             <label>ポケモン</label>
             <input type="text" autocomplete="off" placeholder="名前 / romaji で検索">
             <div class="opts"></div>
           </div>
-          <div class="row"><label>Lv</label><input type="number" id="capLv" min="1" max="100" value="50"></div>
+          <div class="row" style="flex:0 0 60px"><label>Lv</label><input type="number" id="capLv" min="1" max="100" value="50"></div>
+          <label class="chk" id="cap_ck_alpha"><input type="checkbox">オヤブン</label>
         </div>
-        <div class="cmpct-row">
-          <div class="cmpct-col" style="flex:0 0 78px"><label>捕獲率(種族)</label><div class="rta-val" id="capCatchRate">—</div></div>
+        <div class="cmpct-row" style="margin-top:8px">
+          <div class="cmpct-col" style="flex:0 0 78px"><label>被捕獲度</label><div class="rta-val" id="capCatchRate">—</div></div>
           <div class="cmpct-col" style="flex:1"><label>残りHP <b id="capHpLbl" class="cap-hplbl">100%</b></label><input type="range" id="capHp" min="0" max="100" value="100" class="cap-range"></div>
         </div>
-        <div class="row"><label>状態</label>
-          <div class="chips">
-            <label class="chk" id="cap_ck_alpha"><input type="checkbox">オヤブン</label>
-            <label class="chk" id="cap_ck_status"><input type="checkbox">状態異常 ×2</label>
-            <label class="chk" id="cap_ck_outbreak"><input type="checkbox">大量発生/大大大発生 +10</label>
-          </div>
+        <div class="row"><label>ボール</label>
+          <select id="capBall">
+            <option value="poke">モンスターボール ×0.75</option>
+            <option value="great">スーパーボール ×1.5</option>
+            <option value="ultra">ハイパーボール ×2.25</option>
+            <option value="feather">フェザーボール ×0.5</option>
+            <option value="feather_s">フェザーボール ×1.25（飛行中）</option>
+            <option value="wing">ウイングボール ×1.25</option>
+            <option value="wing_s">ウイングボール ×2（飛行中）</option>
+            <option value="jet">ジェットボール ×2</option>
+            <option value="jet_s">ジェットボール ×2.75（飛行中）</option>
+            <option value="heavy">ヘビーボール ×1</option>
+            <option value="heavy_s">ヘビーボール ×1.25（気づかれていない）</option>
+            <option value="leaden">メガトンボール ×1.75</option>
+            <option value="leaden_s">メガトンボール ×2（気づかれていない）</option>
+            <option value="gigaton">ギガトンボール ×2.5</option>
+            <option value="gigaton_s">ギガトンボール ×2.75（気づかれていない）</option>
+          </select>
         </div>
-      </section>
-
-      <section class="card">
-        <h2><span class="tag tag-cap">状況</span>ボール・状況</h2>
-        <div class="grid2">
-          <div class="row"><label>ボール</label>
-            <select id="capBall">
-              <option value="poke">モンスターボール</option>
-              <option value="great">スーパーボール</option>
-              <option value="ultra">ハイパーボール</option>
-              <option value="feather">フェザーボール</option>
-              <option value="wing">ウイングボール</option>
-              <option value="jet">ジェットボール</option>
-              <option value="heavy">ヘビーボール</option>
-              <option value="leaden">メガトンボール</option>
-              <option value="gigaton">ギガトンボール</option>
+        <div class="row"><label>団員ランク</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <div class="nat-seg" id="capRankBtns" style="flex:1">
+              <button class="on" data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button>
+            </div>
+            <select id="capRankSel" style="flex:0 0 auto;width:auto">
+              <option value="">6〜10</option>
+              <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
             </select>
           </div>
-          <div class="row"><label>団員ランク</label><input type="number" id="capRank" min="0" max="10" value="0"></div>
         </div>
         <div class="row"><label>相手の状況</label>
           <select id="capAi">
-            <option value="default">戦闘中 / 攻撃的な相手が気づいた（！）</option>
-            <option value="caution">警戒「…」（ばりばりだま等）</option>
-            <option value="timid">臆病な相手が気づいた（！）</option>
-            <option value="escaping">逃げている</option>
-            <option value="resting">休んでいる（寝ていない・座り）</option>
-            <option value="sleeping">寝ている</option>
-            <option value="feeding_nuts">きのみを食べている</option>
-            <option value="feeding_cake">よせだまを食べている</option>
-            <option value="tiredness">疲れている（むしくいぼんぐり等）</option>
+            <option value="default">通常・戦闘中 ×2</option>
+            <option value="docile">おとなしい相手が気づいた（！）×2</option>
+            <option value="caution">警戒「…」×2（ばりばりだま等）</option>
+            <option value="aggressive">攻撃的な相手が気づいた（！）×1</option>
+            <option value="timid">臆病な相手が気づいた（！）×1</option>
+            <option value="escaping">逃げている ×1</option>
+            <option value="resting">休んでいる（座り・非睡眠）×2.5</option>
+            <option value="sleeping">寝ている ×4</option>
+            <option value="feeding_nuts">きのみを食べている ×2.5</option>
+            <option value="feeding_cake">よせだまを食べている ×4</option>
+            <option value="tiredness">疲れている ×3（むしくいぼんぐり等）</option>
           </select>
         </div>
         <div class="row"><label>補正</label>
           <div class="chips">
-            <label class="chk" id="cap_ck_suitable" style="display:none"><input type="checkbox">ボール適正</label>
-            <label class="chk" id="cap_ck_back"><input type="checkbox">背面取り ×1.75</label>
-            <label class="chk" id="cap_ck_razz"><input type="checkbox">ズリのみ ×1.3</label>
+            <label class="chk" id="cap_ck_status"><input type="checkbox">状態異常 <span class="cap-mult">×2</span></label>
+            <label class="chk" id="cap_ck_outbreak"><input type="checkbox">大量発生 / 大大大発生 <span class="cap-mult">+10</span></label>
+            <label class="chk" id="cap_ck_back"><input type="checkbox">背面取り <span class="cap-mult">×1.75</span></label>
+            <label class="chk" id="cap_ck_razz"><input type="checkbox">ズリのみ <span class="cap-mult">×1.3</span></label>
           </div>
         </div>
       </section>
-    </div>
-
-    <section class="result cap-result">
-      <div class="cap-res-head">
-        <div>
-          <div class="res-label">捕獲率（1球あたり）</div>
-          <div class="cap-big" id="capPct">—</div>
+      <!-- 右: 結果 + 補足 -->
+      <div>
+        <div style="text-align:right;margin-bottom:6px"><label class="chk" id="cap_show_mult"><input type="checkbox">倍率表示</label></div>
+        <section class="result cap-result" style="margin-top:0">
+          <div class="cap-res-head">
+            <div>
+              <div class="res-label">捕獲率（1球あたり）</div>
+              <div class="cap-big" id="capPct">—</div>
+            </div>
+            <div class="cap-verdict" id="capVerdict"></div>
+          </div>
+          <div class="bar"><div class="cap-fill" id="capBarFill" style="width:0%"></div></div>
+          <div class="meta" id="capMeta"></div>
+        </section>
+        <div style="margin-top:14px">
+          <p class="cap-note">残りHP：HPが低いほど入りやすい。戦闘から離脱しても、野生ポケモンのHPが回復するほど離れなければ補正は続く</p>
+          <p class="cap-note">状態異常：どく・やけど・しもやけ・まひ・ねむけのどれでも <span class="cap-mult">×2</span>（種類による差はなし）。なければ <span class="cap-mult">×1</span></p>
+          <p class="cap-note">背面取り：背後からボールを当てると有効（気づかれていても可）。背面取りで戦闘に入った場合、離脱するまで継続する</p>
+          <p class="cap-note">ズリのみ：野生ポケモンがフィールドでズリのみを食べると有効。食べ終わり・捕獲失敗・戦闘中も継続。主人公が遠く離れると終了する</p>
+          <p class="cap-note">フェザー系：飛行中のポケモンに高補正。ただし当てても戦闘を始めないポケモンのみ</p>
+          <p class="cap-note">ヘビー系：油断しているポケモン（主人公に気づいていない）に高補正。背面取りは不問</p>
         </div>
-        <div class="cap-verdict" id="capVerdict"></div>
+        <details class="foot" style="margin-top:8px">
+          <summary>捕獲率の計算式について</summary>
+          <div>捕獲インデックス = <code>0.75×被捕獲度 + (大量発生?10:0) + 30×Lv補正 + 環境補正</code></div>
+          <div>環境補正 = <code>30 × HP補正 × 状態異常 × ボール × 状況 × 不意打ち × ズリのみ</code>、<code>HP補正 = 1 − 0.66×(残HP/最大HP)</code></div>
+          <div>捕獲率 = <code>clamp(捕獲インデックス ÷ 255, 0, 1)</code>（インデックスを255で割り0〜1に収めた値が、そのまま1球あたりの捕獲率）。Legends Arceus データマイン値より。</div>
+        </details>
       </div>
-      <div class="bar"><div class="cap-fill" id="capBarFill" style="width:0%"></div></div>
-      <div class="meta" id="capMeta"></div>
-    </section>
-
-    <details class="foot">
-      <summary>捕獲率の計算式について</summary>
-      <div>捕獲インデックス = <code>0.75×種族捕獲率 + (大量発生?10:0) + 30×Lv補正 + 環境補正</code></div>
-      <div>環境補正 = <code>30 × HP補正 × 状態異常 × ボール × 状況 × 不意打ち × ズリのみ</code>、<code>HP補正 = 1 − 0.66×(残HP/最大HP)</code></div>
-      <div>捕獲率 = <code>1 −(1 − clamp(捕獲インデックス÷255, 0, 1))^(2/2)</code> ＝ <code>clamp(捕獲インデックス÷255, 0, 1)</code>。Legends Arceus データマイン値より。</div>
-    </details>
+    </div>
   </div><!-- /tabCapture -->
 
   <!-- ========== チェックリストタブ ========== -->
@@ -900,7 +924,9 @@ body.ov-mode{margin:0;padding:0}
       <div class="cl-toolbar">
         <button class="dc-btn sub" id="clAddGroup" style="height:30px;padding:0 12px">＋ グループを追加</button>
         <label class="cl-namechk"><input type="checkbox" id="clShowNames" checked>名前を表示</label>
+        <label class="cl-namechk"><input type="checkbox" id="clHideMineral" checked>ごりごりミネラルを非表示</label>
         <button class="dc-btn sub" id="clDragLock" style="height:30px;padding:0 12px">🔒 並替</button>
+        <button class="dc-btn sub" id="clGlobalEdit" style="height:30px;padding:0 12px">編集</button>
         <span class="cl-addnote" id="clAddNote"></span>
         <span class="cl-prog" id="clProg" style="margin-left:auto"></span>
         <button class="dc-btn sub" id="clOverlayBtn" style="height:30px;padding:0 12px">📺 配信</button>
@@ -1107,14 +1133,21 @@ function calcStat(key,base,lv,el,nm){
   if(key==='h')return Math.floor((lv/100+1)*base+lv+gv);
   return Math.floor(((lv/50+1)*base/1.5)*(nm||1)+gv);
 }
-// RTA相手の実数値: シート値(がんばLv0)を基準に、オヤブンはがんばレベル分を加算（floor(X+整数)=floor(X)+整数なので増分は厳密）
+// RTA相手の実数値: シート値(無補正・がんばLv0)を基準に、オヤブンはがんばレベル分＋性格補正分を加算
+// がんばLv増分は floor(X+整数)=floor(X)+整数 で厳密。性格はXに掛かるので、がんばLv反映後の無補正値との差分を別途加算する
 function rtaEffortForKey(key){return key==='h'?(S.right.rtaEffortH||0):(key==='a'||key==='c')?(S.right.rtaEffortAtk||0):(S.right.rtaEffortDef||0);}
+function rtaNatureModForKey(key){return (key==='a'||key==='c')?(S.right.rtaNatureAtk||'none'):(key==='b'||key==='d')?(S.right.rtaNatureDef||'none'):'none';}
 function rtaStatVal(key,mon,lv,rta){
   if(!rta)return 0;
   const sheetVal={h:rta.H,a:rta.A,b:rta.B,c:rta.C,d:rta.D}[key];
   if(rta.note==='オヤブン'&&mon){
+    const base=mon.base[key];
     const N=rtaEffortForKey(key);
-    if(N>0)return sheetVal+(ganbari(mon.base[key],lv,N)-ganbari(mon.base[key],lv,0));
+    const nm=NMUL[rtaNatureModForKey(key)]||1;
+    let val=sheetVal;
+    if(N>0)val+=ganbari(base,lv,N)-ganbari(base,lv,0);                 // がんばLv増分（厳密）
+    if(nm!==1)val+=calcStat(key,base,lv,N,nm)-calcStat(key,base,lv,N,1);// 同がんばLvでの 性格補正 - 無補正 の差分
+    return val;
   }
   return sheetVal;
 }
@@ -1128,7 +1161,8 @@ const makeBase=()=>({
   move:null,powerOverride:null,style:'normal',
   baibun:false,shuchuA:false,crit:false,tokkou:false,regigigas:false,status:'none',oyabunA:false,
   shuchuD:false,nemuke:false,oyabunD:false,
-  rta:null,rtaGroup:null,rtaMonIdx:0,rtaEffortH:0,rtaEffortDef:0,rtaEffortAtk:0
+  rta:null,rtaGroup:null,rtaMonIdx:0,rtaEffortH:0,rtaEffortDef:0,rtaEffortAtk:0,
+  rtaNatureDef:'none',rtaNatureAtk:'none'
 });
 const S={left:makeBase(),right:makeBase(),swapped:false,weather:'none',mode:'normal',showTutor:false};
 
@@ -1237,6 +1271,7 @@ function setRtaMon(gi,mi){
   S.right.mon=findMon(m.no);S.right.lv=m.lv;
   S.right.atkRank='none';S.right.defRank='none';   // 相手を変えたらランクはリセット
   S.right.rtaEffortH=0;S.right.rtaEffortDef=0;S.right.rtaEffortAtk=0;   // がんばLvもリセット
+  S.right.rtaNatureDef='none';S.right.rtaNatureAtk='none';             // 性格補正もリセット
   document.getElementById('rtaEffortH').value=0;document.getElementById('rtaEffortDef').value=0;document.getElementById('rtaEffortAtk').value=0;
   // オヤブンは攻撃/防御とも×1.5をデフォルトON（非オヤブンはOFF）。攻守交代どちらでも効く
   const isOya=m.note==='オヤブン';
@@ -1265,6 +1300,12 @@ document.getElementById('rightRtaMonSel').addEventListener('change',e=>{
 document.getElementById('rightRtaRank').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   S.right[S.swapped?'atkRank':'defRank']=b.dataset.v;
+  update();
+});
+// RTAオヤブンの性格補正（攻守交代に応じて rtaNatureAtk/rtaNatureDef を切替）
+document.getElementById('rightRtaNature').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  S.right[S.swapped?'rtaNatureAtk':'rtaNatureDef']=b.dataset.v;
   update();
 });
 // RTAオヤブンのがんばレベル（HP/防御/攻撃）
@@ -1494,34 +1535,24 @@ function update(){
 
   // RTA情報の描画（ルート相手は常に右側。物理/特殊で表示ステを切替・攻守交代で攻/防を切替）
   if(S.mode==='rta'){
-    const r=S.right.rta;const rm=S.right.mon,rl=S.right.lv;
-    const sv=k=>r?rtaStatVal(k,rm,rl,r):'—';   // オヤブンはがんばLv反映済みの値
-    const hpCol=document.getElementById('rtaColHP');
-    if(S.swapped){              // 相手が攻撃側 → こうげき/とくこう のみ
-      hpCol.style.display='none';
-      document.getElementById('rtaValStatLabel').textContent=phys?'こうげき':'とくこう';
-      document.getElementById('rtaValStat').textContent=sv(phys?'a':'c');
-    } else {                    // 相手が防御側 → HP + ぼうぎょ/とくぼう
-      hpCol.style.display='';
-      document.getElementById('rtaValHP').textContent=sv('h');
-      document.getElementById('rtaValStatLabel').textContent=phys?'ぼうぎょ':'とくぼう';
-      document.getElementById('rtaValStat').textContent=sv(phys?'b':'d');
-    }
+    const r=S.right.rta;
     // ランク表示を現在の役割の値に同期
     const rk=S.swapped?S.right.atkRank:S.right.defRank;
     document.querySelectorAll('#rightRtaRank button').forEach(x=>x.classList.toggle('on',x.dataset.v===rk));
-    const badge=document.getElementById('rtaBadge');
-    badge.style.display=(r&&r.note)?'':'none';if(r&&r.note)badge.textContent=r.note;
     // オヤブン(野生)の時だけ がんばレベル入力欄を表示。守備時=HP+防御/特防、攻撃時=攻撃/特攻
     const isOya=!!(r&&r.note==='オヤブン');
     document.getElementById('rtaEffortRow').style.display=isOya?'':'none';
-    document.getElementById('rtaRouteLabel').textContent=isOya?'相手の実数値（がんばLv反映）':'相手の実数値（無補正・がんばLv0）';
+    document.getElementById('rtaNatureRow').style.display=isOya?'':'none';
     if(isOya){
       document.getElementById('rtaEffHWrap').style.display=S.swapped?'none':'';
       document.getElementById('rtaEffDefWrap').style.display=S.swapped?'none':'';
       document.getElementById('rtaEffAtkWrap').style.display=S.swapped?'':'none';
       document.getElementById('rtaEffDefLbl').textContent=phys?'防御':'特防';
       document.getElementById('rtaEffAtkLbl').textContent=phys?'こうげき':'とくこう';
+      // 性格補正セグメント: 役割(攻/防)の値に同期・対象ステ名を表示
+      document.getElementById('rtaNatureStatLbl').textContent=S.swapped?(phys?'こうげき':'とくこう'):(phys?'ぼうぎょ':'とくぼう');
+      const nv=S.swapped?S.right.rtaNatureAtk:S.right.rtaNatureDef;
+      document.querySelectorAll('#rightRtaNature button').forEach(x=>x.classList.toggle('on',x.dataset.v===nv));
     }
   }
 
@@ -1641,13 +1672,12 @@ function setDock(opts){
 }
 /* ===== 捕獲率計算 ===== */
 const C={mon:null,catchRate:null,lv:50,alpha:false,hpPct:100,status:false,
-  ball:'poke',ai:'default',suitable:false,backstrike:false,razz:false,outbreak:false,plrank:0};
-const CAP_BALL={poke:{n:0.75},great:{n:1.5},ultra:{n:2.25},
-  feather:{n:0.5,s:1.25},wing:{n:1.25,s:2},jet:{n:2,s:2.75},
-  heavy:{n:1,s:1.25},leaden:{n:1.75,s:2},gigaton:{n:2.5,s:2.75}};
+  ball:'poke',ai:'default',backstrike:false,razz:false,outbreak:false,plrank:0};
+const CAP_BALL={poke:0.75,great:1.5,ultra:2.25,
+  feather:0.5,feather_s:1.25,wing:1.25,wing_s:2,jet:2,jet_s:2.75,
+  heavy:1,heavy_s:1.25,leaden:1.75,leaden_s:2,gigaton:2.5,gigaton_s:2.75};
 // AI補正（wiki準拠）: 攻撃的が気づく/戦闘中/警戒=2、臆病が気づく/逃走=1、休憩2.5、寝4、きのみ2.5、よせだま4、疲れ3
-const CAP_AI={default:2,caution:2,timid:1,escaping:1,resting:2.5,sleeping:4,feeding_nuts:2.5,feeding_cake:4,tiredness:3};
-function capBallHasSuitable(){return CAP_BALL[C.ball]&&CAP_BALL[C.ball].s!=null;}
+const CAP_AI={default:2,docile:2,caution:2,aggressive:1,timid:1,escaping:1,resting:2.5,sleeping:4,feeding_nuts:2.5,feeding_cake:4,tiredness:3};
 
 setupCombo('capMon',dexItems,no=>{
   C.mon=findMon(no);C.catchRate=PLA_CATCHRATE[no]!=null?PLA_CATCHRATE[no]:null;
@@ -1659,7 +1689,6 @@ function calcCapture(){
     fill=document.getElementById('capBarFill'),vEl=document.getElementById('capVerdict');
   document.getElementById('capName').textContent=C.mon?C.mon.name:'ポケモンを選択';
   document.getElementById('capCatchRate').textContent=C.catchRate!=null?C.catchRate:'—';
-  document.getElementById('cap_ck_suitable').style.display=capBallHasSuitable()?'':'none';
   if(!C.mon||C.catchRate==null){pctEl.textContent='—';meta.innerHTML='';fill.style.width='0%';vEl.textContent='';vEl.className='cap-verdict';return;}
   const POKEPARA=0.75,BASIC=30,HPC=0.66,RANGE=255,ROOT=2,EVAL=2;
   // L = 団員ランク -(オヤブン補正 + レベル補正)+ 1、-5〜0にクランプ（wiki準拠・レベル補正=⌈Lv/10⌉）
@@ -1667,7 +1696,7 @@ function calcCapture(){
   const lvFactor=Math.max(-5,Math.min(0,(C.plrank||0)-((C.alpha?4:0)+levcorr)+1));
   const hpFactor=1-HPC*((C.hpPct||0)/100);
   const sick=C.status?2:1;
-  const bd=CAP_BALL[C.ball];const ball=(C.suitable&&bd.s!=null)?bd.s:bd.n;
+  const ball=CAP_BALL[C.ball]??0.75;
   const ai=CAP_AI[C.ai]||2;const back=C.backstrike?1.75:1;const bait=C.razz?1.3:1;
   const env=BASIC*hpFactor*sick*ball*ai*back*bait;
   const idx=POKEPARA*C.catchRate+(C.outbreak?10:0)+BASIC*lvFactor+env;
@@ -1675,8 +1704,7 @@ function calcCapture(){
   const pct=(1-Math.pow(1-ratio,EVAL/ROOT))*100;
   pctEl.textContent=pct.toFixed(1)+'%';
   fill.style.width=Math.min(100,Math.max(0,pct))+'%';
-  vEl.textContent=pct>=80?'入りやすい':pct>=40?'まあまあ':pct>0?'入りにくい':'ほぼ入らない';
-  vEl.className='cap-verdict '+(pct>=80?'hi':pct>=40?'mid':'lo');
+  vEl.textContent='';vEl.className='cap-verdict';
   const expected=pct>0?100/pct:Infinity;
   meta.innerHTML=
     `<div><span>捕獲インデックス</span><b>${idx.toFixed(2)}</b></div>`
@@ -1688,12 +1716,22 @@ function calcCapture(){
 
 document.getElementById('capLv').addEventListener('input',e=>{C.lv=e.target.value===''?null:parseInt(e.target.value,10);calcCapture();});
 document.getElementById('capHp').addEventListener('input',e=>{C.hpPct=parseInt(e.target.value,10);document.getElementById('capHpLbl').textContent=C.hpPct+'%';calcCapture();});
-document.getElementById('capRank').addEventListener('input',e=>{C.plrank=Math.max(0,Math.min(10,parseInt(e.target.value,10)||0));calcCapture();});
-document.getElementById('capBall').addEventListener('change',e=>{C.ball=e.target.value;if(!capBallHasSuitable()){C.suitable=false;const c=document.getElementById('cap_ck_suitable');c.querySelector('input').checked=false;c.classList.remove('on');}calcCapture();});
+document.getElementById('capRankBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-v]');if(!b)return;document.querySelectorAll('#capRankBtns button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('capRankSel').value='';C.plrank=parseInt(b.dataset.v,10);calcCapture();});
+document.getElementById('capRankSel').addEventListener('change',e=>{if(!e.target.value)return;document.querySelectorAll('#capRankBtns button').forEach(x=>x.classList.remove('on'));C.plrank=parseInt(e.target.value,10);calcCapture();});
+document.getElementById('capBall').addEventListener('change',e=>{C.ball=e.target.value;calcCapture();});
 document.getElementById('capAi').addEventListener('change',e=>{C.ai=e.target.value;calcCapture();});
 function capChk(id,key){const el=document.getElementById(id);el.querySelector('input').addEventListener('change',()=>{const v=el.querySelector('input').checked;C[key]=v;el.classList.toggle('on',v);calcCapture();});}
 capChk('cap_ck_alpha','alpha');capChk('cap_ck_status','status');capChk('cap_ck_outbreak','outbreak');
-capChk('cap_ck_suitable','suitable');capChk('cap_ck_back','backstrike');capChk('cap_ck_razz','razz');
+capChk('cap_ck_back','backstrike');capChk('cap_ck_razz','razz');
+// 倍率表示トグル
+document.querySelectorAll('#capBall option,#capAi option').forEach(o=>{o.dataset.full=o.textContent;});
+function multShort(s){return s.replace(/\s?×[\d.]+/g,'').replace(/\s\+\d+/g,'').trim();}
+function applyCapMult(show){
+  document.querySelectorAll('#capBall option,#capAi option').forEach(o=>{o.textContent=show?o.dataset.full:multShort(o.dataset.full);});
+  document.getElementById('tabCapture').classList.toggle('cap-hide-mult',!show);
+}
+applyCapMult(false);
+(function(){const el=document.getElementById('cap_show_mult');el.querySelector('input').addEventListener('change',()=>{const v=el.querySelector('input').checked;el.classList.toggle('on',v);applyCapMult(v);});})();
 function setDefaultCap(){const d=sortedDex[0];C.mon=d;C.catchRate=PLA_CATCHRATE[d.no]!=null?PLA_CATCHRATE[d.no]:null;document.querySelector('[data-combo="capMon"]')._setLabel(d.name);calcCapture();}
 
 /* メインタブ切替 */
@@ -1873,6 +1911,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
   let CL={groups:[],done:{},memo:{},subtasks:{},skip:{},showFood:{},optional:{},textItems:{},nextId:1,nextSubId:1,nextTId:1};
   let SAVES={active:null,list:[],nextId:1};
   let dragLocked=true;try{if(localStorage.getItem('pla-cl-drag-lock')==='0')dragLocked=false;}catch(e){}
+  let hideMineral=true;try{if(localStorage.getItem('pla-cl-hide-mineral')==='0')hideMineral=false;}catch(e){}
   let dragState=null,dragOverInfo=null;
   try{const s=JSON.parse(localStorage.getItem(KEY));
     if(s){
@@ -2027,6 +2066,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     document.getElementById('clSavesDel').disabled=SAVES.list.length<=1;
   }
   const editOpenSet=new Set();
+  let globalEdit=false;
   function isDone(no){const st=CL.subtasks[no];return(st&&st.length)?st.every(t=>t.checked):!!CL.done[no];}
   function recomputeDone(no){const st=CL.subtasks[no];if(st&&st.length){if(st.every(t=>t.checked))CL.done[no]=true;else delete CL.done[no];}return isDone(no);}
   function addSubtask(no,label){if(!label.trim())return;if(!CL.subtasks[no])CL.subtasks[no]=[];CL.subtasks[no].push({id:CL.nextSubId++,label:label.trim(),checked:false});recomputeDone(no);save();renderGroups();const ni=groupsEl.querySelector(`.cl-sub-new[data-no="${no}"]`);if(ni)ni.focus();}
@@ -2034,6 +2074,9 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
   const nameChk=document.getElementById('clShowNames');
   function applyNames(){nameChk.checked=CL.showNames;groupsEl.classList.toggle('cl-hidenames',!CL.showNames);}
   nameChk.addEventListener('change',()=>{CL.showNames=nameChk.checked;save();applyNames();});
+  const mineralChk=document.getElementById('clHideMineral');
+  mineralChk.checked=hideMineral;
+  mineralChk.addEventListener('change',()=>{hideMineral=mineralChk.checked;try{localStorage.setItem('pla-cl-hide-mineral',hideMineral?'1':'0');}catch(e){}renderGroups();});
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   // アイコン枠：PokeAPIスプライト(jsDelivr配信)を全国図鑑IDで表示。読めない時は図鑑番号にフォールバック
   function iconHTML(d){
@@ -2044,14 +2087,17 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
   }
   // 好物アイコン（エサ5種・gamepedia由来を内蔵）。base64はCSSに一度だけ展開→各行はクラスspanのみ（全件一覧でも軽量）
   const FOOD_ASCII={'キノコ':'kinoko','ミネラル':'mineral','ミツ':'mitsu','イナホ':'inaho','マメ':'mame'};
+  const FOOD_ORDER=['キノコ','ミツ','イナホ','マメ','ミネラル'];
   if(typeof FOOD_ICONS!=='undefined'){
     const css=Object.entries(FOOD_ASCII).map(([jp,a])=>FOOD_ICONS[jp]?`.cl-food-${a}{background-image:url('${FOOD_ICONS[jp]}')}`:'').join('');
     const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
   }
   function foodHTML(no){
     const foods=(typeof PLA_FOOD!=='undefined')?(PLA_FOOD[no]||[]):[];
-    if(!foods.length)return '';
-    return '<span class="cl-foods">'+foods.map(f=>`<span class="cl-food cl-food-${FOOD_ASCII[f]}" title="好物: ${f}"></span>`).join('')+'</span>';
+    const filtered=hideMineral?foods.filter(f=>f!=='ミネラル'):foods;
+    if(!filtered.length)return '';
+    const sorted=[...filtered].sort((a,b)=>FOOD_ORDER.indexOf(a)-FOOD_ORDER.indexOf(b));
+    return '<span class="cl-foods">'+sorted.map(f=>`<span class="cl-food cl-food-${FOOD_ASCII[f]}" title="好物: ${f}"></span>`).join('')+'</span>';
   }
   /* ---- 上部: 検索＋候補ごとにグループのチェック欄（閉じずに次々追加/解除） ---- */
   function resRowHTML(d){
@@ -2099,7 +2145,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
       <div class="cl-card-row" data-no="${id}" data-gid="${gid}">
         ${handle}<input class="cl-text-lbl" data-no="${id}" value="${esc(item.label)}" placeholder="タスク内容" maxlength="60">
         ${opt?'<span class="cl-opt-badge">任意</span>':''}
-        <div class="cl-card-tools"><span class="cl-check">${skip?'✕':'✓'}</span><button class="cl-skip-btn${skip?' on':''}" data-skip="${id}">${skip?'解除':'スキップ'}</button></div>
+        <div class="cl-card-tools"><button class="cl-skip-btn${skip?' on':''}" data-skip="${id}">${skip?'解除':'スキップ'}</button></div>
         <button class="cl-x" data-x title="削除">×</button>
       </div></div>`;
   }
@@ -2108,7 +2154,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     const d=findMon(no);if(!d)return '';
     const done=isDone(no),skip=!!CL.skip[no],opt=!!CL.optional[no];
     const st=CL.subtasks[no]||[];
-    const epKey=gid+'_'+no,editing=editOpenSet.has(epKey);
+    const epKey=gid+'_'+no,editing=globalEdit;
     // 通常表示: メモ(内容があれば)・サブタスクチェック(あれば、ラベルはread-only)・好物(非表示設定がなければ)
     const mainFood=CL.showFood[no]?foodHTML(no):'';
     const mainMemo=CL.memo[no]?`<input class="cl-memo" data-no="${no}" value="${esc(CL.memo[no])}" placeholder="ひとことメモ" maxlength="50">`:'';
@@ -2119,17 +2165,16 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
       <div class="cl-ep-row"><span class="cl-ep-lbl">好物</span><label class="cl-ep-toggle"><input type="checkbox" class="cl-ep-food-chk" data-no="${no}"${CL.showFood[no]?' checked':''}> 表示する</label>${foodHTML(no)}</div>
       <div class="cl-ep-row"><span class="cl-ep-lbl">メモ</span><input class="cl-memo cl-ep-memo" data-no="${no}" value="${esc(CL.memo[no]||'')}" placeholder="ひとことメモ（空欄で非表示）" maxlength="50"></div>
       <div class="cl-ep-row"><span class="cl-ep-lbl">サブタスク</span><div class="cl-ep-subs">${st.map(t=>`<div class="cl-sub-item"><input type="checkbox" class="cl-sub-ck" data-no="${no}" data-sid="${t.id}"${t.checked?' checked':''}><input class="cl-sub-label" data-no="${no}" data-sid="${t.id}" value="${esc(t.label)}" maxlength="30" placeholder="ラベル"><button class="cl-sub-del" data-no="${no}" data-sid="${t.id}">×</button></div>`).join('')}<div class="cl-sub-add"><input class="cl-sub-new" data-no="${no}" placeholder="例: ♂" maxlength="30"><button class="cl-sub-addbtn" data-no="${no}">＋</button></div></div></div>
-      <div class="cl-ep-foot"><button class="cl-ep-close" data-epclose="${epKey}">閉じる</button></div>
     </div>`:'';
     const handle='<span class="cl-drag-handle" title="ドラッグで並替">⠿</span>';
     return `<div class="cl-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${no}" data-gid="${gid}"${dragLocked?'':' draggable="true"'}>
       <div class="cl-card-row" data-no="${no}" data-gid="${gid}">
         <span class="cl-ic">${iconHTML(d)}</span>
         <span class="cl-info"><span class="cl-name">${esc(d.name)}</span>${opt?'<span class="cl-opt-badge">任意</span>':''}${mainFood}${mainMemo}${mainSubs}</span>
-        <div class="cl-card-tools">${handle}<span class="cl-check">${skip?'✕':'✓'}</span></div>
+        <div class="cl-card-tools">${handle}</div>
         <button class="cl-x" data-x title="このグループから外す">×</button>
       </div>
-      <div class="cl-card-foot"><button class="cl-skip-btn${skip?' on':''}" data-skip="${no}">${skip?'解除':'スキップ'}</button><button class="cl-edit-btn${editing?' open':''}" data-epkey="${epKey}">編集</button></div>${ep}</div>`;
+      <div class="cl-card-foot"><button class="cl-skip-btn${skip?' on':''}" data-skip="${no}">${skip?'解除':'スキップ'}</button></div>${ep}</div>`;
   }
   function groupHTML(g){
     const done=g.items.filter(no=>isDone(no)&&!CL.skip[no]).length;
@@ -2446,8 +2491,8 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     document.getElementById('clDragModal').style.display='none';
   });
   document.addEventListener('click',e=>{
-    if(!editOpenSet.size)return;
-    if(e.target.closest('.cl-edit-panel')||e.target.closest('[data-epkey]'))return;
+    if(!editOpenSet.size&&!globalEdit)return;
+    if(globalEdit||e.target.closest('.cl-edit-panel'))return;
     editOpenSet.clear();renderGroups();
   });
   // ===== ロックボタン =====
@@ -2465,6 +2510,17 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     applyDragLockUI();
   });
   applyDragLockUI();
+  // ===== 全体編集モード =====
+  function applyGlobalEditUI(){
+    const btn=document.getElementById('clGlobalEdit');
+    btn.textContent=globalEdit?'編集中':'編集';
+    btn.style.borderColor=globalEdit?'var(--accent2)':'';
+    btn.style.color=globalEdit?'var(--accent2)':'';
+  }
+  document.getElementById('clGlobalEdit').addEventListener('click',()=>{
+    globalEdit=!globalEdit;applyGlobalEditUI();renderGroups();
+  });
+  applyGlobalEditUI();
   // ===== 検索エリアトグル =====
   const clAddSec=document.getElementById('clAddSec');
   document.getElementById('clSearchToggle').addEventListener('click',()=>{
@@ -2518,7 +2574,7 @@ showTab(_savedTab);
     return sts.length?sts.every(t=>t.checked):!!(cl.done||{})[no];
   }
   const root=document.createElement('div');root.id='ovRoot';
-  root.innerHTML=`<div id="ovCtrlBar"><button id="ovCfgToggle">⚙ 設定</button></div>
+  root.innerHTML=`<div id="ovCtrlBar"><button id="ovCfgToggle">⚙</button>
   <div id="ovCfgPanel">
     <label>列数<input type="number" id="ovCols" min="1" max="40" value="${cfg.cols}" style="width:52px"></label>
     <label>並び順<select id="ovSort">
@@ -2534,7 +2590,7 @@ showTab(_savedTab);
       <option value="dark"${cfg.bg==='dark'?' selected':''}>暗め(半透明黒)</option>
       <option value="black"${cfg.bg==='black'?' selected':''}>黒</option>
     </select></label>
-  </div>
+  </div></div>
   <div id="ovGrid"></div>`;
   document.body.appendChild(root);
   function applyBg(){
@@ -2554,9 +2610,16 @@ showTab(_savedTab);
       const d=(typeof PLA_DEX!=='undefined')?PLA_DEX.find(x=>x.no===no):null;if(!d)return '';
       const done=ovIsDone(no,cl),skip=!!(cl.skip||{})[no],opt=!!(cl.optional||{})[no];
       const cls=['ov-ic',done?(cfg.done==='dim'?'done-dim':'done-chk'):'',skip?'skip':'',opt?'optional':''].filter(Boolean).join(' ');
-      return `<div class="${cls}" title="${ovEsc(d.name)}">${ovIconHTML(d)}${done&&cfg.done==='check'?'<span class="ov-chk">✓</span>':''}${skip?'<span class="ov-skipx">✕</span>':''}</div>`;
+      return `<div class="${cls}" title="${ovEsc(d.name)}">${ovIconHTML(d)}</div>`;
     }).join('');
   }
+  let _lastCL='';
+  function renderIfChanged(){
+    const cur=localStorage.getItem('pla-checklist')||'';
+    if(cur!==_lastCL){_lastCL=cur;render();}
+  }
+  const _origRender=render;
+  render=function(){_lastCL=localStorage.getItem('pla-checklist')||'';_origRender();};
   render();
   document.getElementById('ovCfgToggle').addEventListener('click',()=>{document.getElementById('ovCfgPanel').classList.toggle('show');});
   document.getElementById('ovCols').addEventListener('input',e=>{cfg.cols=Math.max(1,+e.target.value||8);saveCfg();render();});
@@ -2564,6 +2627,7 @@ showTab(_savedTab);
   document.getElementById('ovDone').addEventListener('change',e=>{cfg.done=e.target.value;saveCfg();render();});
   document.getElementById('ovBg').addEventListener('change',e=>{cfg.bg=e.target.value;saveCfg();applyBg();});
   window.addEventListener('storage',e=>{if(e.key==='pla-checklist')render();});
+  setInterval(renderIfChanged,1000);
 })();
 </script>
 </body>
