@@ -88,23 +88,8 @@ html,body{margin:0;padding:0;color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
   font-size:14px;line-height:1.5;-webkit-text-size-adjust:100%;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-.wrap{max-width:1080px;margin:0 auto;padding:18px 14px 90px}
-#dock{position:fixed;bottom:0;left:0;right:0;background:rgba(15,21,31,.82);
-  border-top:1px solid var(--line2);padding:11px 16px;z-index:100;
-  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
-  box-shadow:0 -8px 28px rgba(0,0,0,.35)}
-#dock-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-height:34px}
-.dk-dmg{font-size:22px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;
-  background:linear-gradient(135deg,var(--accent),#ff6e6e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.dk-pct{font-size:13px;font-weight:700;color:var(--accent2);white-space:nowrap;font-variant-numeric:tabular-nums}
-.dk-verdict{font-size:14px;font-weight:800;white-space:nowrap;margin-left:auto}
-.dk-verdict .ko{color:var(--bad)} .dk-verdict .rng{color:var(--warn)} .dk-verdict .safe{color:var(--good)}
-.dk-bar{flex:1;min-width:60px;max-width:200px;height:9px;border-radius:5px;
-  background:var(--panel2);position:relative;overflow:hidden;border:1px solid var(--line)}
-.dk-bar-max{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(255,138,76,.3),rgba(255,107,107,.42));transition:width .3s}
-.dk-bar-min{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent),var(--bad));transition:width .3s}
-.dk-hint{color:var(--muted);font-size:12px}
-header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:12px 14px 14px}
+header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .brand{display:flex;align-items:center;gap:11px;min-width:0}
 .brand .emblem{flex:0 0 auto;width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
   font-size:20px;background:linear-gradient(135deg,var(--accent),#ff5e87 55%,var(--accent2));
@@ -140,7 +125,7 @@ header.top .sub{font-size:11px;color:var(--muted);width:100%;line-height:1.5}
 .cards.swapped #rightCard .tag-def{display:none}
 .cards.swapped #rightCard .tag-atk{display:inline}
 .card{background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);
-  border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:var(--gap)}
+  border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;gap:8px}
 .card h2{font-size:15px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;letter-spacing:.01em}
 .card h2 .tag{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
 .tag.atk{background:rgba(255,138,76,.18);color:var(--atk);box-shadow:inset 0 0 0 1px rgba(255,138,76,.3)}
@@ -198,35 +183,35 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
   box-shadow:0 5px 16px rgba(0,0,0,.4);transition:transform .25s ease,box-shadow .2s;flex:0 0 auto}
 .swap:hover{transform:rotate(180deg) scale(1.08);box-shadow:0 7px 22px rgba(72,185,255,.45)}
 .swap:active{transform:rotate(180deg) scale(.96)}
-.result{margin-top:14px;background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;box-shadow:var(--shadow)}
+.result{margin-top:10px;background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px 12px;box-shadow:var(--shadow)}
 .result>h2{font-size:11px;margin:0 0 14px;color:var(--faint);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .res-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .res-dmg{min-width:0}
 .res-label{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .dmgline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.dmgbig{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.01em;
+.dmgbig{font-size:33px;font-weight:800;line-height:1;letter-spacing:-.01em;
   background:linear-gradient(135deg,var(--accent),#ff6e6e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
 .dmgpct{font-size:16px;font-weight:700;color:var(--accent2);font-variant-numeric:tabular-nums}
 .verdict-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:99px;font-size:15px;font-weight:800;white-space:nowrap}
 .verdict-badge.ko{background:rgba(255,107,107,.16);color:var(--bad);box-shadow:inset 0 0 0 1px rgba(255,107,107,.4)}
 .verdict-badge.rng{background:rgba(255,209,102,.15);color:var(--warn);box-shadow:inset 0 0 0 1px rgba(255,209,102,.36)}
 .verdict-badge.safe{background:rgba(70,219,163,.15);color:var(--good);box-shadow:inset 0 0 0 1px rgba(70,219,163,.36)}
-.bar{height:16px;background:var(--panel2);border-radius:8px;overflow:hidden;margin:14px 0 2px;border:1px solid var(--line);position:relative}
+.bar{height:14px;background:var(--panel2);border-radius:8px;overflow:hidden;margin:8px 0 2px;border:1px solid var(--line);position:relative}
 .bar .fillmax{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(255,138,76,.3),rgba(255,107,107,.42));transition:width .35s cubic-bezier(.4,0,.2,1)}
 .bar .fillmin{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent),var(--bad));transition:width .35s cubic-bezier(.4,0,.2,1)}
 .bar-cap{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);font-weight:600;margin-bottom:12px}
 .rolls-head{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
 .rolls-head .legend{margin-left:auto;display:inline-flex;align-items:center;gap:5px;text-transform:none;letter-spacing:0;font-weight:600}
 .rolls-head .legend i{width:10px;height:10px;border-radius:3px;background:rgba(255,107,107,.25);box-shadow:inset 0 0 0 1px rgba(255,107,107,.5);display:inline-block}
-.rolls{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:5px;margin:0}
-.roll{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 2px;text-align:center;line-height:1.2}
+.rolls{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:4px;margin:0}
+.roll{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:4px 2px;text-align:center;line-height:1.2}
 .roll b{font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;display:block}
 .roll small{display:block;font-size:10px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums}
 .roll.ko{background:rgba(255,107,107,.13);border-color:rgba(255,107,107,.4)}
 .roll.ko b{color:#ff8f8f}
 .roll.ko small{color:rgba(255,143,143,.7)}
-.meta{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin-top:16px;font-size:12px}
-.meta>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:var(--muted);padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin-top:10px;font-size:12px}
+.meta>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:var(--muted);padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
 .meta .wide{grid-column:1/-1}
 .meta b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
 .meta .sub{font-size:10px;color:var(--faint);font-weight:500}
@@ -289,7 +274,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .main-tab{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:800;padding:6px 16px;border-radius:99px;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;letter-spacing:.03em}
 .main-tab:hover:not(.on){color:var(--text)}
 .main-tab.on{background:var(--accent2);color:#10141c;box-shadow:0 2px 9px rgba(72,185,255,.35)}
-.damage-modebar{margin:0 0 12px auto}
+.damage-modebar{width:fit-content;margin:0 0 8px 0}
 /* ===== 捕獲率タブ ===== */
 .cap-cards{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:860px){.cap-cards{grid-template-columns:1fr 1fr;align-items:start}}
@@ -308,9 +293,9 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cap-hide-mult .cap-mult{display:none}
 .cap-layout{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
 @media(min-width:700px){.cap-layout{grid-template-columns:1fr 1fr}}
-.foot{margin-top:20px;font-size:11px;color:var(--faint);line-height:1.7;
+.foot{margin-top:10px;font-size:11px;color:var(--faint);line-height:1.7;
   background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 14px}
-.foot summary{cursor:pointer;padding:12px 2px;font-weight:700;color:var(--muted);list-style:none;user-select:none}
+.foot summary{cursor:pointer;padding:9px 2px;font-weight:700;color:var(--muted);list-style:none;user-select:none}
 .foot summary::-webkit-details-marker{display:none}
 .foot summary::before{content:"▸";color:var(--faint);margin-right:7px;display:inline-block;transition:transform .15s}
 .foot[open] summary::before{transform:rotate(90deg)}
@@ -412,11 +397,11 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cl-card.done::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;color:var(--good);pointer-events:none}
 .cl-card.skip::after{content:'✕';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;color:var(--bad);pointer-events:none}
 .cl-card.done .cl-name{text-decoration:line-through}
-.cl-card.cl-dragging{opacity:.35;outline:2px dashed var(--line2)}
-.cl-drop-indicator{height:3px;background:var(--accent2);border-radius:2px;margin:2px 4px;pointer-events:none}
-.cl-group.cl-dnd-target>.cl-grid{outline:2px dashed var(--accent2);outline-offset:-3px;border-radius:8px}
-.cl-drag-handle{font-size:18px;color:var(--line2);cursor:grab;padding:0 2px;line-height:1;align-self:center;flex:none;display:none}
+.cl-card.cl-drag-src{opacity:.32;outline:2px dashed var(--accent2);outline-offset:-2px}
+.cl-drag-clone{position:fixed;z-index:9999;pointer-events:none;opacity:.96;box-shadow:0 14px 34px rgba(0,0,0,.55);transform:rotate(1.5deg);transition:none}
+.cl-drag-handle{font-size:20px;color:var(--muted);cursor:grab;padding:2px 7px;line-height:1;align-self:center;flex:none;display:none;border-radius:6px;touch-action:none}
 #clGroups.edit-mode .cl-drag-handle{display:block}
+.cl-drag-handle:hover{color:var(--accent2);background:rgba(72,185,255,.13)}
 .cl-drag-handle:active{cursor:grabbing}
 .cl-card.skip{border-color:rgba(255,107,107,.4)}
 .cl-card.optional{border-color:rgba(245,166,35,.35);border-left:3px solid #f5a623;background:rgba(245,166,35,.04)}
@@ -486,7 +471,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cl-saves-btn:disabled{opacity:.4;cursor:not-allowed}
 .cl-saves-btn.danger:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
 /* ===== 配信オーバーレイモード ===== */
-body.ov-mode .wrap,body.ov-mode #dock{display:none!important}
+body.ov-mode .wrap{display:none!important}
 body.ov-mode{margin:0;padding:0}
 #ovRoot{padding:2px;min-height:100vh;box-sizing:border-box;position:relative}
 #ovCtrlBar{position:absolute;top:4px;right:4px;z-index:20;display:flex;flex-direction:column;align-items:flex-end;gap:4px;opacity:0;pointer-events:none;transition:opacity .15s}
@@ -497,12 +482,19 @@ body.ov-mode{margin:0;padding:0}
 #ovCfgPanel.show{display:flex}
 #ovCfgPanel label{color:#ccc;font-size:12px;display:flex;align-items:center;gap:5px}
 #ovCfgPanel select,#ovCfgPanel input[type=number]{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:4px;padding:2px 6px;font-size:12px}
-#ovGrid{display:grid;gap:2px}
-.ov-ic{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
-.ov-ic img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#ovCfgPanel option{color:#10141c;background:#fff}
+#ovHelp{flex-basis:100%;max-width:420px;font-size:11px;line-height:1.6;color:#cfd6e0;border-top:1px solid rgba(255,255,255,.12);padding-top:8px;margin-top:2px}
+#ovHelp b{color:#fff}
+#ovHelp .ovHelp-warn{display:block;margin-top:5px;color:#ffd166}
+#ovGrid{display:grid;gap:0}
+.ov-ic{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1;overflow:hidden}
+/* セル境界の薄い区切り線（右・下に引いて格子状に。多少はみ出しても線で仕切られる） */
+.ov-ic::before{content:'';position:absolute;inset:0;z-index:3;box-shadow:inset -1px -1px 0 rgba(255,255,255,.13);pointer-events:none}
+#ovGrid.no-lines .ov-ic::before{display:none}
+.ov-ic img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;transform:scale(1.2)}
 .ov-ic.optional{opacity:.55}
-.ov-ic.done-chk::after,.ov-ic.done-dim::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(30,195,80,.5);border-radius:4px;pointer-events:none}
-.ov-ic.skip::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(220,55,55,.5);border-radius:4px;pointer-events:none}
+.ov-ic.done::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(30,195,80,.5);pointer-events:none}
+.ov-ic.skip::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(220,55,55,.5);pointer-events:none}
 .ov-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.6vw,13px);font-weight:700;color:#9aa4b2}
 .ov-ic:has(img) .ov-num{display:none}
 </style>
@@ -925,8 +917,7 @@ body.ov-mode{margin:0;padding:0}
         <button class="dc-btn sub" id="clAddGroup" style="height:30px;padding:0 12px">＋ グループを追加</button>
         <label class="cl-namechk"><input type="checkbox" id="clShowNames" checked>名前を表示</label>
         <label class="cl-namechk"><input type="checkbox" id="clHideMineral" checked>ごりごりミネラルを非表示</label>
-        <button class="dc-btn sub" id="clDragLock" style="height:30px;padding:0 12px">🔒 並替</button>
-        <button class="dc-btn sub" id="clGlobalEdit" style="height:30px;padding:0 12px">編集</button>
+        <button class="dc-btn sub" id="clGlobalEdit" style="height:30px;padding:0 12px">✏ 編集・並び替え</button>
         <span class="cl-addnote" id="clAddNote"></span>
         <span class="cl-prog" id="clProg" style="margin-left:auto"></span>
         <button class="dc-btn sub" id="clOverlayBtn" style="height:30px;padding:0 12px">📺 配信</button>
@@ -949,6 +940,7 @@ body.ov-mode{margin:0;padding:0}
       <summary>使い方</summary>
       <div>「ポケモンを追加」で検索し、<b>追加先グループ</b>を選んで追加するとそのグループに並びます。「＋ グループを追加」でグループを増やせます。グループ名（「グループ1」など）は<b>直接クリックして変更</b>できます。</div>
       <div>各カードをクリックすると<b>完了/未完了</b>が切り替わります。<b>同じポケモンを複数グループに入れた場合、1つチェックすると全グループの同じポケモンも一斉に切り替わります</b>。カード右上の×でそのグループから外し、グループの「削除」でグループごと消せます。状態はブラウザに保存され、リロードしても残ります。</div>
+      <div><b>配信に映す（📺 配信）</b>：押すと、選んだポケモンだけを並べた<b>配信用の小窓</b>が別ウィンドウで開きます（OBSでの取り込み方や注意は小窓内の⚙に記載）。</div>
     </details>
   </div><!-- /tabChecklist -->
 
@@ -1067,8 +1059,6 @@ body.ov-mode{margin:0;padding:0}
     </div>
   </div>
 </div>
-
-<div id="dock"><div id="dock-inner"><span class="dk-hint">ポケモン・わざ・相手を選択</span></div></div>
 
 <script>
 "use strict";
@@ -1655,21 +1645,7 @@ function update(){
     <div class="mults">${mults.map(x=>`<span class="mult">${x[0]} <b>×${x[1]}</b></span>`).join('')||'<span class="mult">補正なし</span>'}</div>
   `;
 }
-function setDock(opts){
-  const inner=document.getElementById('dock-inner');
-  if(!inner)return;
-  if(!opts){inner.innerHTML=`<span class="dk-hint">ポケモン・わざ・相手を選択</span>`;return;}
-  const {dmgMin,dmgMax,pMin,pMax,verdict,pctW,pctWmin}=opts;
-  inner.innerHTML=`
-    <span class="dk-dmg">${dmgMin} 〜 ${dmgMax}</span>
-    <span class="dk-pct">${pMin.toFixed(1)}%〜${pMax.toFixed(1)}%</span>
-    <div class="dk-bar">
-      <div class="dk-bar-max" style="width:${pctW}%"></div>
-      <div class="dk-bar-min" style="width:${pctWmin}%"></div>
-    </div>
-    <span class="dk-verdict">${verdict}</span>
-  `;
-}
+function setDock(){}   // 下部固定ドックは廃止（結果は計算結果カードに常時表示）
 /* ===== 捕獲率計算 ===== */
 const C={mon:null,catchRate:null,lv:50,alpha:false,hpPct:100,status:false,
   ball:'poke',ai:'default',backstrike:false,razz:false,outbreak:false,plrank:0};
@@ -1743,7 +1719,6 @@ function showTab(t){
   document.getElementById('tabCapture').style.display=t==='capture'?'':'none';
   document.getElementById('tabChecklist').style.display=t==='checklist'?'':'none';
   document.getElementById('tabDexcap').style.display=t==='dexcap'?'':'none';
-  document.getElementById('dock').style.display=t==='damage'?'':'none';
   document.querySelectorAll('#mainTabs .main-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
   document.getElementById('headSub').textContent=t==='dexcap'?DEXCAP_SUB:t==='capture'?CAP_SUB:t==='checklist'?CL_SUB:(S.mode==='rta'?RTA_SUB:NORMAL_SUB);
   try{localStorage.setItem('pla-tab',t);}catch(e){}
@@ -1910,9 +1885,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
   // CL = { groups:[{id,title,items:[no...]}], done:{no:true}, memo:{no:"text"}（共に種ごと・全グループ共通）, nextId }
   let CL={groups:[],done:{},memo:{},subtasks:{},skip:{},showFood:{},optional:{},textItems:{},nextId:1,nextSubId:1,nextTId:1};
   let SAVES={active:null,list:[],nextId:1};
-  let dragLocked=true;try{if(localStorage.getItem('pla-cl-drag-lock')==='0')dragLocked=false;}catch(e){}
   let hideMineral=true;try{if(localStorage.getItem('pla-cl-hide-mineral')==='0')hideMineral=false;}catch(e){}
-  let dragState=null,dragOverInfo=null;
   try{const s=JSON.parse(localStorage.getItem(KEY));
     if(s){
       CL.done=s.done||{};
@@ -1972,10 +1945,14 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
   sub: ♂
   sub: ♀
 コロボーシ
+  food
 ムクバード
 ルクシオ
 ミミロル
+  food
+ビッパ
 コダック
+  food
 ミツハニー
   optional
   sub: 倒す
@@ -1986,33 +1963,41 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
 パラス
 マスキッパ
 コロトック
+  food
 ヒメグマ
+  food
 グレッグル
 ヒポポタス
+  food
 サイホーン
 スボミー
+  food
 モンジャラ
+  food
 ミツハニー
-  optional
-  sub: 倒す
-  sub: タスク完了
 
 === 群青の海岸 ===
 ニャルマー
+  food
 タマザラシ
+  food
 ペラップ
+  food
 ヨマワル
 ドクケイル
 カラナクシ
   food
 メノクラゲ
 ロコン
+  food
   optional
 ガーディ（ヒスイ）
+  food
   optional
 ワンリキー
   optional
 トゲピー
+  food
   optional
 ケイコウオ
   optional
@@ -2141,7 +2126,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     const item=CL.textItems[id];if(!item)return '';
     const done=isDone(id),skip=!!CL.skip[id],opt=!!CL.optional[id];
     const handle='<span class="cl-drag-handle" title="ドラッグで並替">⠿</span>';
-    return `<div class="cl-card cl-text-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${id}" data-gid="${gid}"${dragLocked?'':' draggable="true"'}>
+    return `<div class="cl-card cl-text-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${id}" data-gid="${gid}">
       <div class="cl-card-row" data-no="${id}" data-gid="${gid}">
         ${handle}<input class="cl-text-lbl" data-no="${id}" value="${esc(item.label)}" placeholder="タスク内容" maxlength="60">
         ${opt?'<span class="cl-opt-badge">任意</span>':''}
@@ -2167,7 +2152,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
       <div class="cl-ep-row"><span class="cl-ep-lbl">サブタスク</span><div class="cl-ep-subs">${st.map(t=>`<div class="cl-sub-item"><input type="checkbox" class="cl-sub-ck" data-no="${no}" data-sid="${t.id}"${t.checked?' checked':''}><input class="cl-sub-label" data-no="${no}" data-sid="${t.id}" value="${esc(t.label)}" maxlength="30" placeholder="ラベル"><button class="cl-sub-del" data-no="${no}" data-sid="${t.id}">×</button></div>`).join('')}<div class="cl-sub-add"><input class="cl-sub-new" data-no="${no}" placeholder="例: ♂" maxlength="30"><button class="cl-sub-addbtn" data-no="${no}">＋</button></div></div></div>
     </div>`:'';
     const handle='<span class="cl-drag-handle" title="ドラッグで並替">⠿</span>';
-    return `<div class="cl-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${no}" data-gid="${gid}"${dragLocked?'':' draggable="true"'}>
+    return `<div class="cl-card${done?' done':''}${skip?' skip':''}${opt?' optional':''}" data-no="${no}" data-gid="${gid}">
       <div class="cl-card-row" data-no="${no}" data-gid="${gid}">
         <span class="cl-ic">${iconHTML(d)}</span>
         <span class="cl-info"><span class="cl-name">${esc(d.name)}</span>${opt?'<span class="cl-opt-badge">任意</span>':''}${mainFood}${mainMemo}${mainSubs}</span>
@@ -2231,7 +2216,7 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     if(epcl){editOpenSet.delete(epcl.dataset.epclose);renderGroups();return;}
     // カード行クリック: done トグル（スキップ中・サブタスクあり は無効）
     const cr=e.target.closest('.cl-card-row');
-    if(cr){if(e.target.closest('.cl-memo')||e.target.closest('.cl-text-lbl')||e.target.closest('.cl-subs')||e.target.closest('.cl-edit-btn')||e.target.closest('.cl-skip-btn')||e.target.closest('[data-x]'))return;
+    if(cr){if(e.target.closest('.cl-memo')||e.target.closest('.cl-text-lbl')||e.target.closest('.cl-subs')||e.target.closest('.cl-edit-btn')||e.target.closest('.cl-skip-btn')||e.target.closest('.cl-drag-handle')||e.target.closest('[data-x]'))return;
       const no=+cr.dataset.no;
       if(CL.skip[no])return;
       const st=CL.subtasks[no];if(st&&st.length)return;
@@ -2422,70 +2407,76 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     editOpenSet.clear();
   });
 
-  // ===== ドラッグ&ドロップ並替 =====
-  function clearDragUI(){
-    groupsEl.querySelectorAll('.cl-dragging').forEach(el=>el.classList.remove('cl-dragging'));
-    groupsEl.querySelectorAll('.cl-drop-indicator').forEach(el=>el.remove());
-    groupsEl.querySelectorAll('.cl-dnd-target').forEach(el=>el.classList.remove('cl-dnd-target'));
-    dragOverInfo=null;
+  // ===== ドラッグ並替（ポインタ式・ドラッグ中もホイールスクロール可・カードが押し出される） =====
+  let drag=null;
+  function domItems(gid){   // DOM上のカード順から items 配列を作る
+    const sec=groupsEl.querySelector(`.cl-group[data-gid="${gid}"]`);
+    if(!sec)return null;
+    return Array.from(sec.querySelectorAll(':scope > .cl-grid > .cl-card')).map(c=>+c.dataset.no);
   }
-  groupsEl.addEventListener('dragstart',e=>{
-    if(dragLocked){e.preventDefault();return;}
-    if(e.target.closest('input,button,select,textarea')){e.preventDefault();return;}
-    const card=e.target.closest('.cl-card');if(!card)return;
-    const no=+card.dataset.no,gid=+card.dataset.gid;
-    const g=CL.groups.find(z=>z.id===gid);
-    dragState={no,gid,srcIdx:g?g.items.indexOf(no):0};
-    e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','');
-    card.classList.add('cl-dragging');
-  });
-  groupsEl.addEventListener('dragover',e=>{
-    if(!dragState)return;e.preventDefault();e.dataTransfer.dropEffect='move';
-    clearDragUI();
-    const card=e.target.closest('.cl-card');
-    if(card&&!(+card.dataset.no===dragState.no&&+card.dataset.gid===dragState.gid)){
-      const rect=card.getBoundingClientRect(),before=e.clientY<rect.top+rect.height/2;
-      const ind=document.createElement('div');ind.className='cl-drop-indicator';
-      if(before)card.parentNode.insertBefore(ind,card);else card.parentNode.insertBefore(ind,card.nextSibling);
-      const g=CL.groups.find(z=>z.id===+card.dataset.gid);
-      if(g){const ci=g.items.indexOf(+card.dataset.no);dragOverInfo={targetGid:+card.dataset.gid,insertIdx:before?ci:ci+1};}
-    } else {
-      const group=e.target.closest('.cl-group');
-      if(group&&!card){
-        group.classList.add('cl-dnd-target');
-        const tgid=+group.dataset.gid,tg=CL.groups.find(z=>z.id===tgid);
-        dragOverInfo={targetGid:tgid,insertIdx:tg?tg.items.length:0};
-      }
+  function onDragMove(e){
+    if(!drag)return;
+    if(!drag.started){
+      if(Math.abs(e.clientX-drag.sx)+Math.abs(e.clientY-drag.sy)<5)return;
+      drag.started=true;
+      const c=drag.el.cloneNode(true);
+      c.classList.add('cl-drag-clone');
+      c.style.width=drag.w+'px';c.style.height=drag.h+'px';
+      document.body.appendChild(c);drag.clone=c;
+      drag.el.classList.add('cl-drag-src');
     }
-  });
-  groupsEl.addEventListener('dragleave',e=>{
-    if(!groupsEl.contains(e.relatedTarget))clearDragUI();
-  });
-  groupsEl.addEventListener('dragend',e=>{clearDragUI();dragState=null;});
-  groupsEl.addEventListener('drop',e=>{
-    e.preventDefault();
-    if(!dragState||!dragOverInfo){clearDragUI();dragState=null;return;}
-    const{no,gid:srcGid,srcIdx}=dragState,{targetGid,insertIdx}=dragOverInfo;
-    clearDragUI();dragState=null;
-    if(srcGid===targetGid){
-      const g=CL.groups.find(z=>z.id===srcGid);if(!g)return;
-      g.items.splice(srcIdx,1);
-      const adj=srcIdx<insertIdx?insertIdx-1:insertIdx;
-      g.items.splice(Math.max(0,Math.min(adj,g.items.length)),0,no);
-      save();renderGroups();
-    } else {
-      const srcG=CL.groups.find(z=>z.id===srcGid),dstG=CL.groups.find(z=>z.id===targetGid);
-      if(!srcG||!dstG)return;
-      if(dstG.items.includes(no)){
-        const m=findMon(no);
-        document.getElementById('clDragModalMsg').textContent='「'+(m?m.name:no)+'」は既に「'+dstG.title+'」に追加されています';
+    drag.clone.style.left=(e.clientX-drag.ox)+'px';
+    drag.clone.style.top=(e.clientY-drag.oy)+'px';
+    // 挿入位置を決めて、つかんでいるカードをDOM上で実際に動かす＝以降のカードが押し出される
+    const under=document.elementFromPoint(e.clientX,e.clientY);
+    if(!under)return;
+    const overCard=under.closest('.cl-card');
+    if(overCard&&overCard!==drag.el&&!overCard.classList.contains('cl-drag-clone')){
+      const r=overCard.getBoundingClientRect();
+      if(e.clientX>r.left+r.width/2)overCard.after(drag.el);else overCard.before(drag.el);
+    }else{
+      const grid=under.closest('.cl-grid');
+      if(grid&&!under.closest('.cl-card'))grid.appendChild(drag.el);
+    }
+  }
+  function onDragUp(){
+    document.removeEventListener('pointermove',onDragMove);
+    const d=drag;drag=null;
+    if(!d)return;
+    if(d.clone)d.clone.remove();
+    d.el.classList.remove('cl-drag-src');
+    if(!d.started)return;   // ほぼ動かしてなければ何もしない
+    const destSec=d.el.closest('.cl-group');
+    const destGid=destSec?+destSec.dataset.gid:d.srcGid;
+    // 別グループへ移動 かつ 既に同じポケモンがいる → 取り消して案内
+    if(destGid!==d.srcGid){
+      const dg=CL.groups.find(z=>z.id===destGid);
+      if(dg&&dg.items.includes(d.no)){
+        const m=findMon(d.no);
+        document.getElementById('clDragModalMsg').textContent='「'+(m?m.name:d.no)+'」は既に「'+dg.title+'」に追加されています';
         document.getElementById('clDragModal').style.display='flex';
-        return;
+        renderGroups();return;
       }
-      srcG.items.splice(srcIdx,1);
-      dstG.items.splice(Math.min(insertIdx,dstG.items.length),0,no);
-      save();renderGroups();
     }
+    const srcItems=domItems(d.srcGid);
+    if(srcItems){const g=CL.groups.find(z=>z.id===d.srcGid);if(g)g.items=srcItems;}
+    if(destGid!==d.srcGid){
+      const dstItems=domItems(destGid);
+      if(dstItems){const g=CL.groups.find(z=>z.id===destGid);if(g)g.items=dstItems;}
+    }
+    save();renderGroups();
+  }
+  groupsEl.addEventListener('pointerdown',e=>{
+    if(!globalEdit)return;
+    if(e.button!==undefined&&e.button!==0)return;
+    const handle=e.target.closest('.cl-drag-handle');if(!handle)return;
+    const card=handle.closest('.cl-card');if(!card)return;
+    e.preventDefault();
+    const r=card.getBoundingClientRect();
+    drag={el:card,no:+card.dataset.no,srcGid:+card.dataset.gid,clone:null,started:false,
+      sx:e.clientX,sy:e.clientY,ox:e.clientX-r.left,oy:e.clientY-r.top,w:r.width,h:r.height};
+    document.addEventListener('pointermove',onDragMove);
+    document.addEventListener('pointerup',onDragUp,{once:true});
   });
   document.getElementById('clDragModalOk').addEventListener('click',()=>{
     document.getElementById('clDragModal').style.display='none';
@@ -2495,27 +2486,13 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
     if(globalEdit||e.target.closest('.cl-edit-panel'))return;
     editOpenSet.clear();renderGroups();
   });
-  // ===== ロックボタン =====
-  function applyDragLockUI(){
-    const btn=document.getElementById('clDragLock');
-    btn.textContent=dragLocked?'✏ 編集':'✏ 編集中';
-    btn.style.borderColor=dragLocked?'':'var(--accent2)';
-    btn.style.color=dragLocked?'':'var(--accent2)';
-    groupsEl.classList.toggle('edit-mode',!dragLocked);
-    groupsEl.querySelectorAll('.cl-card').forEach(c=>c.draggable=!dragLocked);
-  }
-  document.getElementById('clDragLock').addEventListener('click',()=>{
-    dragLocked=!dragLocked;
-    try{localStorage.setItem('pla-cl-drag-lock',dragLocked?'1':'0');}catch(e){}
-    applyDragLockUI();
-  });
-  applyDragLockUI();
-  // ===== 全体編集モード =====
+  // ===== 編集・並び替えモード（編集パネル展開＋ドラッグ並替を兼ねる） =====
   function applyGlobalEditUI(){
     const btn=document.getElementById('clGlobalEdit');
-    btn.textContent=globalEdit?'編集中':'編集';
+    btn.textContent=globalEdit?'✏ 編集・並び替え中':'✏ 編集・並び替え';
     btn.style.borderColor=globalEdit?'var(--accent2)':'';
     btn.style.color=globalEdit?'var(--accent2)':'';
+    groupsEl.classList.toggle('edit-mode',globalEdit);   // ドラッグハンドル/×の表示切替
   }
   document.getElementById('clGlobalEdit').addEventListener('click',()=>{
     globalEdit=!globalEdit;applyGlobalEditUI();renderGroups();
@@ -2547,25 +2524,25 @@ update();
 let _savedTab='damage';try{_savedTab=localStorage.getItem('pla-tab')||'damage';}catch(e){}
 showTab(_savedTab);
 
-// ===== 配信オーバーレイ =====
+// ===== 配信オーバーレイ（窓キャプチャ） =====
 (function(){
   const openBtn=document.getElementById('clOverlayBtn');
   if(openBtn){
     openBtn.addEventListener('click',()=>{
-      const url=location.href.split('#')[0]+'#overlay';
+      const url=location.href.split('?')[0].split('#')[0]+'#overlay';
       window.open(url,'pla_overlay','width=860,height=280,resizable=yes,toolbar=no,menubar=no,location=no');
     });
   }
   if(location.hash!=='#overlay')return;
   document.body.classList.add('ov-mode');
-  let cfg={cols:8,sort:'cl',done:'dim',bg:'trans'};
+  let cfg={cols:8,sort:'cl',bg:'dark',lines:true};
   try{const s=JSON.parse(localStorage.getItem('pla-overlay-cfg'));if(s)Object.assign(cfg,s);}catch(e){}
+  if(cfg.bg!=='dark'&&cfg.bg!=='black')cfg.bg='dark';   // 旧「透過」設定はウィンドウキャプチャ用に暗めへ寄せる
   function saveCfg(){try{localStorage.setItem('pla-overlay-cfg',JSON.stringify(cfg));}catch(e){}}
   function ovEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function ovIconHTML(d){
     const id=(typeof PLA_ICONS!=='undefined')?PLA_ICONS[d.no]:null;
     const num=String(d.no).padStart(3,'0');
-    // 番号フォールバックは背面に常設し、画像が読めた時だけ前面で隠す（onerrorに引用符を入れず壊さない）
     if(id)return `<span class="ov-num">${num}</span><img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.remove()">`;
     return `<span class="ov-num">${num}</span>`;
   }
@@ -2581,23 +2558,24 @@ showTab(_savedTab);
       <option value="cl"${cfg.sort==='cl'?' selected':''}>リスト順</option>
       <option value="dex"${cfg.sort==='dex'?' selected':''}>図鑑番号順</option>
     </select></label>
-    <label>完了表示<select id="ovDone">
-      <option value="dim"${cfg.done==='dim'?' selected':''}>グレーアウト</option>
-      <option value="check"${cfg.done==='check'?' selected':''}>チェックマーク</option>
-    </select></label>
     <label>背景<select id="ovBg">
-      <option value="trans"${cfg.bg==='trans'?' selected':''}>透過</option>
       <option value="dark"${cfg.bg==='dark'?' selected':''}>暗め(半透明黒)</option>
       <option value="black"${cfg.bg==='black'?' selected':''}>黒</option>
     </select></label>
+    <label>区切り線<input type="checkbox" id="ovLines"${cfg.lines!==false?' checked':''}></label>
+    <div id="ovHelp">
+      <b>OBSへの映し方</b>：この小窓をOBSの「ウィンドウキャプチャ」で取り込みます。タイトルバーやこの⚙など<b>不要な部分は、ソース右クリック →「変換」→「変換の編集」</b>でクロップ（または <b>Altキーを押しながら枠をドラッグ</b>）して切り取ってください。チェックリスト側でチェックを入れると即反映されます。<br>
+      <span class="ovHelp-warn">※ ポケモンのアイコン画像を表示します。本ツールは非公式のファン制作物で、権利は任天堂／株式会社ポケモン等の各権利者に帰属します。配信での使用は各自の責任でお願いします。</span>
+    </div>
   </div></div>
   <div id="ovGrid"></div>`;
   document.body.appendChild(root);
   function applyBg(){
-    const m={trans:'transparent',dark:'rgba(0,0,0,.65)',black:'#000'};
-    document.body.style.background=m[cfg.bg]||'transparent';
+    const m={dark:'rgba(0,0,0,.65)',black:'#000'};
+    document.body.style.background=m[cfg.bg]||'rgba(0,0,0,.65)';
   }
   applyBg();
+  function applyLines(){const g=document.getElementById('ovGrid');if(g)g.classList.toggle('no-lines',cfg.lines===false);}
   function render(){
     let cl={groups:[],done:{},skip:{},optional:{},subtasks:{}};
     try{const s=JSON.parse(localStorage.getItem('pla-checklist'));if(s)cl=s;}catch(e){}
@@ -2609,23 +2587,21 @@ showTab(_savedTab);
     grid.innerHTML=nos.map(no=>{
       const d=(typeof PLA_DEX!=='undefined')?PLA_DEX.find(x=>x.no===no):null;if(!d)return '';
       const done=ovIsDone(no,cl),skip=!!(cl.skip||{})[no],opt=!!(cl.optional||{})[no];
-      const cls=['ov-ic',done?(cfg.done==='dim'?'done-dim':'done-chk'):'',skip?'skip':'',opt?'optional':''].filter(Boolean).join(' ');
+      const cls=['ov-ic',done?'done':'',skip?'skip':'',opt?'optional':''].filter(Boolean).join(' ');
       return `<div class="${cls}" title="${ovEsc(d.name)}">${ovIconHTML(d)}</div>`;
     }).join('');
   }
-  let _lastCL='';
-  function renderIfChanged(){
-    const cur=localStorage.getItem('pla-checklist')||'';
-    if(cur!==_lastCL){_lastCL=cur;render();}
-  }
-  const _origRender=render;
-  render=function(){_lastCL=localStorage.getItem('pla-checklist')||'';_origRender();};
   render();
+  applyLines();
   document.getElementById('ovCfgToggle').addEventListener('click',()=>{document.getElementById('ovCfgPanel').classList.toggle('show');});
+  document.getElementById('ovLines').addEventListener('change',e=>{cfg.lines=e.target.checked;saveCfg();applyLines();});
   document.getElementById('ovCols').addEventListener('input',e=>{cfg.cols=Math.max(1,+e.target.value||8);saveCfg();render();});
   document.getElementById('ovSort').addEventListener('change',e=>{cfg.sort=e.target.value;saveCfg();render();});
-  document.getElementById('ovDone').addEventListener('change',e=>{cfg.done=e.target.value;saveCfg();render();});
   document.getElementById('ovBg').addEventListener('change',e=>{cfg.bg=e.target.value;saveCfg();applyBg();});
+  // 同一ブラウザのポップアップを監視（チェックを入れると即反映）
+  let lastCL='';
+  function renderIfChanged(){const cur=localStorage.getItem('pla-checklist')||'';if(cur!==lastCL){lastCL=cur;render();}}
+  lastCL=localStorage.getItem('pla-checklist')||'';
   window.addEventListener('storage',e=>{if(e.key==='pla-checklist')render();});
   setInterval(renderIfChanged,1000);
 })();
