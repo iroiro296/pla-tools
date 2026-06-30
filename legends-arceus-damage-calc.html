@@ -538,7 +538,7 @@ body.ov-mode{margin:0;padding:0}
           <input type="text" autocomplete="off" placeholder="名前 / romaji で検索（五十音順）">
           <div class="opts"></div>
         </div>
-        <div class="row"><label>Lv</label><input type="number" id="leftLv" min="1" max="100" value="50"></div>
+        <div class="row"><label>Lv</label><input type="number" id="leftLv" min="1" max="100" value="50" onfocus="this.select()"></div>
       </div>
 
       <!-- 攻撃モード: わざ + スタイル -->
@@ -652,7 +652,7 @@ body.ov-mode{margin:0;padding:0}
           <label>ポケモン</label>
           <select id="rightRtaMonSel"></select>
         </div>
-        <div class="row" id="rightLvCell"><label>Lv</label><input type="number" id="rightLv" min="1" max="100" value="50"></div>
+        <div class="row" id="rightLvCell"><label>Lv</label><input type="number" id="rightLv" min="1" max="100" value="50" onfocus="this.select()"></div>
       </div>
 
       <!-- 攻撃モード: わざ + スタイル -->
@@ -798,7 +798,7 @@ body.ov-mode{margin:0;padding:0}
             <input type="text" autocomplete="off" placeholder="名前 / romaji で検索">
             <div class="opts"></div>
           </div>
-          <div class="row" style="flex:0 0 60px"><label>Lv</label><input type="number" id="capLv" min="1" max="100" value="50"></div>
+          <div class="row" style="flex:0 0 60px"><label>Lv</label><input type="number" id="capLv" min="1" max="100" value="50" onfocus="this.select()"></div>
           <label class="chk" id="cap_ck_alpha"><input type="checkbox">オヤブン</label>
         </div>
         <div class="cmpct-row" style="margin-top:8px">
