@@ -2017,11 +2017,11 @@ document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.targe
   mineralChk.checked=hideMineral;
   mineralChk.addEventListener('change',()=>{hideMineral=mineralChk.checked;try{localStorage.setItem('pla-cl-hide-mineral',hideMineral?'1':'0');}catch(e){}renderGroups();});
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  // アイコン枠：PokeAPIスプライト(jsDelivr配信)を全国図鑑IDで表示。読めない時は図鑑番号にフォールバック
+  // アイコン枠：PokeAPIスプライト(raw.githubusercontent)を全国図鑑IDで表示。読めない時は図鑑番号にフォールバック
   function iconHTML(d){
     const num=String(d.no).padStart(3,'0');
     const id=(typeof PLA_ICONS!=='undefined')?PLA_ICONS[d.no]:null;
-    if(id)return `<img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.outerHTML='<span>${num}</span>'">`;
+    if(id)return `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.outerHTML='<span>${num}</span>'">`;
     return `<span>${num}</span>`;
   }
   // 好物アイコン（エサ5種・gamepedia由来を内蔵）。base64はCSSに一度だけ展開→各行はクラスspanのみ（全件一覧でも軽量）
@@ -2497,7 +2497,7 @@ showTab(_savedTab);
   function ovIconHTML(d){
     const id=(typeof PLA_ICONS!=='undefined')?PLA_ICONS[d.no]:null;
     const num=String(d.no).padStart(3,'0');
-    if(id)return `<span class="ov-num">${num}</span><img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.remove()">`;
+    if(id)return `<span class="ov-num">${num}</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" alt="" loading="lazy" onerror="this.remove()">`;
     return `<span class="ov-num">${num}</span>`;
   }
   function ovIsDone(no,cl){
