@@ -451,6 +451,102 @@ body.ov-mode{margin:0;padding:0}
 .ov-ic.skip::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(220,55,55,.5);pointer-events:none}
 .ov-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.6vw,13px);font-weight:700;color:#9aa4b2}
 .ov-ic:has(img) .ov-num{display:none}
+/* ===== 行動順シミュレータ ===== */
+.ko-intro{font-size:11px;color:var(--muted);line-height:1.6;margin:0 0 12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px}
+.ko-intro b{color:var(--text)}
+.ko-combatants{display:flex;gap:12px;margin-bottom:14px}
+.ko-side{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;position:relative}
+.ko-side.self{border-color:rgba(72,185,255,.45);box-shadow:inset 0 0 0 1px rgba(72,185,255,.12)}
+.ko-side.opp{border-color:rgba(255,107,107,.45);box-shadow:inset 0 0 0 1px rgba(255,107,107,.12)}
+.ko-side h3{margin:0 0 9px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:7px}
+.ko-badge{font-size:11px;font-weight:800;padding:2px 9px;border-radius:99px}
+.ko-side.self .ko-badge{background:rgba(72,185,255,.16);color:var(--accent2);border:1px solid rgba(72,185,255,.3)}
+.ko-side.opp .ko-badge{background:rgba(255,107,107,.16);color:var(--bad);border:1px solid rgba(255,107,107,.3)}
+.ko-field{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ko-field label{font-size:12px;color:var(--muted);flex:0 0 auto;min-width:54px}
+.ko-field input[type=number]{width:84px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:0 9px;font-size:14px;font-weight:700}
+.ko-field input[type=number]:focus{outline:none;border-color:var(--accent2)}
+.ko-tier{font-size:11px;color:var(--faint);margin-left:auto;text-align:right;line-height:1.35}
+.ko-tier b{color:var(--text);font-weight:800}
+.ko-chk{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.ko-chk input{width:15px;height:15px;accent-color:var(--accent2)}
+.ko-poke{margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.ko-pokecombo{margin-bottom:8px}
+.ko-pokecombo > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.ko-pokerow{display:flex;gap:8px;align-items:flex-end}
+.ko-pcol > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;white-space:nowrap}
+.ko-pcol.nat{flex:1;min-width:118px}
+.ko-pcol input[type=number]{width:56px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:0 8px;font-size:14px;font-weight:700;text-align:center}
+.ko-pcol .nat-seg{height:34px}
+.ko-pcol .nat-seg button{font-size:11px}
+.ko-poke-hint{font-size:10px;color:var(--faint);margin-top:7px;line-height:1.4}
+.ko-move{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.ko-movecombo{margin-bottom:8px}
+.ko-movecombo > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
+/* 行動順補正バッジ（技候補・実行ボタン共通） */
+.kod{display:inline-flex;align-items:center;gap:2px;min-width:30px;justify-content:center;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:800;background:var(--panel3);color:var(--muted);font-variant-numeric:tabular-nums}
+.kod.dn{color:var(--good);background:rgba(70,219,163,.14)}
+.kod.up{color:var(--bad);background:rgba(255,107,107,.14)}
+.kod.opp{color:var(--warn);background:rgba(255,209,102,.16);border:1px solid rgba(255,209,102,.35)}
+.opt-delays{display:flex;gap:3px;flex-shrink:0}
+/* 登録した技（最大4つ・実行しない、ただの一覧） */
+.ko-moveset{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.ko-moveset-empty{font-size:11px;color:var(--faint);padding:4px 2px}
+.ko-mvchip{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:99px;padding:5px 6px 5px 11px;font-size:12px;font-weight:700}
+.ko-mvchip .rm{border:none;background:transparent;color:var(--faint);font-size:14px;line-height:1;cursor:pointer;padding:0 3px}
+.ko-mvchip .rm:hover{color:var(--bad)}
+.ko-moveset-full{font-size:10px;color:var(--faint);align-self:center}
+/* 実行パネル：手番側の技ボタン（クリック即実行） */
+.ko-actmoves{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:12px}
+.ko-actmoves-empty{font-size:12px;color:var(--faint);grid-column:1/-1;padding:10px 2px}
+/* 技カード：技名＋早業/通常/力業の3ボタンを内蔵（ゲーム内の技リストのL/○/R表示を再現） */
+.ko-actrow{display:flex;flex-direction:column;gap:6px;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:9px 10px}
+.ko-actrow .mv{font-size:13px;font-weight:800;color:var(--text)}
+.ko-actrow-styles{display:flex;gap:5px}
+.ko-actstyle{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 3px;border-radius:8px;border:1px solid var(--line2);background:var(--panel3);color:var(--muted);cursor:pointer;transition:border-color .12s,background .12s}
+.ko-actstyle:hover{border-color:var(--accent2);background:var(--panel)}
+.ko-actstyle .lbl{font-size:10px;font-weight:800}
+.ko-actstyle .val{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+.ko-actstyle .val.up{color:var(--bad)}
+.ko-actstyle .val.dn{color:var(--good)}
+.ko-actstyle .opp{font-size:9px;font-weight:800;color:var(--warn)}
+/* タイムライン */
+.ko-timeline-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 12px 14px;margin-bottom:14px}
+.ko-tl-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.ko-tl-head .t{font-size:13px;font-weight:800}
+.ko-tl-head .s{font-size:11px;color:var(--muted)}
+.ko-timeline{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px}
+.ko-slot{flex:0 0 auto;width:72px;border-radius:10px;padding:8px 4px;text-align:center;position:relative;border:1px solid var(--line2);background:var(--panel2);box-sizing:border-box}
+.ko-slot .who{font-size:13px;font-weight:800;line-height:1.2}
+.ko-slot .tt{font-size:10px;color:var(--faint);margin-top:3px}
+.ko-slot.self{background:rgba(72,185,255,.13);border-color:rgba(72,185,255,.4)}
+.ko-slot.self .who{color:var(--accent2)}
+.ko-slot.opp{background:rgba(255,107,107,.13);border-color:rgba(255,107,107,.4)}
+.ko-slot.opp .who{color:var(--bad)}
+.ko-slot.next{outline:2px solid var(--warn);outline-offset:1px}
+.ko-slot .ord{position:absolute;top:-7px;left:-4px;font-size:10px;font-weight:800;color:var(--faint);background:var(--bg);border:1px solid var(--line2);border-radius:99px;min-width:16px;height:16px;line-height:14px;padding:0 2px}
+.ko-slot.styled::after{content:attr(data-style);position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:800;white-space:nowrap;padding:1px 5px;border-radius:99px;background:var(--panel3);color:var(--text);border:1px solid var(--line2)}
+/* .mvは常にDOMへ出す（中身が空でも1行ぶんの高さを確保）→ ホバーで技名が出ても枠の高さが変わらないように */
+.ko-slot .mv{font-size:9px;color:var(--muted);margin-top:1px;min-height:12px;line-height:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+/* 中立予測と比べて行動順が入れ替わったスロット（ホバー中のみ） */
+.ko-slot.changed{box-shadow:0 0 0 2px var(--warn);animation:koChangedPulse 1s ease-in-out infinite}
+.ko-slot.changed::before{content:'⇄';position:absolute;top:-8px;right:-6px;width:16px;height:16px;border-radius:99px;background:var(--warn);color:#10141c;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
+@keyframes koChangedPulse{0%,100%{box-shadow:0 0 0 2px var(--warn)}50%{box-shadow:0 0 0 4px rgba(255,209,102,.55)}}
+/* 次の行動コントロール */
+.ko-next{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+.ko-next-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ko-next-lbl{font-size:13px;font-weight:800}
+.ko-next-lbl .nm{padding:2px 10px;border-radius:99px;font-weight:800}
+.ko-next-lbl .nm.self{background:rgba(72,185,255,.16);color:var(--accent2)}
+.ko-next-lbl .nm.opp{background:rgba(255,107,107,.16);color:var(--bad)}
+.ko-btn{height:36px;padding:0 16px;border-radius:9px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);font-size:13px;font-weight:800;cursor:pointer;transition:.12s}
+.ko-btn:hover{border-color:var(--accent2)}
+.ko-log{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.ko-log h4{margin:0 0 7px;font-size:12px;color:var(--muted);font-weight:800}
+.ko-log ol{margin:0;padding-left:22px;font-size:12px;color:var(--text);line-height:1.7;max-height:150px;overflow-y:auto}
+.ko-log li .sty{font-size:10px;font-weight:800;padding:0 6px;border-radius:99px;margin-left:5px}
+.ko-log .empty{font-size:12px;color:var(--faint);padding-left:0;list-style:none}
+@media(max-width:640px){.ko-combatants{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -466,6 +562,7 @@ body.ov-mode{margin:0;padding:0}
     <div class="main-tabs" id="mainTabs">
       <button class="main-tab on" data-tab="damage">ダメージ計算</button>
       <button class="main-tab" data-tab="capture">捕獲率</button>
+      <button class="main-tab" data-tab="koudo">行動順</button>
       <button class="main-tab" data-tab="checklist">チェックリスト</button>
       <button class="main-tab" data-tab="dexcap">図鑑キャプチャ</button>
     </div>
@@ -988,6 +1085,96 @@ body.ov-mode{margin:0;padding:0}
       <div>※ getDisplayMedia の都合上、<b>http://localhost で開く必要があります</b>（ファイルを直接開くと画面共有が使えない場合あり）。タイマー等のオーバーレイを含めたくない場合は、OBSでゲームソースだけのプロジェクター窓を共有してください。</div>
     </details>
   </div><!-- /tabDexcap -->
+
+  <div id="tabKoudo" style="display:none">
+    <p class="ko-intro">
+      アルセウスの戦闘は<b>行動順カウンター方式</b>。素早さで決まる「行動時間」ぶんカウントが進むと行動でき、速い側は<b>連続行動</b>もします。<br>
+両者のポケモンと<b>覚えている技（最大4つ）</b>を登録すると、下に実機のYボタンと同じ<b>行動順プレビュー</b>が常に表示されます（技はまだ選ばれていないので素早さだけで予測）。各技には<b>早業/通常/力業のボタンが内蔵</b>されていて、実際の対戦と同じくカーソルを乗せるだけで行動順プレビューに即反映、クリックでその手を実行できます。
+    </p>
+    <div class="ko-combatants">
+      <section class="ko-side self">
+        <h3><span class="ko-badge">自分</span></h3>
+        <div class="ko-poke">
+          <div class="row combo ko-pokecombo" data-combo="koSelfPoke">
+            <label>ポケモンから算出（任意）</label>
+            <input type="text" autocomplete="off" placeholder="名前 / romaji で検索 → 素早さ自動入力">
+            <div class="opts"></div>
+          </div>
+          <div class="ko-pokerow">
+            <div class="ko-pcol"><label>Lv</label><input type="number" id="koSelfLv" min="1" max="100" value="50" onfocus="this.select()"></div>
+            <div class="ko-pcol nat"><label>性格補正（素早さ）</label>
+              <div class="nat-seg" id="koSelfNat"><button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button></div>
+            </div>
+            <div class="ko-pcol"><label>がんばLv</label><input type="number" id="koSelfEff" min="0" max="10" value="0" onfocus="this.select()"></div>
+          </div>
+          <div class="ko-poke-hint">ポケモンを選ぶと下の素早さ実数値へ自動入力。手入力で上書きも可。</div>
+        </div>
+        <div class="ko-field">
+          <label>素早さ実数値</label>
+          <input type="number" id="koSelfSpd" min="1" max="999" value="120" onfocus="this.select()">
+          <span class="ko-tier" id="koSelfTier">基礎行動時間 <b>–</b></span>
+        </div>
+        <label class="ko-chk"><input type="checkbox" id="koSelfPara">まひ（素早さ実質50%）</label>
+        <div class="ko-move">
+          <div class="row combo ko-movecombo" data-combo="koSelfMove">
+            <label>技を覚える（最大4つ・変化技も選べる）</label>
+            <input type="text" autocomplete="off" placeholder="先にポケモンを選択 → わざ名 / romaji で選ぶと即登録">
+            <div class="opts"></div>
+          </div>
+          <div class="ko-moveset" id="koSelfMoveset"></div>
+        </div>
+      </section>
+      <section class="ko-side opp">
+        <h3><span class="ko-badge">相手</span></h3>
+        <div class="ko-poke">
+          <div class="row combo ko-pokecombo" data-combo="koOppPoke">
+            <label>ポケモンから算出（任意）</label>
+            <input type="text" autocomplete="off" placeholder="名前 / romaji で検索 → 素早さ自動入力">
+            <div class="opts"></div>
+          </div>
+          <div class="ko-pokerow">
+            <div class="ko-pcol"><label>Lv</label><input type="number" id="koOppLv" min="1" max="100" value="50" onfocus="this.select()"></div>
+            <div class="ko-pcol nat"><label>性格補正（素早さ）</label>
+              <div class="nat-seg" id="koOppNat"><button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button></div>
+            </div>
+            <div class="ko-pcol"><label>がんばLv</label><input type="number" id="koOppEff" min="0" max="10" value="0" onfocus="this.select()"></div>
+          </div>
+          <div class="ko-poke-hint">ポケモンを選ぶと下の素早さ実数値へ自動入力。手入力で上書きも可。</div>
+        </div>
+        <div class="ko-field">
+          <label>素早さ実数値</label>
+          <input type="number" id="koOppSpd" min="1" max="999" value="120" onfocus="this.select()">
+          <span class="ko-tier" id="koOppTier">基礎行動時間 <b>–</b></span>
+        </div>
+        <label class="ko-chk"><input type="checkbox" id="koOppPara">まひ（素早さ実質50%）</label>
+        <div class="ko-move">
+          <div class="row combo ko-movecombo" data-combo="koOppMove">
+            <label>技を覚える（最大4つ・変化技も選べる）</label>
+            <input type="text" autocomplete="off" placeholder="先にポケモンを選択 → わざ名 / romaji で選ぶと即登録">
+            <div class="opts"></div>
+          </div>
+          <div class="ko-moveset" id="koOppMoveset"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="ko-timeline-wrap">
+      <div class="ko-tl-head"><span class="t">行動順プレビュー</span><span class="s">ゲーム内Yボタン表示と同じ、常時先読み表示（実機は7手までですが最大24手まで表示）</span></div>
+      <div class="ko-timeline" id="koTimeline"></div>
+    </div>
+
+    <div class="ko-next">
+      <div class="ko-next-row">
+        <span class="ko-next-lbl">次に動く：<span class="nm" id="koNextName">自分</span></span>
+        <button class="ko-btn" id="koReset" title="登録した技はそのままに、最初の状態から再生し直す">⟲ 巻き戻す</button>
+      </div>
+      <div class="ko-actmoves" id="koActMoves"></div>
+      <div class="ko-log">
+        <h4>行動ログ</h4>
+        <ol id="koLog"><li class="empty">まだ行動していません。上のボタンから技をクリックすると1手進みます。</li></ol>
+      </div>
+    </div>
+  </div><!-- /tabKoudo -->
 </div><!-- /wrap -->
 
 <div class="dc-lightbox" id="dcLightbox">
@@ -1054,7 +1241,8 @@ const ROMA=_romaConv({..._tBase,
 /* キーボード入力スタイル: 小文字仮名をl接頭辞で表現 ディ→deli, ファ→fula など */
 const ROMAKBD=_romaConv({..._tBase,
   'ァ':'la','ィ':'li','ゥ':'lu','ェ':'le','ォ':'lo','ャ':'lya','ュ':'lyu','ョ':'lyo'});
-const norm=s=>(s||'').toLowerCase().replace(/[ー・（）\s]/g,'');
+// ひらがな→カタカナに寄せてから比較（名前側は元々カタカナなので、ひらがな入力でもヒットするように）
+const norm=s=>(s||'').toLowerCase().replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60)).replace(/[ー・（）\s]/g,'');
 function loose(r){
   return (r||'').toLowerCase()
     .replace(/shi/g,'si').replace(/sh/g,'sy').replace(/chi/g,'ti').replace(/ch/g,'ty')
@@ -1155,7 +1343,7 @@ const dexItems=q=>sortedDex.filter(d=>matchName(d.name,q)).map(d=>({
 
 const makeMoveItems=side=>q=>{
   const st=S[side];const mon=st.mon;
-  let names=Object.keys(PLA_MOVES);
+  let names=Object.keys(PLA_MOVES).filter(n=>PLA_MOVES[n].p!=null);   // ダメ計は威力のある技のみ（変化技は除外）
   const rtaMoves=(S.mode==='rta'&&side==='right'&&st.rta&&st.rta.moves&&st.rta.moves.length)?st.rta.moves:null;
   if(rtaMoves){const mv=new Set(rtaMoves);names=names.filter(n=>mv.has(n));}   // ルート相手=トレーナー使用技のみ
   else if(mon&&mon.learnset&&mon.learnset.length>0){
@@ -1668,15 +1856,18 @@ function setDefaultCap(){const d=sortedDex[0];C.mon=d;C.catchRate=PLA_CATCHRATE[
 const CAP_SUB='捕獲率計算：ポケモン・ボール・状況を入れると1球あたりの捕獲率を表示します。';
 const DEXCAP_SUB='図鑑キャプチャ：RTA中に一瞬だけ表示される図鑑を、画面共有から自動でキャプチャします。';
 const CL_SUB='チェックリスト：選んだポケモンだけを並べて、RTA中のタスク消化を「完了」チェックで管理できます。';
+const KOUDO_SUB='行動順シミュレータ：素早さと技スタイル（早業/力業）から、どちらが先に・何回動くかを対戦と同じ形式で再現します。ダメージは扱いません。';
 function showTab(t){
   document.getElementById('tabDamage').style.display=t==='damage'?'':'none';
   document.getElementById('tabCapture').style.display=t==='capture'?'':'none';
   document.getElementById('tabChecklist').style.display=t==='checklist'?'':'none';
   document.getElementById('tabDexcap').style.display=t==='dexcap'?'':'none';
+  document.getElementById('tabKoudo').style.display=t==='koudo'?'':'none';
   document.querySelectorAll('#mainTabs .main-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
-  document.getElementById('headSub').textContent=t==='dexcap'?DEXCAP_SUB:t==='capture'?CAP_SUB:t==='checklist'?CL_SUB:(S.mode==='rta'?RTA_SUB:NORMAL_SUB);
+  document.getElementById('headSub').textContent=t==='dexcap'?DEXCAP_SUB:t==='capture'?CAP_SUB:t==='checklist'?CL_SUB:t==='koudo'?KOUDO_SUB:(S.mode==='rta'?RTA_SUB:NORMAL_SUB);
   try{localStorage.setItem('pla-tab',t);}catch(e){}
   if(t==='capture')calcCapture();
+  if(t==='koudo')koudoRender();
 }
 document.getElementById('mainTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
 
@@ -2475,6 +2666,228 @@ let _savedMode='rta';try{_savedMode=localStorage.getItem('pla-mode')||'rta';}cat
 applyMode(_savedMode);
 setDefaultCap();
 update();
+/* ===== 行動順シミュレータ ===== */
+const KOUDO_CFG = { PARA_SPEED:0.5, SLOTS:24 };   // 行動順プレビューの手数（実機のYボタン表示=7手より多く）
+// 素早さ実数値 → 基礎行動時間（待ち時間）。境界402/317/243/182はJP勢の閾値と一致
+const KOUDO_AT_TABLE = [
+  {min:402, at:5, range:'402〜'}, {min:317, at:6, range:'317–401'}, {min:243, at:7, range:'243–316'},
+  {min:182, at:8, range:'182–242'}, {min:130, at:9, range:'130–181'}, {min:89, at:10, range:'89–129'},
+  {min:56, at:11, range:'56–88'}, {min:32, at:12, range:'32–55'}, {min:16, at:13, range:'16–31'}, {min:0, at:14, range:'〜15'}
+];
+function koudoTier(spd){ for(const r of KOUDO_AT_TABLE){ if(spd>=r.min) return r; } return KOUDO_AT_TABLE[KOUDO_AT_TABLE.length-1]; }
+function koudoEffSpd(s){ return s.para ? Math.floor(s.spd*KOUDO_CFG.PARA_SPEED) : s.spd; }
+function koudoBaseAT(s){ return koudoTier(koudoEffSpd(s)).at; }
+function koudoStyleLabel(st){ return st==='agile'?'早業':st==='strong'?'力業':'通常'; }
+// 技の行動順遅延度（基/早/力）。技データ(PLA_MOVES)から取得。dl=基, dla=早(省略時は基), dls=力(省略時は基)
+function koudoMoveDelays(mv){ const m=PLA_MOVES[mv]; if(!m)return{n:0,a:0,s:0}; const dl=(m.dl!=null)?m.dl:0; return {n:dl, a:(m.dla!=null)?m.dla:dl, s:(m.dls!=null)?m.dls:dl}; }
+function koudoDelayOf(mv,style){ if(!mv||!PLA_MOVES[mv])return 0; const d=koudoMoveDelays(mv); return style==='agile'?d.a:style==='strong'?d.s:d.n; }
+// 相手への行動順遅延（自分のカウンターとは別に、相手の現在のカウンターに直接加算する）。早業と通常/力業で別枠。0=効果なし
+function koudoOppDelayOf(mv,style){ const m=mv&&PLA_MOVES[mv]; if(!m)return 0; return style==='agile'?(m.oa||0):(m.oo||0); }
+// 行動順補正の値を色分けバッジHTMLに（正=遅い/赤、負=速い/緑、0=グレー）。opp=trueで相手用の警告色
+function koudoBadgeHTML(label,val,opp){
+  const cls=opp?'opp':(val>0?'up':val<0?'dn':'');
+  const txt=val>0?'+'+val:String(val);
+  return `<span class="kod ${cls}">${label}${txt}</span>`;
+}
+(function(){
+  const $=id=>document.getElementById(id);
+  const selSpd=$('koSelfSpd'),oppSpd=$('koOppSpd'),selPara=$('koSelfPara'),oppPara=$('koOppPara');
+  const tl=$('koTimeline'),nextName=$('koNextName'),logEl=$('koLog');
+  const actMovesEl=$('koActMoves'),resetBtn=$('koReset'),selTier=$('koSelfTier'),oppTier=$('koOppTier');
+  if(!tl) return;
+  // 登録した技（最大4つ・実際の対戦の技スロットに相当。並び順・スタイルは持たない＝クリック時に選ぶ）
+  const koMoveset={ self:[], opp:[] };
+  const koPoke={ self:{monNo:null,lv:50,nat:'none',eff:0}, opp:{monNo:null,lv:50,nat:'none',eff:0} };
+  const moveCombo={};   // side → setupCombo root（_setLabel用）
+  const POKE_CFG={ self:{spd:'koSelfSpd',lv:'koSelfLv',eff:'koSelfEff',nat:'koSelfNat',pokeCombo:'koSelfPoke',moveCombo:'koSelfMove',moveset:'koSelfMoveset'},
+                   opp:{spd:'koOppSpd',lv:'koOppLv',eff:'koOppEff',nat:'koOppNat',pokeCombo:'koOppPoke',moveCombo:'koOppMove',moveset:'koOppMoveset'} };
+  // --- ポケモン → 素早さ実数値（ダメ計と同じcalcStat/NMUL共用） ---
+  function applyPoke(sideKey){
+    const p=koPoke[sideKey]; if(p.monNo==null) return;
+    const mon=findMon(p.monNo); if(!mon||!mon.base) return;
+    const sp=calcStat('s',mon.base.s,p.lv,p.eff,NMUL[p.nat]||1);
+    const spdEl=$(POKE_CFG[sideKey].spd);
+    spdEl.value=sp; spdEl.dispatchEvent(new Event('input'));
+  }
+  // --- そのポケモンの覚え技（変化技も含む）。未選択なら全技 ---
+  function moveItems(sideKey){ return q=>{
+    const monNo=koPoke[sideKey].monNo; let names;
+    if(monNo!=null){ const mon=findMon(monNo);
+      if(mon&&mon.learnset&&mon.learnset.length){ const ls=new Set(mon.learnset); if(mon.tutor)mon.tutor.forEach(t=>ls.add(t)); names=Object.keys(PLA_MOVES).filter(n=>ls.has(n)); }
+      else names=Object.keys(PLA_MOVES); }
+    else names=Object.keys(PLA_MOVES);
+    if(q)names=names.filter(n=>matchName(n,q));
+    names.sort((a,b)=>jaKanaKey(a).localeCompare(jaKanaKey(b),'ja'));
+    return names.map(n=>{ const m=PLA_MOVES[n]; const d=koudoMoveDelays(n); const opp=Math.max(m.oa||0,m.oo||0);
+      const badges=koudoBadgeHTML('早',d.a)+koudoBadgeHTML('通',d.n)+koudoBadgeHTML('力',d.s)+(opp?koudoBadgeHTML('敵',opp,true):'');
+      return {key:n,label:n,html:`<span class="opt-mn">${n}</span><span class="opt-meta"><span class="tchip" style="background:${TYPE_COLOR[m.t]}">${m.t}</span><span class="opt-delays">${badges}</span></span>`};});
+  };}
+  // --- 技を覚える（最大4つ。選ぶと即登録） ---
+  function registerMove(sideKey,name){
+    const set=koMoveset[sideKey];
+    if(!set.includes(name)&&set.length<4) set.push(name);
+    if(moveCombo[sideKey]) moveCombo[sideKey]._setLabel('');
+    renderMoveset(sideKey); render();
+  }
+  function renderMoveset(sideKey){
+    const set=koMoveset[sideKey], el=$(POKE_CFG[sideKey].moveset);
+    const chips=set.map((n,i)=>`<span class="ko-mvchip">${n}<button class="rm" data-rm="${i}" title="この技を忘れる">×</button></span>`).join('');
+    const full=set.length>=4?'<span class="ko-moveset-full">4/4（上限）</span>':'';
+    el.innerHTML=(chips||'<span class="ko-moveset-empty">まだ技が登録されていません（最大4つ）</span>')+full;
+  }
+  function wireSide(sideKey){
+    const c=POKE_CFG[sideKey];
+    setupCombo(c.pokeCombo,dexItems,no=>{ koPoke[sideKey].monNo=no; applyPoke(sideKey); });
+    $(c.lv).addEventListener('input',()=>{ koPoke[sideKey].lv=Math.max(1,Math.min(100,parseInt($(c.lv).value,10)||1)); applyPoke(sideKey); });
+    $(c.eff).addEventListener('input',()=>{ koPoke[sideKey].eff=Math.max(0,Math.min(10,parseInt($(c.eff).value,10)||0)); applyPoke(sideKey); });
+    $(c.nat).addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b)return;
+      koPoke[sideKey].nat=b.dataset.v; $(c.nat).querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); applyPoke(sideKey); });
+    moveCombo[sideKey]=setupCombo(c.moveCombo,moveItems(sideKey),name=>registerMove(sideKey,name));
+    $(c.moveset).addEventListener('click',e=>{
+      const b=e.target.closest('[data-rm]'); if(!b)return;
+      koMoveset[sideKey].splice(+b.dataset.rm,1);
+      renderMoveset(sideKey); render();
+    });
+  }
+  wireSide('self'); wireSide('opp');
+  // --- カウンター状態 ---
+  let ko;
+  function readSide(spdEl,paraEl){ return { spd:Math.max(1,parseInt(spdEl.value,10)||1), para:paraEl.checked }; }
+  function resetSim(){
+    const self=readSide(selSpd,selPara), opp=readSide(oppSpd,oppPara);
+    ko={ self:{...self,counter:koudoBaseAT(self),lastActed:0}, opp:{...opp,counter:koudoBaseAT(opp),lastActed:0}, t:0, log:[] };
+    render();
+  }
+  function pickActor(st,cands){
+    if(cands.length===1) return cands[0];
+    const a=st.self,b=st.opp, wa=st.t-a.lastActed, wb=st.t-b.lastActed;
+    if(wa!==wb) return wa>wb?'self':'opp';
+    const sa=koudoEffSpd(a), sb=koudoEffSpd(b);
+    if(sa!==sb) return sa>sb?'self':'opp';
+    return 'self';
+  }
+  // st(self/opp/t)を1tick進めて、次に動くactorを確定する（破壊しない）
+  function advanceOneTick(st){
+    const m=Math.min(st.self.counter,st.opp.counter);
+    const self2={...st.self,counter:st.self.counter-m}, opp2={...st.opp,counter:st.opp.counter-m}, t2=st.t+m;
+    const cands=[]; if(self2.counter<=0)cands.push('self'); if(opp2.counter<=0)cands.push('opp');
+    const actor=pickActor({self:self2,opp:opp2,t:t2},cands);
+    return {self:self2,opp:opp2,t:t2,actor};
+  }
+  // tick済みstateに対してactorがmove+styleで行動した後のstateを返す（破壊しない）
+  function applyMove(tickedSt,move,style){
+    const actor=tickedSt.actor, other=actor==='self'?'opp':'self';
+    const st2={self:{...tickedSt.self},opp:{...tickedSt.opp},t:tickedSt.t};
+    st2[actor]={...st2[actor],lastActed:st2.t,counter:Math.max(1,koudoBaseAT(st2[actor])+koudoDelayOf(move,style))};
+    const oppDelay=koudoOppDelayOf(move,style);
+    if(oppDelay) st2[other]={...st2[other],counter:st2[other].counter+oppDelay};
+    return st2;
+  }
+  function peekNextActor(st){ return advanceOneTick(st).actor; }
+  function moveTag(mv,style){ if(!mv)return '行動'; const c=style==='agile'?'var(--good)':style==='strong'?'var(--accent)':'var(--panel3)';
+    const tc=style==='normal'?'var(--text)':'#10141c'; return `<span class="sty" style="background:${c};color:${tc}">${mv}・${koudoStyleLabel(style)}</span>`; }
+  // 実機のYボタン表示と同じ「常時先読みプレビュー」。今後の技はまだ選ばれていないので、
+  // 素早さのみ（技による補正なし）で中立に予測する＝現在のカウンターから先N手の行動者だけを出す。
+  // preview={side,move,style} を渡すと、直近の1手だけその技を使った想定に差し替える（技へのホバー用）
+  function simulate(n,preview){
+    let st=ko;
+    const out=[];
+    for(let i=0;i<n;i++){
+      const ticked=advanceOneTick(st);
+      const actor=ticked.actor;
+      let st2, previewed=(i===0&&preview&&actor===preview.side);
+      if(previewed){
+        st2=applyMove(ticked,preview.move,preview.style);
+      }else{
+        st2={self:{...ticked.self},opp:{...ticked.opp},t:ticked.t};
+        st2[actor]={...st2[actor],lastActed:ticked.t,counter:koudoBaseAT(st2[actor])};
+      }
+      out.push({side:actor,t:ticked.t,move:previewed?preview.move:null,style:previewed?preview.style:null});
+      st=st2;
+    }
+    return out;
+  }
+  function renderTimeline(preview){
+    const list=simulate(KOUDO_CFG.SLOTS,preview);
+    // ホバー中(preview指定時)だけ、中立予測と比較して行動順が入れ替わったスロットを検出
+    const baseline=preview?simulate(KOUDO_CFG.SLOTS):null;
+    tl.innerHTML=list.map((x,i)=>{
+      const styled=!!x.move;
+      const changed=!!(baseline&&baseline[i]&&baseline[i].side!==x.side);
+      return `<div class="ko-slot ${x.side}${i===0?' next':''}${styled?' styled':''}${changed?' changed':''}"${styled?` data-style="${koudoStyleLabel(x.style)}"`:''}>`+
+        `<div class="who">${x.side==='self'?'自分':'相手'}</div>`+
+        `<div class="mv"${x.move?` title="${x.move}"`:''}>${x.move||''}</div>`+
+        `<div class="tt">t+${x.t}</div></div>`;
+    }).join('');
+  }
+  // 技(+スタイル)にカーソルを合わせている間だけプレビューへ反映（実機と同じ挙動）。外したらrender()側で通常表示に戻す
+  function previewTimeline(move,style){ renderTimeline({side:peekNextActor(ko),move,style}); }
+  // 技カード＝技名＋早業/通常/力業の3ボタン内蔵（ゲーム内の技リストのL/○/Rを再現）。各ボタンを直接クリックで即実行
+  function renderActMoves(actor){
+    const set=koMoveset[actor];
+    if(!set.length){ actMovesEl.innerHTML=`<div class="ko-actmoves-empty">${actor==='self'?'自分':'相手'}の技が登録されていません。上のカードで技を選ぶと自動で登録されます。</div>`; return; }
+    actMovesEl.innerHTML=set.map(mv=>{
+      const d=koudoMoveDelays(mv);
+      const styles=[['agile','早業',d.a],['normal','通常',d.n],['strong','力業',d.s]];
+      const btns=styles.map(([st,label,val])=>{
+        const opp=koudoOppDelayOf(mv,st);
+        const cls=val>0?'up':val<0?'dn':'';
+        return `<button class="ko-actstyle" data-mv="${mv}" data-style="${st}">`+
+          `<span class="lbl">${label}</span><span class="val ${cls}">${val>0?'+':''}${val}</span>`+
+          (opp?`<span class="opp">敵+${opp}</span>`:'')+
+          `</button>`;
+      }).join('');
+      return `<div class="ko-actrow"><div class="mv">${mv}</div><div class="ko-actrow-styles">${btns}</div></div>`;
+    }).join('');
+  }
+  function render(){
+    if(!ko) return;
+    const sT=koudoTier(koudoEffSpd(ko.self)), oT=koudoTier(koudoEffSpd(ko.opp));
+    selTier.innerHTML=`基礎行動時間 <b>${sT.at}</b>（素早さ${sT.range}）`+(ko.self.para?`<br>まひ→実質 ${koudoEffSpd(ko.self)}`:'');
+    oppTier.innerHTML=`基礎行動時間 <b>${oT.at}</b>（素早さ${oT.range}）`+(ko.opp.para?`<br>まひ→実質 ${koudoEffSpd(ko.opp)}`:'');
+    renderMoveset('self'); renderMoveset('opp');
+    const actor=peekNextActor(ko);
+    nextName.textContent=actor==='self'?'自分':'相手'; nextName.className='nm '+actor;
+    renderTimeline();
+    renderActMoves(actor);
+    if(!ko.log.length){ logEl.innerHTML='<li class="empty">まだ行動していません。上のボタンから技をクリックすると1手進みます。</li>'; }
+    else logEl.innerHTML=ko.log.map(e=>{
+      const oppTxt=e.oppDelay?` <span style="color:var(--warn);font-size:10px">→${e.side==='self'?'相手':'自分'}を+${e.oppDelay}遅延</span>`:'';
+      return `<li>${e.side==='self'?'自分':'相手'} が ${moveTag(e.move,e.style)}${oppTxt}<span style="color:var(--faint);font-size:10px"> （t+${e.t}）</span></li>`;
+    }).join('');
+  }
+  function doAction(move,style){
+    const ticked=advanceOneTick(ko);
+    const actor=ticked.actor;
+    const oppDelay=koudoOppDelayOf(move,style);
+    const after=applyMove(ticked,move,style);
+    ko.log.push({side:actor,move,style,t:ticked.t,oppDelay});
+    ko.self=after.self; ko.opp=after.opp; ko.t=after.t;
+    render();
+  }
+  actMovesEl.addEventListener('click',e=>{
+    const b=e.target.closest('.ko-actstyle'); if(!b)return;
+    doAction(b.dataset.mv,b.dataset.style);
+  });
+  // 技×スタイルのボタンにカーソルを合わせると即座に行動順プレビューへ反映、外したら通常表示に戻す（実機のYボタン挙動と同じ）
+  actMovesEl.addEventListener('mouseover',e=>{
+    const b=e.target.closest('.ko-actstyle'); if(!b)return;
+    if(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ko-actstyle')===b)return;
+    previewTimeline(b.dataset.mv,b.dataset.style);
+  });
+  actMovesEl.addEventListener('mouseout',e=>{
+    const b=e.target.closest('.ko-actstyle'); if(!b)return;
+    if(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ko-actstyle')===b)return;
+    renderTimeline();
+  });
+  [selSpd,oppSpd].forEach(el=>el.addEventListener('input',resetSim));
+  [selPara,oppPara].forEach(el=>el.addEventListener('change',resetSim));
+  resetBtn.addEventListener('click',resetSim);
+  resetSim();
+  window.koudoRender=render;
+})();
+window.koudoRender=window.koudoRender||function(){};
+
 let _savedTab='damage';try{_savedTab=localStorage.getItem('pla-tab')||'damage';}catch(e){}
 showTab(_savedTab);
 

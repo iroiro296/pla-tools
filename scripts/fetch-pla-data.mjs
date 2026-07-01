@@ -8,6 +8,7 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 import { parseKoroMoves } from './parse-koro-moves.mjs'
+import { OPP_DELAY_TABLE, OPP_DELAY_DEFAULT } from './opponent-delay-table.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const OUT = resolve(__dirname, '../pla-data.js')
@@ -136,6 +137,16 @@ async function main() {
   console.log('fetching PLA moves from koro-pokemon ...')
   const { moves, skipped } = await parseKoroMoves()
   console.log('moves(damaging):', Object.keys(moves).length, '| skipped:', skipped.length)
+
+  console.log('merging opponent-delay table (行動順:相手への遅延) ...')
+  let oppApplied = 0
+  for (const name of Object.keys(moves)) {
+    const [oa, oo] = OPP_DELAY_TABLE[name] || OPP_DELAY_DEFAULT
+    if (oa !== 0) moves[name].oa = oa
+    if (oo !== 0) moves[name].oo = oo
+    if (oa !== 0 || oo !== 0) oppApplied++
+  }
+  console.log('opponent-delay applied to', oppApplied, 'moves')
 
   console.log('building type chart ...')
   const chart = await buildTypeChart()
