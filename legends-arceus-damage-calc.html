@@ -96,7 +96,7 @@ header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom
   box-shadow:0 4px 14px rgba(255,138,76,.35);color:#fff}
 .brand .ttl{display:flex;flex-direction:column;gap:1px;min-width:0}
 header.top h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.01em;line-height:1.2}
-header.top .ver{font-size:10px;font-weight:700;color:var(--accent2);background:rgba(72,185,255,.12);
+header.top .ver{font-size:11px;font-weight:700;color:var(--accent2);background:rgba(72,185,255,.12);
   border:1px solid rgba(72,185,255,.25);padding:1px 7px;border-radius:99px;align-self:center}
 header.top .sub{font-size:11px;color:var(--muted);width:100%;line-height:1.5}
 /* モード切替トグル */
@@ -106,7 +106,7 @@ header.top .sub{font-size:11px;color:var(--muted);width:100%;line-height:1.5}
 .mode-toggle .mt-btn.on{background:var(--accent);color:#10141c;box-shadow:0 2px 9px rgba(255,138,76,.35)}
 .mode-toggle .mt-btn[data-mode="rta"].on{background:linear-gradient(135deg,#ffd166,#ff8a4c);color:#10141c}
 .cards{display:grid;grid-template-columns:1fr;gap:12px}
-@media(min-width:860px){.cards{grid-template-columns:1fr 66px 1fr;align-items:start;gap:10px}}
+@media(min-width:860px){.cards{grid-template-columns:1fr 66px 1fr;align-items:stretch;gap:10px}}
 /* カードボーダー: デフォルトは左=攻撃(橙) 右=防御(青) */
 #leftCard{border-top:3px solid var(--atk);box-shadow:var(--shadow),0 -1px 0 0 rgba(255,138,76,.25),inset 0 22px 40px -28px rgba(255,138,76,.30)}
 #rightCard{border-top:3px solid var(--def);box-shadow:var(--shadow),0 -1px 0 0 rgba(72,185,255,.25),inset 0 22px 40px -28px rgba(72,185,255,.30)}
@@ -127,7 +127,7 @@ header.top .sub{font-size:11px;color:var(--muted);width:100%;line-height:1.5}
 .card{background:linear-gradient(180deg,var(--panel),#131b27);border:1px solid var(--line);
   border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;gap:8px}
 .card h2{font-size:15px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;letter-spacing:.01em}
-.card h2 .tag{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
+.card h2 .tag{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
 .tag.atk{background:rgba(255,138,76,.18);color:var(--atk);box-shadow:inset 0 0 0 1px rgba(255,138,76,.3)}
 .tag.def{background:rgba(72,185,255,.18);color:var(--def);box-shadow:inset 0 0 0 1px rgba(72,185,255,.3)}
 .row{margin-bottom:0}
@@ -152,9 +152,9 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .combo .opts::-webkit-scrollbar{width:9px}
 .combo .opts::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px;border:2px solid var(--panel3)}
 .combo .opts::-webkit-scrollbar-track{background:transparent}
-.opt-sep{padding:6px 10px 4px;font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.06em;
+.opt-sep{padding:6px 10px 4px;font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.06em;
   cursor:default;margin-top:2px}
-.tchip{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;color:#0c1018;white-space:nowrap;letter-spacing:.02em}
+.tchip{font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;color:#0c1018;white-space:nowrap;letter-spacing:.02em}
 .seg{display:flex;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--panel2)}
 .seg button{flex:1;height:calc(var(--ctl-h) - 2px);display:flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0 4px;cursor:pointer;color:var(--muted);font-size:12px;font-weight:600;transition:background .14s,color .14s;border-left:1px solid var(--line)}
 .seg button:first-child{border-left:none}
@@ -170,10 +170,10 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .chk.def.on{border-color:var(--accent2);background:rgba(72,185,255,.13)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .swapwrap{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}
-@media(min-width:860px){.swapwrap{position:sticky;top:14px;padding-top:26px}}
+@media(min-width:860px){.swapwrap{padding-top:0}}
 @media(max-width:859px){.swapwrap{margin:2px 0}}
 .weather-btns{display:flex;flex-direction:column;gap:6px;width:100%}
-.wthr-label{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-align:center;margin-bottom:-2px}
+.wthr-label{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-align:center;margin-bottom:-2px}
 .wthr-btn{display:flex;align-items:center;justify-content:center;gap:4px;padding:7px 6px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel2);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;width:100%}
 .wthr-btn:hover{border-color:var(--line2);color:var(--text)}
 #wbtnSun.on{background:rgba(255,200,50,.16);border-color:rgba(255,200,50,.55);color:#ffca32}
@@ -187,7 +187,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .result>h2{font-size:11px;margin:0 0 14px;color:var(--faint);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .res-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .res-dmg{min-width:0}
-.res-label{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.res-label{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .dmgline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .dmgbig{font-size:33px;font-weight:800;line-height:1;letter-spacing:-.01em;
   background:linear-gradient(135deg,var(--accent),#ff6e6e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
@@ -199,14 +199,14 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .bar{height:14px;background:var(--panel2);border-radius:8px;overflow:hidden;margin:8px 0 2px;border:1px solid var(--line);position:relative}
 .bar .fillmax{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(255,138,76,.3),rgba(255,107,107,.42));transition:width .35s cubic-bezier(.4,0,.2,1)}
 .bar .fillmin{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent),var(--bad));transition:width .35s cubic-bezier(.4,0,.2,1)}
-.bar-cap{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);font-weight:600;margin-bottom:12px}
-.rolls-head{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.bar-cap{display:flex;justify-content:space-between;font-size:11px;color:var(--faint);font-weight:600;margin-bottom:12px}
+.rolls-head{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
 .rolls-head .legend{margin-left:auto;display:inline-flex;align-items:center;gap:5px;text-transform:none;letter-spacing:0;font-weight:600}
 .rolls-head .legend i{width:10px;height:10px;border-radius:3px;background:rgba(255,107,107,.25);box-shadow:inset 0 0 0 1px rgba(255,107,107,.5);display:inline-block}
 .rolls{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:4px;margin:0}
 .roll{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:4px 2px;text-align:center;line-height:1.2}
 .roll b{font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;display:block}
-.roll small{display:block;font-size:10px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums}
+.roll small{display:block;font-size:11px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums}
 .roll.ko{background:rgba(255,107,107,.13);border-color:rgba(255,107,107,.4)}
 .roll.ko b{color:#ff8f8f}
 .roll.ko small{color:rgba(255,143,143,.7)}
@@ -214,7 +214,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .meta>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:var(--muted);padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
 .meta .wide{grid-column:1/-1}
 .meta b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
-.meta .sub{font-size:10px;color:var(--faint);font-weight:500}
+.meta .sub{font-size:11px;color:var(--faint);font-weight:500}
 .mults{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px}
 .mult{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
 .mult b{color:var(--text);font-weight:700}
@@ -228,7 +228,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .base-pow{margin-left:6px;font-weight:700;color:var(--accent2)}
 /* わざラベル: 伝授技トグルを右端に */
 .row > label.move-label{display:flex;align-items:center;gap:6px}
-.tutor-tg{margin-left:auto;flex:0 0 auto;font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--faint);cursor:pointer;transition:background .14s,color .14s,border-color .14s;letter-spacing:.02em}
+.tutor-tg{margin-left:auto;flex:0 0 auto;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--faint);cursor:pointer;transition:background .14s,color .14s,border-color .14s;letter-spacing:.02em}
 .tutor-tg::before{content:"＋";margin-right:2px;font-weight:800}
 .tutor-tg:hover{color:var(--text);border-color:var(--line2)}
 .tutor-tg.on{background:rgba(72,185,255,.16);border-color:var(--accent2);color:var(--accent2)}
@@ -267,7 +267,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .rta-eff-item{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted)}
 .rta-effort-inp{width:46px;height:28px;background:var(--panel2);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:0 6px;text-align:center;font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
 .rta-effort-inp:focus{outline:none;box-shadow:0 0 0 3px rgba(255,138,76,.18)}
-.rta-count{font-size:10px;font-weight:800;color:var(--def);background:rgba(72,185,255,.14);padding:2px 8px;border-radius:99px;box-shadow:inset 0 0 0 1px rgba(72,185,255,.3)}
+.rta-count{font-size:11px;font-weight:800;color:var(--def);background:rgba(72,185,255,.14);padding:2px 8px;border-radius:99px;box-shadow:inset 0 0 0 1px rgba(72,185,255,.3)}
 .rta-monname{font-size:12px;font-weight:700;color:var(--text)}
 /* ===== メインタブ（ダメージ計算 / 捕獲率） ===== */
 .main-tabs{margin-left:auto;display:flex;gap:2px;background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:3px;flex:0 0 auto;align-self:center}
@@ -278,7 +278,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 /* ===== 捕獲率タブ ===== */
 .cap-cards{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:860px){.cap-cards{grid-template-columns:1fr 1fr;align-items:start}}
-.tag-cap{background:rgba(72,185,255,.18);color:var(--def);box-shadow:inset 0 0 0 1px rgba(72,185,255,.3);font-size:10px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
+.tag-cap{background:rgba(72,185,255,.18);color:var(--def);box-shadow:inset 0 0 0 1px rgba(72,185,255,.3);font-size:11px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em;flex:0 0 auto}
 .cap-hplbl{color:var(--def);font-variant-numeric:tabular-nums}
 .cap-range{width:100%;accent-color:var(--accent2);cursor:pointer;padding:0;height:var(--ctl-h)}
 .cap-result{margin-top:12px}
@@ -326,7 +326,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .dc-shot video{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:cover}
 .dc-shot .dc-play-ov{position:absolute;top:0;left:0;right:0;height:calc(100% - 26px);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;background:rgba(0,0,0,.18);opacity:0;transition:opacity .12s;pointer-events:none;text-shadow:0 1px 4px rgba(0,0,0,.7)}
 .dc-shot:hover .dc-play-ov{opacity:1}
-.dc-shot .dc-meta{display:flex;align-items:center;justify-content:space-between;padding:5px 7px;font-size:10px;color:var(--faint);font-weight:600}
+.dc-shot .dc-meta{display:flex;align-items:center;justify-content:space-between;padding:5px 7px;font-size:11px;color:var(--faint);font-weight:600}
 .dc-shot .dc-x{cursor:pointer;color:var(--bad);font-weight:800}
 .dc-shot .dc-dl{cursor:pointer;color:var(--accent2);font-weight:800;text-decoration:none}
 .dc-empty{color:var(--faint);font-size:12px;text-align:center;padding:30px 0}
@@ -405,14 +405,14 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .cl-drag-handle:active{cursor:grabbing}
 .cl-card.skip{border-color:rgba(255,107,107,.4)}
 .cl-card.optional{border-color:rgba(245,166,35,.35);border-left:3px solid #f5a623;background:rgba(245,166,35,.04)}
-.cl-opt-badge{font-size:10px;font-weight:800;color:#c8861a;background:rgba(245,166,35,.18);border:1px solid rgba(245,166,35,.4);border-radius:4px;padding:1px 5px;margin-left:5px;white-space:nowrap;vertical-align:middle;line-height:16px;display:inline-block}
+.cl-opt-badge{font-size:11px;font-weight:800;color:#c8861a;background:rgba(245,166,35,.18);border:1px solid rgba(245,166,35,.4);border-radius:4px;padding:1px 5px;margin-left:5px;white-space:nowrap;vertical-align:middle;line-height:16px;display:inline-block}
 .cl-card.skip .cl-name{text-decoration:line-through;color:var(--muted)}
 .cl-card-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;cursor:pointer;position:relative}
 .cl-card-tools{display:flex;align-items:center;gap:6px;flex:none;margin-left:auto}
 .cl-card-foot{display:flex;justify-content:flex-end;gap:6px;padding:0 10px 8px;margin-top:auto}
-.cl-edit-btn{background:none;border:1px solid var(--line);border-radius:5px;color:var(--muted);cursor:pointer;font-size:10px;font-weight:800;padding:2px 7px;letter-spacing:.04em;transition:.12s;white-space:nowrap}
+.cl-edit-btn{background:none;border:1px solid var(--line);border-radius:5px;color:var(--muted);cursor:pointer;font-size:11px;font-weight:800;padding:2px 7px;letter-spacing:.04em;transition:.12s;white-space:nowrap}
 .cl-edit-btn:hover,.cl-edit-btn.open{border-color:var(--accent2);color:var(--text)}
-.cl-skip-btn{background:none;border:1px solid var(--line);border-radius:5px;color:var(--muted);cursor:pointer;font-size:10px;font-weight:800;padding:2px 7px;letter-spacing:.04em;transition:.12s;white-space:nowrap}
+.cl-skip-btn{background:none;border:1px solid var(--line);border-radius:5px;color:var(--muted);cursor:pointer;font-size:11px;font-weight:800;padding:2px 7px;letter-spacing:.04em;transition:.12s;white-space:nowrap}
 .cl-skip-btn:hover{border-color:rgba(255,107,107,.5);color:var(--bad)}
 .cl-skip-btn.on{border-color:rgba(255,107,107,.5);background:rgba(255,107,107,.08);color:var(--bad)}
 .cl-skip-btn.on:hover{border-color:var(--bad)}
@@ -495,104 +495,132 @@ body.ov-mode{margin:0;padding:0}
 .ov-ic.optional{opacity:.55}
 .ov-ic.done::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(30,195,80,.5);pointer-events:none}
 .ov-ic.skip::after{content:'';position:absolute;inset:0;z-index:2;background:rgba(220,55,55,.5);pointer-events:none}
-.ov-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.6vw,13px);font-weight:700;color:#9aa4b2}
+.ov-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(11px,1.6vw,13px);font-weight:700;color:#9aa4b2}
 .ov-ic:has(img) .ov-num{display:none}
 /* ===== 行動順シミュレータ ===== */
-.ko-intro{font-size:11px;color:var(--muted);line-height:1.6;margin:0 0 12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px}
+/* 配色ルール: 自分=青(--accent2) / 相手=赤(--bad) ＝実機の行動順パネル準拠。
+   フォントは全て11px以上（極小文字禁止）。入力欄の高さはアプリ共通の --ctl-h に揃える。 */
+.ko-intro{font-size:11px;color:var(--muted);line-height:1.65;margin:0 0 12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 13px}
 .ko-intro b{color:var(--text)}
-.ko-combatants{display:flex;gap:12px;margin-bottom:14px}
-.ko-side{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;position:relative}
-.ko-side.self{border-color:rgba(72,185,255,.45);box-shadow:inset 0 0 0 1px rgba(72,185,255,.12)}
-.ko-side.opp{border-color:rgba(255,107,107,.45);box-shadow:inset 0 0 0 1px rgba(255,107,107,.12)}
-.ko-side h3{margin:0 0 9px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:7px}
-.ko-badge{font-size:11px;font-weight:800;padding:2px 9px;border-radius:99px}
+/* クイック操作行：ダメ計読込・戦闘開始状況 */
+.ko-quickrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ko-startcond{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:4px}
+.ko-startcond .lbl{font-size:11px;font-weight:700;color:var(--muted);padding-left:8px}
+.ko-startcond button{border:none;background:transparent;color:var(--muted);font-size:11px;font-weight:800;padding:6px 12px;border-radius:99px;cursor:pointer;transition:.12s}
+.ko-startcond button:hover:not(.on){color:var(--text)}
+.ko-startcond button.on{background:var(--warn);color:#10141c}
+.ko-combatants{display:flex;gap:12px;margin-bottom:12px}
+.ko-side{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:12px}
+.ko-side.self{border-color:rgba(72,185,255,.45);box-shadow:inset 0 2px 0 rgba(72,185,255,.55)}
+.ko-side.opp{border-color:rgba(255,107,107,.45);box-shadow:inset 0 2px 0 rgba(255,107,107,.55)}
+.ko-side h3{margin:0;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px}
+.ko-badge{font-size:11px;font-weight:800;padding:3px 11px;border-radius:99px}
 .ko-side.self .ko-badge{background:rgba(72,185,255,.16);color:var(--accent2);border:1px solid rgba(72,185,255,.3)}
 .ko-side.opp .ko-badge{background:rgba(255,107,107,.16);color:var(--bad);border:1px solid rgba(255,107,107,.3)}
-.ko-field{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.ko-field label{font-size:12px;color:var(--muted);flex:0 0 auto;min-width:54px}
-.ko-field input[type=number]{width:84px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:0 9px;font-size:14px;font-weight:700}
-.ko-field input[type=number]:focus{outline:none;border-color:var(--accent2)}
-.ko-tier{font-size:11px;color:var(--faint);margin-left:auto;text-align:right;line-height:1.35}
-.ko-tier b{color:var(--text);font-weight:800}
-.ko-chk{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
-.ko-chk input{width:15px;height:15px;accent-color:var(--accent2)}
-.ko-poke{margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
-.ko-pokecombo{margin-bottom:8px}
-.ko-pokecombo > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.ko-side h3 .cap{font-size:11px;font-weight:600;color:var(--faint)}
+.ko-side-summary{font-size:12px;font-weight:600;color:var(--muted)}
+/* ポケモン→素早さ算出ブロック */
+.ko-poke{display:flex;flex-direction:column;gap:9px}
+.ko-pokecombo-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.ko-pokecombo-head label{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.ko-mini-tg-group{display:flex;gap:5px;flex:0 0 auto}
+.ko-mini-tg{flex:0 0 auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;border:1px solid var(--line2);background:var(--panel2);color:var(--faint);cursor:pointer;transition:.12s;white-space:nowrap}
+.ko-mini-tg:hover{color:var(--text);border-color:var(--accent2)}
+.ko-mini-tg.on{background:var(--warn);color:#10141c;border-color:var(--warn)}
+/* RTAルート時: トレーナー欄｜パーティ選択 を1段に */
+.ko-pokecombo-row{display:flex;gap:8px}
+.ko-pokecombo-row .ko-pokecombo{flex:1;min-width:0;margin-bottom:0}
+.ko-rta-monsel{flex:1;min-width:0}
+.ko-rta-monsel:disabled{opacity:1;color:var(--text);-webkit-text-fill-color:var(--text);cursor:default}
 .ko-pokerow{display:flex;gap:8px;align-items:flex-end}
 .ko-pcol > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;white-space:nowrap}
 .ko-pcol.nat{flex:1;min-width:118px}
-.ko-pcol input[type=number]{width:56px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);padding:0 8px;font-size:14px;font-weight:700;text-align:center}
-.ko-pcol .nat-seg{height:34px}
-.ko-pcol .nat-seg button{font-size:11px}
-.ko-poke-hint{font-size:10px;color:var(--faint);margin-top:7px;line-height:1.4}
-.ko-move{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
-.ko-movecombo{margin-bottom:8px}
+.ko-pcol input[type=number]{width:56px;text-align:center;font-weight:700}
+/* 素早さ実数値の行（まひトグルも同居させ縦を節約） */
+.ko-field{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius-sm)}
+.ko-field label{font-size:12px;font-weight:600;color:var(--muted);flex:0 0 auto}
+.ko-field input[type=number]{width:80px;background:var(--panel3);font-weight:800;font-size:15px}
+.ko-manual-badge{font-size:11px;font-weight:800;color:var(--warn);background:rgba(255,209,102,.16);border:1px solid rgba(255,209,102,.35);padding:2px 8px;border-radius:99px;flex:0 0 auto;cursor:pointer;transition:.12s}
+.ko-manual-badge:hover{background:rgba(255,209,102,.3);border-color:var(--warn)}
+.ko-tier{font-size:11px;color:var(--faint);margin-left:auto;text-align:right;line-height:1.4}
+.ko-tier b{color:var(--text);font-weight:800;font-size:13px}
+.ko-chk{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.ko-chk input{width:15px;height:15px;accent-color:var(--accent2)}
+/* 技登録ブロック */
+.ko-move{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:9px}
 .ko-movecombo > label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
-/* 行動順補正バッジ（技候補・実行ボタン共通） */
-.kod{display:inline-flex;align-items:center;gap:2px;min-width:30px;justify-content:center;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:800;background:var(--panel3);color:var(--muted);font-variant-numeric:tabular-nums}
+.ko-moveset{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:32px}
+.ko-moveset-empty{font-size:11px;color:var(--faint)}
+.ko-mvchip{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:99px;padding:5px 6px 5px 12px;font-size:12px;font-weight:700}
+.ko-mvchip .rm{border:none;background:transparent;color:var(--faint);font-size:14px;line-height:1;cursor:pointer;padding:0 3px}
+.ko-mvchip .rm:hover{color:var(--bad)}
+.ko-moveset-full{font-size:11px;font-weight:700;color:var(--warn)}
+/* 行動順補正バッジ（技候補ドロップダウン用） */
+.kod{display:inline-flex;align-items:center;gap:2px;min-width:32px;justify-content:center;padding:2px 6px;border-radius:6px;font-size:11px;font-weight:800;background:var(--panel3);color:var(--muted);font-variant-numeric:tabular-nums}
 .kod.dn{color:var(--good);background:rgba(70,219,163,.14)}
 .kod.up{color:var(--bad);background:rgba(255,107,107,.14)}
 .kod.opp{color:var(--warn);background:rgba(255,209,102,.16);border:1px solid rgba(255,209,102,.35)}
 .opt-delays{display:flex;gap:3px;flex-shrink:0}
-/* 登録した技（最大4つ・実行しない、ただの一覧） */
-.ko-moveset{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-.ko-moveset-empty{font-size:11px;color:var(--faint);padding:4px 2px}
-.ko-mvchip{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:99px;padding:5px 6px 5px 11px;font-size:12px;font-weight:700}
-.ko-mvchip .rm{border:none;background:transparent;color:var(--faint);font-size:14px;line-height:1;cursor:pointer;padding:0 3px}
-.ko-mvchip .rm:hover{color:var(--bad)}
-.ko-moveset-full{font-size:10px;color:var(--faint);align-self:center}
-/* 実行パネル：手番側の技ボタン（クリック即実行） */
-.ko-actmoves{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:12px}
-.ko-actmoves-empty{font-size:12px;color:var(--faint);grid-column:1/-1;padding:10px 2px}
-/* 技カード：技名＋早業/通常/力業の3ボタンを内蔵（ゲーム内の技リストのL/○/R表示を再現） */
-.ko-actrow{display:flex;flex-direction:column;gap:6px;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:9px 10px}
-.ko-actrow .mv{font-size:13px;font-weight:800;color:var(--text)}
-.ko-actrow-styles{display:flex;gap:5px}
-.ko-actstyle{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 3px;border-radius:8px;border:1px solid var(--line2);background:var(--panel3);color:var(--muted);cursor:pointer;transition:border-color .12s,background .12s}
-.ko-actstyle:hover{border-color:var(--accent2);background:var(--panel)}
-.ko-actstyle .lbl{font-size:10px;font-weight:800}
-.ko-actstyle .val{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
-.ko-actstyle .val.up{color:var(--bad)}
-.ko-actstyle .val.dn{color:var(--good)}
-.ko-actstyle .opp{font-size:9px;font-weight:800;color:var(--warn)}
-/* タイムライン */
-.ko-timeline-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 12px 14px;margin-bottom:14px}
-.ko-tl-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+/* タイムライン（実機Yボタンの先読みプレビュー） */
+.ko-timeline-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 12px 8px;margin-bottom:12px}
+.ko-tl-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .ko-tl-head .t{font-size:13px;font-weight:800}
 .ko-tl-head .s{font-size:11px;color:var(--muted)}
-.ko-timeline{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px}
-.ko-slot{flex:0 0 auto;width:72px;border-radius:10px;padding:8px 4px;text-align:center;position:relative;border:1px solid var(--line2);background:var(--panel2);box-sizing:border-box}
+.ko-timeline{display:flex;gap:7px;overflow-x:auto;padding:8px 2px 10px;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.ko-timeline::-webkit-scrollbar{height:9px}
+.ko-timeline::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px;border:2px solid var(--panel)}
+.ko-timeline::-webkit-scrollbar-track{background:transparent}
+.ko-slot{flex:0 0 auto;width:76px;border-radius:10px;padding:9px 4px 7px;text-align:center;position:relative;border:1px solid var(--line2);background:var(--panel2);box-sizing:border-box}
 .ko-slot .who{font-size:13px;font-weight:800;line-height:1.2}
-.ko-slot .tt{font-size:10px;color:var(--faint);margin-top:3px}
+.ko-slot .tt{font-size:11px;color:var(--faint);margin-top:2px}
 .ko-slot.self{background:rgba(72,185,255,.13);border-color:rgba(72,185,255,.4)}
 .ko-slot.self .who{color:var(--accent2)}
 .ko-slot.opp{background:rgba(255,107,107,.13);border-color:rgba(255,107,107,.4)}
 .ko-slot.opp .who{color:var(--bad)}
 .ko-slot.next{outline:2px solid var(--warn);outline-offset:1px}
-.ko-slot .ord{position:absolute;top:-7px;left:-4px;font-size:10px;font-weight:800;color:var(--faint);background:var(--bg);border:1px solid var(--line2);border-radius:99px;min-width:16px;height:16px;line-height:14px;padding:0 2px}
-.ko-slot.styled::after{content:attr(data-style);position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:800;white-space:nowrap;padding:1px 5px;border-radius:99px;background:var(--panel3);color:var(--text);border:1px solid var(--line2)}
-/* .mvは常にDOMへ出す（中身が空でも1行ぶんの高さを確保）→ ホバーで技名が出ても枠の高さが変わらないように */
-.ko-slot .mv{font-size:9px;color:var(--muted);margin-top:1px;min-height:12px;line-height:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.ko-slot .ord{position:absolute;top:-8px;left:-5px;font-size:11px;font-weight:800;color:var(--muted);background:var(--bg);border:1px solid var(--line2);border-radius:99px;min-width:18px;height:18px;line-height:16px;padding:0 3px}
+.ko-slot.styled::after{content:attr(data-style);position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;white-space:nowrap;padding:1px 7px;border-radius:99px;background:var(--panel3);color:var(--text);border:1px solid var(--line2)}
+/* .mvは常にDOMへ出す（中身が空でも1行ぶんの高さを確保）→ ホバーで技名が出ても枠の高さが変わらない */
+.ko-slot .mv{font-size:11px;color:var(--muted);margin-top:1px;min-height:15px;line-height:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 /* 中立予測と比べて行動順が入れ替わったスロット（ホバー中のみ） */
 .ko-slot.changed{box-shadow:0 0 0 2px var(--warn);animation:koChangedPulse 1s ease-in-out infinite}
-.ko-slot.changed::before{content:'⇄';position:absolute;top:-8px;right:-6px;width:16px;height:16px;border-radius:99px;background:var(--warn);color:#10141c;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
+.ko-slot.changed::before{content:'⇄';position:absolute;top:-8px;right:-6px;width:17px;height:17px;border-radius:99px;background:var(--warn);color:#10141c;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;line-height:1}
 @keyframes koChangedPulse{0%,100%{box-shadow:0 0 0 2px var(--warn)}50%{box-shadow:0 0 0 4px rgba(255,209,102,.55)}}
-/* 次の行動コントロール */
-.ko-next{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+/* 実行パネル：手番側の色（青/赤）を上辺に出して「今どちらの番か」を繋げる */
+.ko-next{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.ko-next.self{border-color:rgba(72,185,255,.45);box-shadow:inset 0 2px 0 rgba(72,185,255,.55)}
+.ko-next.opp{border-color:rgba(255,107,107,.45);box-shadow:inset 0 2px 0 rgba(255,107,107,.55)}
 .ko-next-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ko-next-lbl{font-size:13px;font-weight:800}
-.ko-next-lbl .nm{padding:2px 10px;border-radius:99px;font-weight:800}
+.ko-next-lbl{font-size:13px;font-weight:800;display:inline-flex;align-items:center;gap:7px}
+.ko-next-lbl .nm{padding:3px 12px;border-radius:99px;font-weight:800}
 .ko-next-lbl .nm.self{background:rgba(72,185,255,.16);color:var(--accent2)}
 .ko-next-lbl .nm.opp{background:rgba(255,107,107,.16);color:var(--bad)}
-.ko-btn{height:36px;padding:0 16px;border-radius:9px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);font-size:13px;font-weight:800;cursor:pointer;transition:.12s}
+.ko-btn{height:var(--ctl-h);padding:0 16px;border-radius:var(--radius-sm);border:1px solid var(--line2);background:var(--panel2);color:var(--text);font-size:13px;font-weight:800;cursor:pointer;transition:.12s;margin-left:auto}
 .ko-btn:hover{border-color:var(--accent2)}
-.ko-log{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.ko-btn:disabled{opacity:.4;cursor:not-allowed}
+.ko-btn:disabled:hover{border-color:var(--line2)}
+/* 技カード：技名＋早業/通常/力業の3ボタン内蔵（実機の技リストを再現）。ホバー=プレビュー中は黄色で示す */
+.ko-actmoves{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:9px;margin-top:12px}
+.ko-actmoves-empty{font-size:12px;color:var(--faint);grid-column:1/-1;padding:10px 2px}
+.ko-actrow{display:flex;flex-direction:column;gap:7px;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:10px 11px}
+.ko-actrow .mv{font-size:13px;font-weight:800;color:var(--text)}
+.ko-actrow-styles{display:flex;gap:6px}
+.ko-actstyle{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 3px;border-radius:8px;border:1px solid var(--line2);background:var(--panel3);color:var(--muted);cursor:pointer;user-select:none;transition:border-color .12s,background .12s,transform .12s}
+.ko-actstyle:hover{border-color:var(--warn);background:var(--panel);transform:translateY(-1px)}
+.ko-actstyle .lbl{font-size:11px;font-weight:800}
+.ko-actstyle[data-style="agile"] .lbl{color:var(--good)}
+.ko-actstyle[data-style="strong"] .lbl{color:var(--accent)}
+.ko-actstyle .val{font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+.ko-actstyle .val.up{color:var(--bad)}
+.ko-actstyle .val.dn{color:var(--good)}
+.ko-actstyle .opp{font-size:11px;font-weight:800;color:var(--warn)}
+/* 行動ログ */
+.ko-log{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 .ko-log h4{margin:0 0 7px;font-size:12px;color:var(--muted);font-weight:800}
-.ko-log ol{margin:0;padding-left:22px;font-size:12px;color:var(--text);line-height:1.7;max-height:150px;overflow-y:auto}
-.ko-log li .sty{font-size:10px;font-weight:800;padding:0 6px;border-radius:99px;margin-left:5px}
+.ko-log ol{margin:0;padding-left:22px;font-size:12px;color:var(--text);line-height:1.8;max-height:150px;overflow-y:auto}
+.ko-log li .sty{font-size:11px;font-weight:800;padding:1px 7px;border-radius:99px;margin-left:5px}
 .ko-log .empty{font-size:12px;color:var(--faint);padding-left:0;list-style:none}
-@media(max-width:640px){.ko-combatants{flex-direction:column}}
+@media(max-width:640px){.ko-combatants{flex-direction:column}.ko-field{flex-wrap:wrap}.ko-tier{flex-basis:100%;text-align:left;margin-left:0}}
 </style>
 </head>
 <body>
@@ -958,14 +986,16 @@ body.ov-mode{margin:0;padding:0}
       </section>
       <!-- 右: 結果 + 補足 -->
       <div>
-        <div style="text-align:right;margin-bottom:6px"><label class="chk" id="cap_show_mult"><input type="checkbox">倍率表示</label></div>
         <section class="result cap-result" style="margin-top:0">
           <div class="cap-res-head">
             <div>
               <div class="res-label">捕獲率（1球あたり）</div>
               <div class="cap-big" id="capPct">—</div>
             </div>
-            <div class="cap-verdict" id="capVerdict"></div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <label class="chk" id="cap_show_mult"><input type="checkbox">倍率表示</label>
+              <div class="cap-verdict" id="capVerdict"></div>
+            </div>
           </div>
           <div class="bar"><div class="cap-fill" id="capBarFill" style="width:0%"></div></div>
           <div class="meta" id="capMeta"></div>
@@ -1134,16 +1164,28 @@ body.ov-mode{margin:0;padding:0}
 
   <div id="tabKoudo" style="display:none">
     <p class="ko-intro">
-      アルセウスの戦闘は<b>行動順カウンター方式</b>。素早さで決まる「行動時間」ぶんカウントが進むと行動でき、速い側は<b>連続行動</b>もします。<br>
-両者のポケモンと<b>覚えている技（最大4つ）</b>を登録すると、下に実機のYボタンと同じ<b>行動順プレビュー</b>が常に表示されます（技はまだ選ばれていないので素早さだけで予測）。各技には<b>早業/通常/力業のボタンが内蔵</b>されていて、実際の対戦と同じくカーソルを乗せるだけで行動順プレビューに即反映、クリックでその手を実行できます。
+      アルセウスの戦闘は<b>行動順カウンター方式</b>：素早さで決まる「行動時間」を待って行動し、速い側は<b>連続行動</b>もします。<br>
+      ポケモンと技（最大4つ）を登録 → 実行パネルの<b>早業/通常/力業ボタンにカーソル</b>で下のプレビューに即反映、<b>クリックで1手実行</b>。実機のYボタン表示と同じ感覚で使えます。
     </p>
+    <div class="ko-quickrow">
+      <button type="button" class="ko-btn" id="koLoadFromDmg">⇄ ダメ計の対戦カードを読み込む</button>
+      <div class="ko-startcond" id="koStartCond" title="戦闘開始1ターン目だけの特例（実機仕様）">
+        <span class="lbl">開始時の状況</span>
+        <button data-v="normal" class="on">通常</button>
+        <button data-v="back">背後取り</button>
+        <button data-v="flee">逃走後の再戦</button>
+      </div>
+    </div>
     <div class="ko-combatants">
       <section class="ko-side self">
-        <h3><span class="ko-badge">自分</span></h3>
+        <h3><span class="ko-badge">自分</span><span class="ko-side-summary" id="koSelfSummary"></span></h3>
         <div class="ko-poke">
           <div class="row combo ko-pokecombo" data-combo="koSelfPoke">
-            <label>ポケモンから算出（任意）</label>
-            <input type="text" autocomplete="off" placeholder="名前 / romaji で検索 → 素早さ自動入力">
+            <div class="ko-pokecombo-head">
+              <label>ポケモンから素早さを算出（任意・下の実数値へ自動入力）</label>
+              <button type="button" class="ko-mini-tg" id="koSelfSwitchBtn" title="次に選ぶポケモンへ行動順カウンターの経過を引き継ぐ（きぜつ交代を再現）">🔄 交代</button>
+            </div>
+            <input type="text" autocomplete="off" placeholder="名前 / romaji で検索">
             <div class="opts"></div>
           </div>
           <div class="ko-pokerow">
@@ -1153,14 +1195,14 @@ body.ov-mode{margin:0;padding:0}
             </div>
             <div class="ko-pcol"><label>がんばLv</label><input type="number" id="koSelfEff" min="0" max="10" value="0" onfocus="this.select()"></div>
           </div>
-          <div class="ko-poke-hint">ポケモンを選ぶと下の素早さ実数値へ自動入力。手入力で上書きも可。</div>
         </div>
         <div class="ko-field">
           <label>素早さ実数値</label>
+          <button type="button" class="ko-manual-badge" id="koSelfManualBadge" style="display:none" title="クリックでポケモンの設定から再計算した値に戻す">手動 ×</button>
           <input type="number" id="koSelfSpd" min="1" max="999" value="120" onfocus="this.select()">
+          <label class="ko-chk"><input type="checkbox" id="koSelfPara">まひ ×0.5</label>
           <span class="ko-tier" id="koSelfTier">基礎行動時間 <b>–</b></span>
         </div>
-        <label class="ko-chk"><input type="checkbox" id="koSelfPara">まひ（素早さ実質50%）</label>
         <div class="ko-move">
           <div class="row combo ko-movecombo" data-combo="koSelfMove">
             <label>技を覚える（最大4つ・変化技も選べる）</label>
@@ -1171,28 +1213,37 @@ body.ov-mode{margin:0;padding:0}
         </div>
       </section>
       <section class="ko-side opp">
-        <h3><span class="ko-badge">相手</span></h3>
+        <h3><span class="ko-badge">相手</span><span class="ko-side-summary" id="koOppSummary"></span></h3>
         <div class="ko-poke">
-          <div class="row combo ko-pokecombo" data-combo="koOppPoke">
-            <label>ポケモンから算出（任意）</label>
-            <input type="text" autocomplete="off" placeholder="名前 / romaji で検索 → 素早さ自動入力">
-            <div class="opts"></div>
+          <div class="ko-pokecombo-head">
+            <label id="koOppPokeLabel">ポケモンから素早さを算出（任意・下の実数値へ自動入力）</label>
+            <div class="ko-mini-tg-group">
+              <button type="button" class="ko-mini-tg" id="koOppRtaToggle" title="RTAルート順のトレーナーから選ぶ">RTAルート</button>
+              <button type="button" class="ko-mini-tg" id="koOppSwitchBtn" title="次に選ぶポケモンへ行動順カウンターの経過を引き継ぐ（きぜつ交代を再現）">🔄 交代</button>
+            </div>
           </div>
-          <div class="ko-pokerow">
+          <div class="ko-pokecombo-row">
+            <div class="row combo ko-pokecombo" data-combo="koOppPoke">
+              <input type="text" autocomplete="off" placeholder="名前 / romaji で検索">
+              <div class="opts"></div>
+            </div>
+            <select id="koOppRtaMonSel" class="ko-rta-monsel" style="display:none"></select>
+          </div>
+          <div class="ko-pokerow" id="koOppLvRow">
             <div class="ko-pcol"><label>Lv</label><input type="number" id="koOppLv" min="1" max="100" value="50" onfocus="this.select()"></div>
             <div class="ko-pcol nat"><label>性格補正（素早さ）</label>
               <div class="nat-seg" id="koOppNat"><button data-v="down">▼0.9</button><button data-v="none" class="on">無</button><button data-v="up">▲1.1</button></div>
             </div>
             <div class="ko-pcol"><label>がんばLv</label><input type="number" id="koOppEff" min="0" max="10" value="0" onfocus="this.select()"></div>
           </div>
-          <div class="ko-poke-hint">ポケモンを選ぶと下の素早さ実数値へ自動入力。手入力で上書きも可。</div>
         </div>
         <div class="ko-field">
           <label>素早さ実数値</label>
+          <button type="button" class="ko-manual-badge" id="koOppManualBadge" style="display:none" title="クリックでポケモンの設定から再計算した値に戻す">手動 ×</button>
           <input type="number" id="koOppSpd" min="1" max="999" value="120" onfocus="this.select()">
+          <label class="ko-chk"><input type="checkbox" id="koOppPara">まひ ×0.5</label>
           <span class="ko-tier" id="koOppTier">基礎行動時間 <b>–</b></span>
         </div>
-        <label class="ko-chk"><input type="checkbox" id="koOppPara">まひ（素早さ実質50%）</label>
         <div class="ko-move">
           <div class="row combo ko-movecombo" data-combo="koOppMove">
             <label>技を覚える（最大4つ・変化技も選べる）</label>
@@ -1205,14 +1256,15 @@ body.ov-mode{margin:0;padding:0}
     </div>
 
     <div class="ko-timeline-wrap">
-      <div class="ko-tl-head"><span class="t">行動順プレビュー</span><span class="s">ゲーム内Yボタン表示と同じ、常時先読み表示（実機は7手までですが最大24手まで表示）</span></div>
+      <div class="ko-tl-head"><span class="t">行動順プレビュー</span><span class="s">実機のYボタン相当・24手先読み（技はまだ未確定なので素早さのみで予測）</span></div>
       <div class="ko-timeline" id="koTimeline"></div>
     </div>
 
-    <div class="ko-next">
+    <div class="ko-next" id="koNextPanel">
       <div class="ko-next-row">
         <span class="ko-next-lbl">次に動く：<span class="nm" id="koNextName">自分</span></span>
-        <button class="ko-btn" id="koReset" title="登録した技はそのままに、最初の状態から再生し直す">⟲ 巻き戻す</button>
+        <button class="ko-btn" id="koUndo" title="直前の1手を取り消す" disabled>↩ 1手戻す</button>
+        <button class="ko-btn" id="koReset" title="登録した技はそのままに、最初の状態から再生し直す">⟲ リセット</button>
       </div>
       <div class="ko-actmoves" id="koActMoves"></div>
       <div class="ko-log">
@@ -2739,21 +2791,39 @@ function koudoBadgeHTML(label,val,opp){
   const $=id=>document.getElementById(id);
   const selSpd=$('koSelfSpd'),oppSpd=$('koOppSpd'),selPara=$('koSelfPara'),oppPara=$('koOppPara');
   const tl=$('koTimeline'),nextName=$('koNextName'),logEl=$('koLog');
-  const actMovesEl=$('koActMoves'),resetBtn=$('koReset'),selTier=$('koSelfTier'),oppTier=$('koOppTier');
+  const actMovesEl=$('koActMoves'),resetBtn=$('koReset'),undoBtn=$('koUndo'),selTier=$('koSelfTier'),oppTier=$('koOppTier');
+  const startCondEl=$('koStartCond'),loadBtn=$('koLoadFromDmg');
+  const oppRtaToggle=$('koOppRtaToggle'),oppRtaMonSel=$('koOppRtaMonSel');
+  const selSwitchBtn=$('koSelfSwitchBtn'),oppSwitchBtn=$('koOppSwitchBtn');
+  const selSummary=$('koSelfSummary'),oppSummary=$('koOppSummary');
+  const selManualBadge=$('koSelfManualBadge'),oppManualBadge=$('koOppManualBadge');
   if(!tl) return;
   // 登録した技（最大4つ・実際の対戦の技スロットに相当。並び順・スタイルは持たない＝クリック時に選ぶ）
   const koMoveset={ self:[], opp:[] };
   const koPoke={ self:{monNo:null,lv:50,nat:'none',eff:0}, opp:{monNo:null,lv:50,nat:'none',eff:0} };
   const moveCombo={};   // side → setupCombo root（_setLabel用）
+  const manualSpd={ self:false, opp:false };   // 素早さを手入力したら、Lv/性格/がんばLv変更での自動上書きを止める
+  const switchMode={ self:false, opp:false };  // 🔄交代トグルON中は、次のポケモン選択でカウンター経過を引き継ぐ
+  let oppRtaMode=false, oppRtaGroup=null;      // 相手側「RTAルートから選ぶ」モード
+  let startCond='normal';                      // 戦闘開始状況: normal / back(背後取り) / flee(逃走後の再戦)
+  const koHistory=[];                          // 1手戻す用のスナップショット
   const POKE_CFG={ self:{spd:'koSelfSpd',lv:'koSelfLv',eff:'koSelfEff',nat:'koSelfNat',pokeCombo:'koSelfPoke',moveCombo:'koSelfMove',moveset:'koSelfMoveset'},
                    opp:{spd:'koOppSpd',lv:'koOppLv',eff:'koOppEff',nat:'koOppNat',pokeCombo:'koOppPoke',moveCombo:'koOppMove',moveset:'koOppMoveset'} };
-  // --- ポケモン → 素早さ実数値（ダメ計と同じcalcStat/NMUL共用） ---
-  function applyPoke(sideKey){
+  // --- ポケモン → 素早さ実数値（ダメ計と同じcalcStat/NMUL共用）。手入力中は上書きしない。keepElapsed指定時は交代のカウンター引き継ぎ ---
+  function applyPoke(sideKey,opts){
     const p=koPoke[sideKey]; if(p.monNo==null) return;
+    if(manualSpd[sideKey]) return;
     const mon=findMon(p.monNo); if(!mon||!mon.base) return;
     const sp=calcStat('s',mon.base.s,p.lv,p.eff,NMUL[p.nat]||1);
     const spdEl=$(POKE_CFG[sideKey].spd);
-    spdEl.value=sp; spdEl.dispatchEvent(new Event('input'));
+    if(opts&&opts.keepElapsed!=null&&ko){
+      spdEl.value=sp;
+      ko[sideKey]={...ko[sideKey],spd:sp};
+      ko[sideKey].counter=Math.max(1,koudoBaseAT(ko[sideKey])-opts.keepElapsed);
+      render();
+    }else{
+      spdEl.value=sp; spdEl.dispatchEvent(new Event('input'));
+    }
   }
   // --- そのポケモンの覚え技（変化技も含む）。未選択なら全技 ---
   function moveItems(sideKey){ return q=>{
@@ -2781,9 +2851,73 @@ function koudoBadgeHTML(label,val,opp){
     const full=set.length>=4?'<span class="ko-moveset-full">4/4（上限）</span>':'';
     el.innerHTML=(chips||'<span class="ko-moveset-empty">まだ技が登録されていません（最大4つ）</span>')+full;
   }
+  // --- RTAルート相手（ダメ計と同じPLA_RTA_ROUTEを流用）。相手側のみ ---
+  function rtaTrainerItemsKoudo(q){
+    return PLA_RTA_ROUTE.map((g,i)=>({g,i}))
+      .filter(({g})=>!q||matchName(g.label,q)||g.mons.some(m=>matchName(m.n,q)))
+      .map(({g,i})=>{
+        let meta='';
+        if(g.mons.length>1)meta=`<span class="pw rta-count">${g.mons.length}匹</span>`;
+        else if(!g.wild)meta=`<span class="pw rta-monname">${g.mons[0].n}</span>`;
+        return {key:'rtag:'+i,label:g.label,html:`<span class="no">${String(i+1).padStart(2,'0')}</span><span>${g.label}</span>${meta}`};
+      });
+  }
+  function pickKoudoRtaTrainer(gi){
+    const g=PLA_RTA_ROUTE[gi]; if(!g)return;
+    oppRtaGroup=gi;
+    oppRtaMonSel.innerHTML=g.mons.map((m,i)=>`<option value="${i}">${m.n} Lv${m.lv}</option>`).join('');
+    oppRtaMonSel.style.display='';
+    oppRtaMonSel.disabled=g.mons.length<2;   // 1匹なら選択不要（自動）だが枠はダメ計と同様に残す
+    document.querySelector('[data-combo="koOppPoke"]')._setLabel(g.label);
+    setKoudoRtaMon(gi,0);
+  }
+  function setKoudoRtaMon(gi,mi){
+    const g=PLA_RTA_ROUTE[gi]; if(!g)return;
+    mi=Math.max(0,Math.min(g.mons.length-1,mi|0));
+    const m=g.mons[mi];
+    oppRtaMonSel.value=mi;
+    koPoke.opp.monNo=m.no; koPoke.opp.lv=m.lv; koPoke.opp.nat='none'; koPoke.opp.eff=0;
+    manualSpd.opp=false;
+    $('koOppLv').value=m.lv; $('koOppEff').value=0;
+    $('koOppNat').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.v==='none'));
+    applyPoke('opp');
+    if(m.moves&&m.moves.length){ koMoveset.opp=m.moves.slice(0,4); renderMoveset('opp'); }   // トレーナー使用技を自動登録
+    render();
+  }
+  oppRtaMonSel.addEventListener('change',()=>{ if(oppRtaGroup!=null) setKoudoRtaMon(oppRtaGroup,+oppRtaMonSel.value); });
+  const oppPokeLabel=$('koOppPokeLabel'),oppLvRow=$('koOppLvRow');
+  oppRtaToggle.addEventListener('click',()=>{
+    oppRtaMode=!oppRtaMode;
+    oppRtaToggle.classList.toggle('on',oppRtaMode);
+    oppRtaMonSel.style.display='none';
+    oppLvRow.style.display=oppRtaMode?'none':'';   // ルート相手はLv/性格/がんばLvが固定値なので隠す（ダメ計RTAモードと同じ）
+    oppPokeLabel.textContent=oppRtaMode?'トレーナーから選ぶ（ルート順）':'ポケモンから素早さを算出（任意・下の実数値へ自動入力）';
+    const combo=document.querySelector('[data-combo="koOppPoke"]');
+    combo.querySelector('input').placeholder=oppRtaMode?'トレーナー名で検索（ルート順）':'名前 / romaji で検索';
+    if(!oppRtaMode) combo._setLabel('');
+  });
+  // --- 🔄交代（次に選ぶポケモンへ行動順カウンターの経過を引き継ぐ。きぜつ交代のwiki仕様を再現） ---
+  function updateSwitchBtn(sideKey){
+    const btn=sideKey==='self'?selSwitchBtn:oppSwitchBtn;
+    btn.classList.toggle('on',switchMode[sideKey]);
+    btn.textContent=switchMode[sideKey]?'🔄 次の選択で交代':'🔄 交代';
+  }
+  selSwitchBtn.addEventListener('click',()=>{ switchMode.self=!switchMode.self; updateSwitchBtn('self'); });
+  oppSwitchBtn.addEventListener('click',()=>{ switchMode.opp=!switchMode.opp; updateSwitchBtn('opp'); });
   function wireSide(sideKey){
     const c=POKE_CFG[sideKey];
-    setupCombo(c.pokeCombo,dexItems,no=>{ koPoke[sideKey].monNo=no; applyPoke(sideKey); });
+    const getItems=sideKey==='opp'?(q=>oppRtaMode?rtaTrainerItemsKoudo(q):dexItems(q)):dexItems;
+    setupCombo(c.pokeCombo,getItems,key=>{
+      if(sideKey==='opp'&&typeof key==='string'&&key.indexOf('rtag:')===0){ pickKoudoRtaTrainer(+key.slice(5)); return; }
+      if(switchMode[sideKey]&&ko){
+        const elapsed=koudoBaseAT(ko[sideKey])-ko[sideKey].counter;
+        koPoke[sideKey].monNo=key; manualSpd[sideKey]=false;
+        applyPoke(sideKey,{keepElapsed:elapsed});
+        switchMode[sideKey]=false; updateSwitchBtn(sideKey);
+        return;
+      }
+      koPoke[sideKey].monNo=key; manualSpd[sideKey]=false; applyPoke(sideKey);
+    });
     $(c.lv).addEventListener('input',()=>{ koPoke[sideKey].lv=Math.max(1,Math.min(100,parseInt($(c.lv).value,10)||1)); applyPoke(sideKey); });
     $(c.eff).addEventListener('input',()=>{ koPoke[sideKey].eff=Math.max(0,Math.min(10,parseInt($(c.eff).value,10)||0)); applyPoke(sideKey); });
     $(c.nat).addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b)return;
@@ -2796,12 +2930,43 @@ function koudoBadgeHTML(label,val,opp){
     });
   }
   wireSide('self'); wireSide('opp');
+  // --- ダメ計の対戦カード（左=自分/右=相手）を丸ごと読み込む ---
+  function loadFromDamageCalc(){
+    if(typeof S==='undefined') return;
+    if(S.left&&S.left.mon){
+      koPoke.self.monNo=S.left.mon.no; koPoke.self.lv=S.left.lv; manualSpd.self=false;
+      $('koSelfLv').value=S.left.lv;
+      document.querySelector('[data-combo="koSelfPoke"]')._setLabel(S.left.mon.name);
+      applyPoke('self');
+      if(S.left.move&&!koMoveset.self.includes(S.left.move)&&koMoveset.self.length<4){ koMoveset.self.push(S.left.move); renderMoveset('self'); }
+    }
+    if(S.right&&S.right.mon){
+      koPoke.opp.monNo=S.right.mon.no; koPoke.opp.lv=S.right.lv; manualSpd.opp=false;
+      $('koOppLv').value=S.right.lv;
+      document.querySelector('[data-combo="koOppPoke"]')._setLabel(S.right.mon.name);
+      applyPoke('opp');
+      if(S.right.move&&!koMoveset.opp.includes(S.right.move)&&koMoveset.opp.length<4){ koMoveset.opp.push(S.right.move); renderMoveset('opp'); }
+    }
+    render();
+  }
+  loadBtn.addEventListener('click',loadFromDamageCalc);
+  // --- 戦闘開始状況（背後取り/逃走後の再戦は1ターン目のみのカウンター特例・wiki仕様） ---
+  startCondEl.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    startCond=b.dataset.v;
+    startCondEl.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    resetSim();
+  });
   // --- カウンター状態 ---
   let ko;
   function readSide(spdEl,paraEl){ return { spd:Math.max(1,parseInt(spdEl.value,10)||1), para:paraEl.checked }; }
   function resetSim(){
     const self=readSide(selSpd,selPara), opp=readSide(oppSpd,oppPara);
     ko={ self:{...self,counter:koudoBaseAT(self),lastActed:0}, opp:{...opp,counter:koudoBaseAT(opp),lastActed:0}, t:0, log:[] };
+    if(startCond==='back'){ ko.self.counter=0; ko.opp.counter=1; }
+    else if(startCond==='flee'){ ko.self.counter=1; ko.opp.counter=0; }
+    koHistory.length=0;
+    updateUndoBtn();
     render();
   }
   function pickActor(st,cands){
@@ -2861,6 +3026,7 @@ function koudoBadgeHTML(label,val,opp){
       const styled=!!x.move;
       const changed=!!(baseline&&baseline[i]&&baseline[i].side!==x.side);
       return `<div class="ko-slot ${x.side}${i===0?' next':''}${styled?' styled':''}${changed?' changed':''}"${styled?` data-style="${koudoStyleLabel(x.style)}"`:''}>`+
+        `<span class="ord">${i+1}</span>`+
         `<div class="who">${x.side==='self'?'自分':'相手'}</div>`+
         `<div class="mv"${x.move?` title="${x.move}"`:''}>${x.move||''}</div>`+
         `<div class="tt">t+${x.t}</div></div>`;
@@ -2886,20 +3052,30 @@ function koudoBadgeHTML(label,val,opp){
       return `<div class="ko-actrow"><div class="mv">${mv}</div><div class="ko-actrow-styles">${btns}</div></div>`;
     }).join('');
   }
+  function sideSummary(sideKey){
+    const p=koPoke[sideKey]; if(p.monNo==null) return '';
+    const mon=findMon(p.monNo); if(!mon) return '';
+    return `${mon.name} Lv${p.lv}・S${ko?ko[sideKey].spd:'–'}`;
+  }
+  function updateUndoBtn(){ undoBtn.disabled=koHistory.length===0; }
   function render(){
     if(!ko) return;
     const sT=koudoTier(koudoEffSpd(ko.self)), oT=koudoTier(koudoEffSpd(ko.opp));
     selTier.innerHTML=`基礎行動時間 <b>${sT.at}</b>（素早さ${sT.range}）`+(ko.self.para?`<br>まひ→実質 ${koudoEffSpd(ko.self)}`:'');
     oppTier.innerHTML=`基礎行動時間 <b>${oT.at}</b>（素早さ${oT.range}）`+(ko.opp.para?`<br>まひ→実質 ${koudoEffSpd(ko.opp)}`:'');
     renderMoveset('self'); renderMoveset('opp');
+    selSummary.textContent=sideSummary('self'); oppSummary.textContent=sideSummary('opp');
+    selManualBadge.style.display=manualSpd.self?'':'none';
+    oppManualBadge.style.display=manualSpd.opp?'':'none';
     const actor=peekNextActor(ko);
     nextName.textContent=actor==='self'?'自分':'相手'; nextName.className='nm '+actor;
+    const panel=$('koNextPanel'); if(panel){panel.classList.toggle('self',actor==='self');panel.classList.toggle('opp',actor==='opp');}
     renderTimeline();
     renderActMoves(actor);
     if(!ko.log.length){ logEl.innerHTML='<li class="empty">まだ行動していません。上のボタンから技をクリックすると1手進みます。</li>'; }
     else logEl.innerHTML=ko.log.map(e=>{
-      const oppTxt=e.oppDelay?` <span style="color:var(--warn);font-size:10px">→${e.side==='self'?'相手':'自分'}を+${e.oppDelay}遅延</span>`:'';
-      return `<li>${e.side==='self'?'自分':'相手'} が ${moveTag(e.move,e.style)}${oppTxt}<span style="color:var(--faint);font-size:10px"> （t+${e.t}）</span></li>`;
+      const oppTxt=e.oppDelay?` <span style="color:var(--warn);font-size:11px">→${e.side==='self'?'相手':'自分'}を+${e.oppDelay}遅延</span>`:'';
+      return `<li>${e.side==='self'?'自分':'相手'} が ${moveTag(e.move,e.style)}${oppTxt}<span style="color:var(--faint);font-size:11px"> （t+${e.t}）</span></li>`;
     }).join('');
   }
   function doAction(move,style){
@@ -2907,8 +3083,18 @@ function koudoBadgeHTML(label,val,opp){
     const actor=ticked.actor;
     const oppDelay=koudoOppDelayOf(move,style);
     const after=applyMove(ticked,move,style);
+    koHistory.push({self:ko.self,opp:ko.opp,t:ko.t});
     ko.log.push({side:actor,move,style,t:ticked.t,oppDelay});
     ko.self=after.self; ko.opp=after.opp; ko.t=after.t;
+    updateUndoBtn();
+    render();
+  }
+  function undoAction(){
+    if(!koHistory.length) return;
+    const prev=koHistory.pop();
+    ko.self=prev.self; ko.opp=prev.opp; ko.t=prev.t;
+    ko.log.pop();
+    updateUndoBtn();
     render();
   }
   actMovesEl.addEventListener('click',e=>{
@@ -2926,9 +3112,14 @@ function koudoBadgeHTML(label,val,opp){
     if(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ko-actstyle')===b)return;
     renderTimeline();
   });
-  [selSpd,oppSpd].forEach(el=>el.addEventListener('input',resetSim));
+  selSpd.addEventListener('input',e=>{ if(e.isTrusted)manualSpd.self=true; resetSim(); });
+  oppSpd.addEventListener('input',e=>{ if(e.isTrusted)manualSpd.opp=true; resetSim(); });
+  // 手動固定バッジをクリックでポケモンの設定値へ戻す
+  selManualBadge.addEventListener('click',()=>{ manualSpd.self=false; applyPoke('self'); render(); });
+  oppManualBadge.addEventListener('click',()=>{ manualSpd.opp=false; applyPoke('opp'); render(); });
   [selPara,oppPara].forEach(el=>el.addEventListener('change',resetSim));
   resetBtn.addEventListener('click',resetSim);
+  undoBtn.addEventListener('click',undoAction);
   resetSim();
   window.koudoRender=render;
 })();
